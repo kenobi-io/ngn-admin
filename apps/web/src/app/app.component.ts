@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '@ngn-admin/api-interfaces';
+import { Message } from '@api/types';
 
 @Component({
   selector: 'ngn-admin-root',
@@ -8,6 +8,7 @@ import { Message } from '@ngn-admin/api-interfaces';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
+  public hello$ = this.http.get<Message>('/api/hello');
+  // public message: any;
   constructor(private http: HttpClient) {}
 }

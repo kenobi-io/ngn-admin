@@ -29,6 +29,8 @@
       }
     ],
     "no-arg": true,
+    "no-any": true,
+    "no-unsafe-any": true,
     "no-bitwise": true,
     "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
     "no-construct": true,

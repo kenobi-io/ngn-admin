@@ -25,7 +25,20 @@
     "update": "ng update @nrwl/workspace",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "prebuild": "rimraf dist",
+    "api:build": "nest build",
+    "api:format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "api:start": "nest start",
+    "api:start:dev": "nest start --watch",
+    "api:start:debug": "nest start --debug --watch",
+    "api:start:prod": "node dist/main",
+    "api:lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "api:test": "jest",
+    "api:test:watch": "jest --watch",
+    "api:test:cov": "jest --coverage",
+    "api:test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "api:test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "private": true,
   "dependencies": {
