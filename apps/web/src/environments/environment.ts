@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  path: 'api',
+  port: 3333
 };
 
 /*
