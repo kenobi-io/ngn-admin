@@ -1,4 +1,4 @@
-export * from './lib/message.dto';
-export * from './lib/response.dto';
-export * from './lib/request.dto';
+export * from './lib/dto/message.dto';
+export * from './lib/dto/response.dto';
+export * from './lib/dto/request.dto';
 export * from './lib/option';

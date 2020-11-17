@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package api.user;
+
+service UserService {
+    rpc Create (CreateReqUser) returns (ResUser) {
+    }
+
+    rpc Update (UpdateReqUser) returns (ResUser) {
+    }
+
+    rpc Delete (ReqUser) returns (ResUser) {
+    }
+
+    rpc Verify (VerifyReqUser) returns (User) {
+    }
+
+    rpc Get (UserReq) returns (User) {
+    }
+
+    rpc GetAll () returns (ArrayResUser) {
+    }
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string avatar = 4;
+}
+
+message CreateReqUser {
+    string name = 1;
+    string email = 2;
+    string password = 3;
+    string avatar = 4;
+}
+
+message UpdateReqUser {
+    string name = 1;
+    string email = 2;
+    string avatar = 3;
+}
+
+message VerifyReqUser {
+    string email = 1;
+    string password = 2;
+}
+
+message ReqUser {
+    string id = 1;
+}
+
+message ResUser {
+    EStatus status = 1;
+    string message = 2;
+}
+
+message ArrayResUser {
+    repeated User users = 1;
+}
