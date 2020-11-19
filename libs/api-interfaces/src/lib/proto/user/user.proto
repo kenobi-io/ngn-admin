@@ -15,10 +15,10 @@ service UserService {
     rpc Verify (VerifyReqUser) returns (User) {
     }
 
-    rpc Get (UserReq) returns (User) {
+    rpc Get (ReqUser) returns (User) {
     }
 
-    rpc GetAll () returns (ArrayResUser) {
+    rpc GetAll (ReqUser) returns (ArrayResUser) {
     }
 }
 
@@ -27,6 +27,10 @@ message User {
     string name = 2;
     string email = 3;
     string avatar = 4;
+}
+
+message ReqUser {
+    string id = 1;
 }
 
 message CreateReqUser {
@@ -47,10 +51,6 @@ message VerifyReqUser {
     string password = 2;
 }
 
-message ReqUser {
-    string id = 1;
-}
-
 message ResUser {
     EStatus status = 1;
     string message = 2;
@@ -58,4 +58,10 @@ message ResUser {
 
 message ArrayResUser {
     repeated User users = 1;
+}
+
+enum EStatus {
+    UNKNOWN = 0;
+    SUCCESS = 1;
+    ERROR = 2;
 }
