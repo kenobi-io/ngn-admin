@@ -8,7 +8,7 @@ import { Option } from '@api/types';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class RestApiService {
 
   private path: string;
 

@@ -10,7 +10,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e --no-exit",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build",
@@ -38,7 +38,8 @@
     "api:test:watch": "jest --watch",
     "api:test:cov": "jest --coverage",
     "api:test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "api:test:e2e": "jest --config ./test/jest-e2e.json"
+    "api:test:e2e": "jest --config ./test/jest-e2e.json",
+    "cti": "cti create ./libs/api-interfaces/src/lib/generated"
   },
   "private": true,
   "dependencies": {
@@ -52,17 +53,14 @@
     "@angular/platform-browser-dynamic": "^10.2.3",
     "@angular/router": "^10.2.3",
     "@capacitor/core": "^2.4.2",
-    "@grpc/proto-loader": "^0.5.5",
-    "@improbable-eng/grpc-web": "^0.13.0",
     "@nestjs/common": "^7.5.1",
     "@nestjs/core": "^7.5.1",
     "@nestjs/platform-express": "^7.5.1",
     "@nrwl/angular": "10.3.3",
     "google-protobuf": "^3.14.0",
-    "grpc": "^1.24.4",
+    "grpc-web": "^1.2.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.3",
-    "ts-protoc-gen": "^0.13.0",
     "zone.js": "^0.11.3"
   },
   "devDependencies": {
@@ -83,6 +81,7 @@
     "@types/jest": "26.0.15",
     "@types/node": "~14.14.7",
     "codelyzer": "~6.0.1",
+    "create-ts-index": "^1.13.6",
     "cypress": "^5.6.0",
     "dotenv": "8.2.0",
     "eslint": "7.13.0",

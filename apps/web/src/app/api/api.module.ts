@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from './services/api.service';
-
+import { RestApiService } from './services/rest-api.service';
+import { GrpcApiService } from './services/grpc-api.service';
 
 
 @NgModule({
@@ -9,6 +9,6 @@ import { ApiService } from './services/api.service';
   imports: [
     CommonModule
   ],
-  providers:[ApiService]
+  providers:[RestApiService, GrpcApiService]
 })
 export class ApiModule { }

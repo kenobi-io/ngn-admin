@@ -2,21 +2,21 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { ApiService } from './api.service';
+import { RestApiService } from './rest-api.service';
 import { MessageDto, Option, RequestDto, ResponseDto } from '@api/types';
 import { environment } from '@web/env';
 
 describe('#ApiService', () => {
-  let apiService: ApiService;
-  let messageDto: MessageDto = { message: 'Welcome to api!' }
+  let apiService: RestApiService;
+  const messageDto: MessageDto = { message: 'Welcome to api!' }
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ApiService]
+      providers: [RestApiService]
     });
-    apiService = TestBed.inject(ApiService);
+    apiService = TestBed.inject(RestApiService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 

@@ -3,22 +3,22 @@ syntax = "proto3";
 package api.user;
 
 service UserService {
-    rpc Create (CreateReqUser) returns (ResUser) {
+    rpc create (CreateReqUser) returns (ResUser) {
     }
 
-    rpc Update (UpdateReqUser) returns (ResUser) {
+    rpc update (UpdateReqUser) returns (ResUser) {
     }
 
-    rpc Delete (ReqUser) returns (ResUser) {
+    rpc delete (ReqUser) returns (ResUser) {
     }
 
-    rpc Verify (VerifyReqUser) returns (User) {
+    rpc verify (VerifyReqUser) returns (User) {
     }
 
-    rpc Get (ReqUser) returns (User) {
+    rpc get (ReqUser) returns (User) {
     }
 
-    rpc GetAll (ReqUser) returns (ArrayResUser) {
+    rpc getAll (ReqUser) returns (ArrayResUser) {
     }
 }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageDto } from '@api/types';
 import { Observable } from 'rxjs';
 
-import { ApiService } from './api/services/api.service';
+import { RestApiService } from './api/services/rest-api.service';
 
 @Component({
   selector: 'ngn-admin-root',
@@ -10,12 +10,10 @@ import { ApiService } from './api/services/api.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   public hello$: Observable<MessageDto>;
-  
-  constructor(private apiService: ApiService) {}
-  
+
+  constructor(private apiService: RestApiService) { }
+
   ngOnInit(): void {
-    this.hello$ = this.apiService.get<MessageDto>('/api/hello');
   }
 }

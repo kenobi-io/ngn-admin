@@ -2,17 +2,13 @@ syntax = "proto3";
 
 package api.auth;
 
-import "auth.types.proto";
-
 service AuthService {
-    rpc Auth (AuthReq) returns (AuthRes) {
-    }
+    
+    rpc auth (ReqAuth) returns (ResAuth) { }
 
-    rpc UpdateAuth (Stub) returns (AuthRes) {
-    }
+    rpc update (Stub) returns (ResAuth) { }
 
-    rpc GetCertStream (Stub) returns (stream GetCertStreamReAuth) {
-    }
+    rpc getCertStream (Stub) returns (stream GetCertStreamReAuth) { }
 }
 
 message ReqAuth {
@@ -26,4 +22,8 @@ message ResAuth {
 
 message GetCertStreamReAuth {
     string key = 1;
+}
+
+message Stub {
+
 }
