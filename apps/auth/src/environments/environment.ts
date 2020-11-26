@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  globalPrefix: 'api',
+  globalPrefix: 'api/auth',
   port: 3333
 };
