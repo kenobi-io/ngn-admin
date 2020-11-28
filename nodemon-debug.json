@@ -1,0 +1,6 @@
+{
+  "watch": ["apps/auth/src"],
+  "ext": "ts",
+  "ignore": ["apps/auth/src/**/*.spec.ts"],
+  "exec": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register apps/auth/src/main.ts"
+}

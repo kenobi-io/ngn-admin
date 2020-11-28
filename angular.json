@@ -5,7 +5,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "changeDetection": "OnPush"
         }
       },
       "root": "apps/web",
@@ -28,6 +29,11 @@
             "styles": [
               "apps/web/src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "apps/web/src/theming"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -175,6 +181,7 @@
             "outputPath": "dist/apps/auth",
             "main": "apps/auth/src/main.ts",
             "tsConfig": "apps/auth/tsconfig.app.json",
+            "sourceMap": true,
             "assets": [
               "apps/auth/src/assets"
             ]
@@ -195,9 +202,10 @@
         },
         "serve": {
           "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "auth:build"
-          }
+            "options": {
+              "buildTarget": "auth:build",
+              "inspect": true
+            }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",

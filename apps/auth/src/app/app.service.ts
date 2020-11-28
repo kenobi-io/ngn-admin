@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from '@api/types';
+import { MessageDto } from '@api/types';
 
 @Injectable()
 export class AppService {
-  getData(): Message {
+  getData(): MessageDto {
+    console.log('return message.');
     return { message: 'Welcome to api!' };
   }
 }

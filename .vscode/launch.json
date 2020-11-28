@@ -9,11 +9,12 @@
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\apps\\api\\src\\app\\app.controller.ts",
+            "program": "${workspaceFolder}/apps/auth/src/main.ts",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/dist/**/*.js"
             ]
         }
     ]
