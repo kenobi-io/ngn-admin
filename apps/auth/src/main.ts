@@ -1,21 +1,33 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import {
+  GrpcOptions,
+  MicroserviceOptions,
+  Transport,
+} from '@nestjs/microservices';
+import { ValidationPipe } from '@nestjs/common';
+import { join } from 'path';
 
 import { AppModule } from './app/app.module';
-import { environment } from '@api/env';
+import { environment } from '@api/env-auth';
+import { authGrps } from '@api/types';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-    app.setGlobalPrefix(environment.globalPrefix);
-    const port = process.env.PORT || environment.port;
-    await app.listen(port, () => {
-      Logger.log('Listening at http://localhost:' + port + '/' + environment.globalPrefix);
-    });
-  }
+  // const config: GrpcOptions = authGrps(
+  //   Transport.GRPC,
+  //   join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/auth.proto'),
+  //   environment.port.toString()
+  // );
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    // config
+    {
+      transport: Transport.TCP,
+    },
+  );
+  // app.useLogger(logger); TODO: add logger;
+  
+  app.useGlobalPipes(new ValidationPipe());
+  console.log("Compiled: ", await app.listenAsync());
+}
 
 bootstrap();
