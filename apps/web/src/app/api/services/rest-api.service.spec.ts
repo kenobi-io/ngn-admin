@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { RestApiService } from './rest-api.service';
-import { MessageDto, Option, RequestDto, ResponseDto } from '@api/types';
+import { Option } from '@api/core';
 import { environment } from '@web/env';
 
 describe('#ApiService', () => {

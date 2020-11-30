@@ -9,7 +9,7 @@ import { join } from 'path';
 
 import { AppModule } from './app/app.module';
 import { environment } from '@api/env-auth';
-import { authGrps } from '@api/types';
+import { authGrps } from '@api/core';
 
 async function bootstrap() {
   const config: GrpcOptions = authGrps(

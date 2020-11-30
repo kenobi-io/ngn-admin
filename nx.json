@@ -37,10 +37,10 @@
         "web"
       ]
     },
-    "api-interfaces": {
+    "auth": {
       "tags": []
     },
-    "auth": {
+    "api": {
       "tags": []
     }
   }

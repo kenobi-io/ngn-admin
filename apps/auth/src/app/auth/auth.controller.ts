@@ -7,7 +7,7 @@ import {
 } from '@nestjs/microservices';
 import { Metadata, ServerUnaryCall } from 'grpc';
 
-import { userGrpc, UserServiceClient } from '@api/types';
+import { userGrpc, UserServiceClient } from '@api/core';
 import { environment } from '@api/env-auth';
 
 @Controller()

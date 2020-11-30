@@ -140,34 +140,6 @@
         }
       }
     },
-    "api-interfaces": {
-      "root": "libs/api-interfaces",
-      "sourceRoot": "libs/api-interfaces/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/api-interfaces/**/*"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/api-interfaces/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "auth": {
       "root": "apps/auth",
       "sourceRoot": "apps/auth/src",
@@ -202,10 +174,10 @@
         },
         "serve": {
           "builder": "@nrwl/node:execute",
-            "options": {
-              "buildTarget": "auth:build",
-              "inspect": true
-            }
+          "options": {
+            "buildTarget": "auth:build",
+            "inspect": true
+          }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -224,6 +196,34 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/auth/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api": {
+      "root": "libs/api",
+      "sourceRoot": "libs/api/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/api/tsconfig.lib.json",
+              "libs/api/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/api/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/api/jest.config.js",
             "passWithNoTests": true
           }
         }

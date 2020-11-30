@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MessageDto } from '@api/types';
+import { MessageDto } from '@api/core';
 import { environment } from '@web/env';
 
 import { GrpcApiService } from './grpc-api.service';
