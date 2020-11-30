@@ -1,7 +1,6 @@
-import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
-const grpcOption = (
+export const grpcOption = (
   transport: number,
   protoPath: string,
   pack: string,
@@ -20,37 +19,32 @@ const grpcOption = (
 
 export const authGrps = (
   transport: number,
-  protoPath: string,
-  port?: string
+  port?: string,
+  protoPath?: string
 ) => {
   return {
     transport: transport,
     options: {
       url: port || '127.0.0.1:8002',
       package: 'api.auth',
-      protoPath: protoPath,
+      protoPath: protoPath || 
+        join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/auth.proto')
     },
   };
 };
 
-// export const userGrpc = (
-//   transport: number,
-//   protoPath: string,
-//   port?: string
-// ) => {
-//   return {
-//     transport: transport,
-//     options: {
-//       url: port || '127.0.0.1:8001',
-//       package: 'api.user',
-//       protoPath: protoPath,
-//     },
-//   };
-// };
-
-
-export const userGrpc: GrpcOptions = grpcOption(
-    Transport.GRPC, 
-    join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/user.proto'),
-    'api.user',
-    '127.0.0.1:8001');
+export const userGrpc = (
+  transport: number,
+  port?: string,
+  protoPath?: string
+) => {
+  return {
+    transport: transport,
+    options: {
+      url: port || '127.0.0.1:8001',
+      package: 'api.user',
+      protoPath: protoPath || 
+        join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/user.proto')
+    },
+  };
+};

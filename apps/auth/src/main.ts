@@ -12,18 +12,15 @@ import { environment } from '@api/env-auth';
 import { authGrps } from '@api/types';
 
 async function bootstrap() {
-  // const config: GrpcOptions = authGrps(
-  //   Transport.GRPC,
-  //   join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/auth.proto'),
-  //   environment.port.toString()
-  // );
+  const config: GrpcOptions = authGrps(
+    Transport.GRPC,
+    environment.port.toString()
+  );
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
-    // config
-    {
-      transport: Transport.TCP,
-    },
+    config
   );
+  
   // app.useLogger(logger); TODO: add logger;
   
   app.useGlobalPipes(new ValidationPipe());

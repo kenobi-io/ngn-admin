@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MessageDto } from '@api/types';
 import { Observable } from 'rxjs';
 
 import { RestApiService } from './api/services/rest-api.service';
@@ -11,7 +10,7 @@ import { RestApiService } from './api/services/rest-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-  public hello$: Observable<MessageDto>;
+  public hello$: Observable<any>;
 
   constructor(private apiService: RestApiService) { }
 

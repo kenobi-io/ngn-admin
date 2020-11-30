@@ -41,5 +41,5 @@
     3. Create config `launch.json` and add task that is work in background and contains script for  run `serve`. 
         a. npm install nodemon -g
         b. fix set correct tasks in background (fix `endsPattern`)
-        c. add config `auth:debug:nodemon` is work!
-        e. config `auth:debug` work first time, but closed and don't wait for changes before restart like `auth:debug:nodemon` version
+        c. add config `auth:debug:nodemon` is work! https://github.com/microsoft/vscode-recipes/tree/master/nodemon
+        e. config `auth:debug` work first time, but closed and don't wait for changes before restart like `auth:debug:nodemon` version 
