@@ -1,7 +1,7 @@
-import { CreateReqUser } from '../../generated';
+import { user_pb } from '../../generated';
 import { IsDefined, IsEmail, IsString, MaxLength, ValidateIf } from 'class-validator';
 
-export class CreateReqUserDTO implements CreateReqUser.AsObject {
+export class CreateReqUser implements user_pb.CreateReqUser.AsObject {
     
     @IsDefined()
     @IsEmail()

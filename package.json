@@ -41,7 +41,7 @@
     "api:test:cov": "jest --coverage",
     "api:test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "api:test:e2e": "jest --config ./test/jest-e2e.json",
-    "cti": "cti create ./libs/api-interfaces/src/lib/generated"
+    "cti": "cti create ./libs/api/src/lib/core/generated"
   },
   "private": true,
   "dependencies": {

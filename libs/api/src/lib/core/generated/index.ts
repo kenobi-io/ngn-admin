@@ -2,5 +2,5 @@
 
 export * from './AuthServiceClientPb';
 export * from './UserServiceClientPb';
-export *  from './auth_pb';
-export *  from './user_pb';
+export * as auth_pb from './auth_pb';
+export * as user_pb from './user_pb';
