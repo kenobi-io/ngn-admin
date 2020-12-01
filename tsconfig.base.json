@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@api/core": ["libs/api/src/index.ts"],
+      "@api/core": ["libs/api/src/lib/core/index.ts"],
+      "@api/common": ["libs/api/src/lib/common/index.ts"],
       "@api/env-auth": ["apps/auth/src/environments/index.ts"],
       "@web/env": ["apps/web/src/environments/index.ts"]
     }
