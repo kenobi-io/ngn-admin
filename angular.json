@@ -141,8 +141,8 @@
       }
     },
     "auth": {
-      "root": "apps/auth",
-      "sourceRoot": "apps/auth/src",
+      "root": "apps/api/auth",
+      "sourceRoot": "apps/api/auth/src",
       "projectType": "application",
       "prefix": "api.auth",
       "schematics": {},
@@ -150,12 +150,12 @@
         "build": {
           "builder": "@nrwl/node:build",
           "options": {
-            "outputPath": "dist/apps/auth",
-            "main": "apps/auth/src/main.ts",
-            "tsConfig": "apps/auth/tsconfig.app.json",
+            "outputPath": "dist/apps/api/auth",
+            "main": "apps/api/auth/src/main.ts",
+            "tsConfig": "apps/api/auth/tsconfig.app.json",
             "sourceMap": true,
             "assets": [
-              "apps/auth/src/assets"
+              "apps/api/auth/src/assets"
             ]
           },
           "configurations": {
@@ -165,8 +165,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/auth/src/environments/environment.ts",
-                  "with": "apps/auth/src/environments/environment.prod.ts"
+                  "replace": "apps/api/auth/src/environments/environment.ts",
+                  "with": "apps/api/auth/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -183,19 +183,19 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/auth/tsconfig.app.json",
-              "apps/auth/tsconfig.spec.json"
+              "apps/api/auth/tsconfig.app.json",
+              "apps/api/auth/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
-              "!apps/auth/**/*"
+              "!apps/api/auth/**/*"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "apps/auth/jest.config.js",
+            "jestConfig": "apps/api/auth/jest.config.js",
             "passWithNoTests": true
           }
         }

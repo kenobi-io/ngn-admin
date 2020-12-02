@@ -29,19 +29,19 @@
   },
   "projects": {
     "web": {
-      "tags": []
+      "tags": ["web"]
     },
     "web-e2e": {
-      "tags": [],
+      "tags": ["web-e2e"],
       "implicitDependencies": [
         "web"
       ]
     },
     "auth": {
-      "tags": []
+      "tags": ["api-auth"]
     },
     "api": {
-      "tags": []
+      "tags": ["api-shared"]
     }
   }
 }
