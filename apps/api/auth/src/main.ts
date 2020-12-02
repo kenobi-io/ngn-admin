@@ -5,7 +5,6 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { ValidationPipe } from '@nestjs/common';
-import { join } from 'path';
 
 import { AppModule } from './app/app.module';
 import { environment } from '@api/env-auth';

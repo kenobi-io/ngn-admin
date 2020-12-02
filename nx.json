@@ -18,12 +18,7 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -33,15 +28,16 @@
     },
     "web-e2e": {
       "tags": ["web-e2e"],
-      "implicitDependencies": [
-        "web"
-      ]
+      "implicitDependencies": ["web"]
     },
-    "auth": {
+    "api-auth": {
       "tags": ["api-auth"]
     },
     "api": {
       "tags": ["api-shared"]
+    },
+    "api-user": {
+      "tags": ["api-user"]
     }
   }
 }

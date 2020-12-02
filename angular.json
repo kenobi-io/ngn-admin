@@ -22,17 +22,10 @@
             "polyfills": "apps/web/src/polyfills.ts",
             "tsConfig": "apps/web/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "apps/web/src/favicon.ico",
-              "apps/web/src/assets"
-            ],
-            "styles": [
-              "apps/web/src/styles.scss"
-            ],
+            "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
+            "styles": ["apps/web/src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "apps/web/src/theming"
-              ]
+              "includePaths": ["apps/web/src/theming"]
             },
             "scripts": []
           },
@@ -93,10 +86,7 @@
               "apps/web/tsconfig.spec.json",
               "apps/web/tsconfig.editor.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/web/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/web/**/*"]
           }
         },
         "test": {
@@ -129,13 +119,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/e2e/web-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/e2e/web-e2e/**/*"
-            ]
+            "tsConfig": ["apps/e2e/web-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/e2e/web-e2e/**/*"]
           }
         }
       }
@@ -154,9 +139,7 @@
             "main": "apps/api/auth/src/main.ts",
             "tsConfig": "apps/api/auth/tsconfig.app.json",
             "sourceMap": true,
-            "assets": [
-              "apps/api/auth/src/assets"
-            ]
+            "assets": ["apps/api/auth/src/assets"]
           },
           "configurations": {
             "production": {
@@ -186,10 +169,7 @@
               "apps/api/auth/tsconfig.app.json",
               "apps/api/auth/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/api/auth/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/api/auth/**/*"]
           }
         },
         "test": {
@@ -214,16 +194,67 @@
               "libs/api/tsconfig.lib.json",
               "libs/api/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/api/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/api/**/*"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-user": {
+      "root": "apps/api/user",
+      "sourceRoot": "apps/api/user/src",
+      "projectType": "application",
+      "prefix": "api-user",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/api/user",
+            "main": "apps/api/user/src/main.ts",
+            "tsConfig": "apps/api/user/tsconfig.app.json",
+            "assets": ["apps/api/user/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/user/src/environments/environment.ts",
+                  "with": "apps/api/user/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api-user:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/api/user/tsconfig.app.json",
+              "apps/api/user/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/api/user/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/api/user/jest.config.js",
             "passWithNoTests": true
           }
         }
