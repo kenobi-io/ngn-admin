@@ -4,7 +4,7 @@
 		{
 			"label": "npm: serve auth microservice!",
 			"type": "npm",
-			"script": "api:serve auth",
+			"script": "api:serve api-auth",
 			"isBackground": true,
 			"presentation": {
 				"focus": true,
@@ -30,7 +30,38 @@
 					}
 				}
 			},
-			"detail": "ng run auth:serve"
+			"detail": "ng run api-auth:serve"
+		},
+		{
+			"label": "npm: serve api-user microservice!",
+			"type": "npm",
+			"script": "api:serve api-user",
+			"isBackground": true,
+			"presentation": {
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"group": "build",
+			"problemMatcher": {
+				"owner": "typescript",
+				"source": "ts",
+				"applyTo": "closedDocuments",
+				"fileLocation": [
+					"relative",
+					"${cwd}"
+				],
+				"pattern": "$tsc",
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": {
+						"regexp": "(.*?)"
+					},
+					"endsPattern": {
+						"regexp": "Compiled:  undefined |Time: (.*?)ms"
+					}
+				}
+			},
+			"detail": "ng run api-user:serve"
 		},
 		{
 			"label": "kill-terminal",

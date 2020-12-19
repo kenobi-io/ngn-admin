@@ -36,6 +36,9 @@
     "api": {
       "tags": ["api-shared"]
     },
+    "api-e2e": {
+      "tags": ["api-e2e"]
+    },
     "api-user": {
       "tags": ["api-user"]
     }

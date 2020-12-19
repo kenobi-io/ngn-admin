@@ -29,9 +29,7 @@
     "prebuild": "rimraf dist",
     "api:build": "nest build",
     "api:format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "api:start": "nest start --path=apps/auth/tsconfig.json",
     "api:start:dev": "nest start --watch",
-    "api:start:debug": "nest start --debug --watch  --path=apps/auth/tsconfig.json",
     "api:serve": "ng serve",
     "api:nodemon": "nodemon --config nodemon-debug.json",
     "api:start:prod": "node dist/main",
@@ -41,11 +39,13 @@
     "api:test:cov": "jest --coverage",
     "api:test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "api:test:e2e": "jest --config ./test/jest-e2e.json",
-    "cti": "cti create ./libs/api/src/lib/core/generated"
+    "cti": "cti create ./libs/api/src/lib/core/generated",
+    "cy": "cypress run --browser chrome --config-file apps/e2e/web-e2e/cypress.json"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^10.2.3",
+    "@angular/cdk": "^11.0.0",
     "@angular/common": "^10.2.3",
     "@angular/compiler": "^10.2.3",
     "@angular/core": "^10.2.3",
@@ -56,11 +56,14 @@
     "@angular/router": "^10.2.3",
     "@capacitor/core": "^2.4.2",
     "@grpc/proto-loader": "^0.5.5",
+    "@improbable-eng/grpc-web": "^0.13.0",
     "@nestjs/common": "^7.5.1",
     "@nestjs/core": "^7.5.1",
     "@nestjs/microservices": "^7.5.5",
     "@nestjs/platform-express": "^7.5.1",
     "@nrwl/angular": "10.3.3",
+    "@prisma/client": "^2.12.1",
+    "acorn": "^8.0.4",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "fluentvalidation-ts": "^2.2.1",
@@ -69,6 +72,7 @@
     "grpc-web": "^1.2.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.3",
+    "ts-proto": "^1.41.0",
     "zone.js": "^0.11.3"
   },
   "devDependencies": {
@@ -86,9 +90,11 @@
     "@nrwl/nest": "10.3.3",
     "@nrwl/node": "10.3.3",
     "@nrwl/workspace": "10.3.3",
+    "@prisma/cli": "^2.12.1",
     "@types/google-protobuf": "^3.7.4",
     "@types/jest": "26.0.15",
     "@types/node": "~14.14.7",
+    "@types/supertest": "^2.0.10",
     "codelyzer": "~6.0.1",
     "create-ts-index": "^1.13.6",
     "cypress": "^5.6.0",
@@ -98,9 +104,13 @@
     "jest-preset-angular": "8.3.2",
     "nodemon": "^2.0.6",
     "prettier": "2.1.2",
+    "supertest": "^6.0.1",
     "ts-jest": "26.4.4",
     "ts-node": "~9.0.0",
     "tslint": "~6.1.3",
     "typescript": "~4.0.5"
+  },
+  "prisma": {
+    "schema": "libs/api/src/prisma/schema.prisma"
   }
 }

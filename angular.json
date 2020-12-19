@@ -23,7 +23,7 @@
             "tsConfig": "apps/web/tsconfig.app.json",
             "aot": true,
             "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
-            "styles": ["apps/web/src/styles.scss"],
+            "styles": ["./node_modules/@angular/material/prebuilt-themes/purple-green.css", "apps/web/src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["apps/web/src/theming"]
             },
@@ -125,62 +125,6 @@
         }
       }
     },
-    "auth": {
-      "root": "apps/api/auth",
-      "sourceRoot": "apps/api/auth/src",
-      "projectType": "application",
-      "prefix": "api.auth",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/api/auth",
-            "main": "apps/api/auth/src/main.ts",
-            "tsConfig": "apps/api/auth/tsconfig.app.json",
-            "sourceMap": true,
-            "assets": ["apps/api/auth/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/api/auth/src/environments/environment.ts",
-                  "with": "apps/api/auth/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "auth:build",
-            "inspect": true
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/api/auth/tsconfig.app.json",
-              "apps/api/auth/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/api/auth/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/api/auth/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "api": {
       "root": "libs/api",
       "sourceRoot": "libs/api/src",
@@ -206,6 +150,90 @@
         }
       }
     },
+    "api-auth": {
+      "root": "apps/api/auth",
+      "sourceRoot": "apps/api/auth/src",
+      "projectType": "application",
+      "prefix": "api.auth",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/api/auth",
+            "main": "apps/api/auth/src/main.ts",
+            "tsConfig": "apps/api/auth/tsconfig.app.json",
+            "sourceMap": true,
+            "assets": [
+              "apps/api/auth/src/assets",
+              {
+                "input": "libs/api/src/lib/core/proto",
+                "glob": "**/*",
+                "output": "./../../proto"
+              }
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/auth/src/environments/environment.ts",
+                  "with": "apps/api/auth/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api-auth:build",
+            "inspect": true
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/api/auth/tsconfig.app.json",
+              "apps/api/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/api/auth/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/api/auth/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-e2e": {
+      "root": "apps/e2e/api-e2e",
+      "sourceRoot": "apps/e2e/api-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/e2e/api-e2e/jest-e2e.json",
+            "tsConfig": "apps/e2e/api-e2e/tsconfig.spec.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/e2e/api-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/e2e/api-e2e/**/*"]
+          }
+        }
+      }
+    },
     "api-user": {
       "root": "apps/api/user",
       "sourceRoot": "apps/api/user/src",
@@ -219,7 +247,14 @@
             "outputPath": "dist/apps/api/user",
             "main": "apps/api/user/src/main.ts",
             "tsConfig": "apps/api/user/tsconfig.app.json",
-            "assets": ["apps/api/user/src/assets"]
+            "assets": [
+              "apps/api/user/src/assets",
+              {
+                "input": "libs/api/src/lib/core/proto",
+                "glob": "**/*",
+                "output": "./../../proto"
+              }
+            ]
           },
           "configurations": {
             "production": {

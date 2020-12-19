@@ -5,33 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "auth:debug",
-            "skipFiles": [
-                "${workspaceFolder}/node_modules/**/*.js",
-                "<node_internals>/**",
-                "!${workspaceFolder}/node_modules/math/**/*.js"
-            ],
-            // "preLaunchTask": "serve-background",
-            "preLaunchTask": "npm: serve auth microservice!",
-            "postDebugTask": "kill-terminal",
-            "program": "${workspaceFolder}/apps/auth/src/main.ts",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ],
-            "internalConsoleOptions": "neverOpen",
-            "restart": true,
-            "port": 9222,
-            "runtimeArgs": [
-                "--inspect=9222"
-            ],
-            "protocol": "inspector"
-        },
-        {
             "type": "node",
             "request": "launch",
-            "name": "auth:debug:nodemon",
+            "name": "api-auth",
             "protocol": "inspector",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
@@ -42,7 +18,7 @@
             "runtimeArgs": [
                 "--inspect=9222"
             ],
-            "program": "${workspaceFolder}/apps/auth/src/main.ts",
+            "program": "${workspaceFolder}/apps/api/auth/src/main.ts",
             "port": 9222,
             "restart": true,
             "preLaunchTask": "npm: serve auth microservice!",
@@ -51,6 +27,31 @@
                 "${workspaceFolder}/dist/**/*.js"
             ],
             // "console": "integratedTerminal", 
+            "internalConsoleOptions": "neverOpen"
+        }
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "api-user",
+            "protocol": "inspector",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**",
+                "!${workspaceFolder}/node_modules/math/**/*.js"
+            ],
+            "runtimeExecutable": "nodemon",
+            "runtimeArgs": [
+                "--inspect=9222"
+            ],
+            "program": "${workspaceFolder}/apps/api/user/src/main.ts",
+            "port": 9222,
+            "restart": true,
+            "preLaunchTask": "npm: serve api-user microservice!",
+            "postDebugTask": "kill-terminal",
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+            // "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
         }
     ]

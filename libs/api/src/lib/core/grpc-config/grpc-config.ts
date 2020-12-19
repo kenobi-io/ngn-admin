@@ -17,18 +17,18 @@ export const grpcOption = (
 };
 
 
-export const authGrps = (
+export const authGrpc = (
   transport: number,
-  port?: string,
+  port?: number,
   protoPath?: string
 ) => {
   return {
     transport: transport,
     options: {
-      url: port || '127.0.0.1:8002',
+      url: '0.0.0.0:' + port || 50051, // port || '127.0.0.1:8002',
       package: 'api.auth',
       protoPath: protoPath || 
-        join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/auth.proto')
+        join(__dirname, '../../../', 'apps/proto/auth.proto')
     },
   };
 };
@@ -41,10 +41,10 @@ export const userGrpc = (
   return {
     transport: transport,
     options: {
-      url: port || '127.0.0.1:8001',
+      url: 'localhost:' + port || '8001',
       package: 'api.user',
       protoPath: protoPath || 
-        join(__dirname, '../../../', 'libs/api-interfaces/src/lib/proto/user.proto')
+        join(__dirname, '../../../', 'apps/proto/user.proto')
     },
   };
 };

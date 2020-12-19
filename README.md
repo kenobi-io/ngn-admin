@@ -43,3 +43,9 @@
         b. fix set correct tasks in background (fix `endsPattern`)
         c. add config `auth:debug:nodemon` is work! https://github.com/microsoft/vscode-recipes/tree/master/nodemon
         e. config `auth:debug` work first time, but closed and don't wait for changes before restart like `auth:debug:nodemon` version 
+    4. add proto as `assets` to each application. Becauce, proto don't copy to dist directory automaic :(
+
+## Try 4
+    1. install envoy proxy `docker run -d -v "D:/repositories/public/nest/sample/04-grpc"/envoy.yaml:/etc/envoy/envoy.yaml:ro -p
+    8080:8080 -p 9901:9901 envoyproxy/envoy:v1.16.1`
+    2. https://github.com/kmturley/angular-nest-grpc/blob/master/frontend/package.json glone for sample

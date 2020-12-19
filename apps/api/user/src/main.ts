@@ -5,17 +5,31 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import {
+  GrpcOptions,
+  MicroserviceOptions,
+  Transport,
+} from '@nestjs/microservices';
 
+import { userGrpc } from "@api/core";
 import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3333;
-  await app.listen(port, () => {
-    Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
-  });
+  const config: GrpcOptions = userGrpc(
+    Transport.GRPC,
+    environment.port.toString()
+  );
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    config
+  );
+
+  app
+    .listenAsync()
+    .then(() => {
+      Logger.log('Listening at http://localhost:' + environment.port);
+    });
 }
 
 bootstrap();
