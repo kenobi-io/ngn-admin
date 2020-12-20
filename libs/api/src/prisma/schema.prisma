@@ -27,11 +27,11 @@ enum Role {
 
 model User {
 
-  id       Int      @id @default(uuid())
+  // id       Int      @id @default(uuid())
   password String
   email    String   @unique
   name     String?
-  Profile  Profile?
+  // Profile  Profile?
   role     Role     @default(USER)
   //   @PrimaryGeneratedColumn()
   //   id: number = undefined;

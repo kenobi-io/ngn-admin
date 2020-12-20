@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@api/core": ["libs/api/src/lib/core/index.ts"],
+      "@api/core/gen": ["libs/api/src/lib/core/generated/server/index.ts"],
       "@api/common": ["libs/api/src/lib/common/index.ts"],
       "@api/env-auth": ["apps/api/auth/src/environments/index.ts"],
       "@web/env": ["apps/web/src/environments/index.ts"],

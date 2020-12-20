@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "nx",
-    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
+    "ng": "ng",
+    "psi": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "nx": "nx",
     "start": "ng serve",
     "build": "ng build",
@@ -42,7 +42,11 @@
     "cti": "cti create ./libs/api/src/lib/core/generated",
     "cy": "cypress run --browser chrome --config-file apps/e2e/web-e2e/cypress.json"
   },
-  "private": true,
+  "private": false,
+  "browser": {
+    "http": false,
+    "https": false
+  },
   "dependencies": {
     "@angular/animations": "^10.2.3",
     "@angular/cdk": "^11.0.0",
@@ -57,6 +61,7 @@
     "@capacitor/core": "^2.4.2",
     "@grpc/proto-loader": "^0.5.5",
     "@improbable-eng/grpc-web": "^0.13.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.13.0",
     "@nestjs/common": "^7.5.1",
     "@nestjs/core": "^7.5.1",
     "@nestjs/microservices": "^7.5.5",

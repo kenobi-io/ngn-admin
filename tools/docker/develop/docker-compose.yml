@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  api-auth:
+    image: ngn-api-auth
+    container_name: ngn-api-auth
+    build:
+      context: ../../../.
+      dockerfile: ngn-api-auth.dockerfile
+    volumes:
+      - ./../../../apps/api/auth:/home/envuser/apphome
+      - /home/envuser/apphome/node_modules
+    ports:
+      - 3001:3001
+      - 50051:50051
+    networks:
+      - envoymesh
+
+  # frontend:
+  #   build: frontend
+  #   command: npm start
+  #   networks:
+  #     - envoymesh
+  #   volumes:
+  #     - ./frontend:/usr/src/app:rw
+  #     - /usr/src/app/node_modules
+
+  proxy-envoy:
+    image: envoyproxy/envoy-alpine:v1.16.1
+    container_name: envoy_api_dev
+    working_dir: /home/envoy
+    ports:
+      - 8080:8080
+      - 8081:8081
+    networks:
+      - envoymesh
+    volumes:
+      - ./../../../tools/docker/develop/envoy.yaml:/etc/envoy/envoy.yaml
+
+networks:
+  envoymesh: {}

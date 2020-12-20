@@ -1,34 +1,31 @@
-import { Controller, OnModuleInit } from '@nestjs/common';
-import {
-  Client,
-  ClientGrpc,
-  GrpcMethod,
-  Transport,
-} from '@nestjs/microservices';
-import { Metadata, ServerUnaryCall } from 'grpc';
+import { Controller } from '@nestjs/common';
 
-import { userGrpc, UserServiceClient } from '@api/core';
-import { environment } from '@api/env-auth';
+import { Metadata } from 'grpc';
 
-@Controller()
-export class AuthController implements OnModuleInit {
+import { 
+  AuthServiceControllerSr, 
+  AuthServiceControllerMethodsSr, 
+  ReqAuthSr, 
+  ResAuthSr,
+  GetCertStreamReAuthSr,
+  StubSr
+} from '@api/core/gen';
+import { Observable, of } from 'rxjs';
+@Controller('auth')
+@AuthServiceControllerMethodsSr()
+export class AuthController implements AuthServiceControllerSr {
 
-  @Client(userGrpc(Transport.GRPC, environment.port.toString()))
-  private readonly userClientGrpc: ClientGrpc;
-  private userServiceGrps: UserServiceClient;
+  private readonly resAuth: ResAuthSr = { token: 'asdfasdfasfdasdf'}
 
-  constructor() {}
-
-  public onModuleInit() {
-    this.userServiceGrps = this.userClientGrpc.getService('UserService');
+  auth(request: ReqAuthSr, metadata: Metadata, ...rest: any): Observable<ResAuthSr> {
+    console.log('its work))');
+    return of(this.resAuth);
+  }
+  update(request: StubSr, metadata: Metadata, ...rest: any): Observable<ResAuthSr> {
+    throw new Error('Method not implemented.');
+  }
+  getCertStream(request: StubSr, metadata: Metadata, ...rest: any): Observable<GetCertStreamReAuthSr> {
+    throw new Error('Method not implemented.');
   }
 
-//   @GrpcMethod('AuthService', 'auth')
-//   auth(data: ReqAuth,  metadata: Metadata, call: ServerUnaryCall<any>): ResAuth {
-//     const items = [
-//       { email: '', password: 'John' },
-//       { email: '', password: 'Doe' },
-//     ];
-//     return items.find(({ id }) => id === data.id);
-//   }
 }
