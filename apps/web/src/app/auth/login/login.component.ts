@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { Main } from '../../api/ex3.dci';
+// import { Main } from '../../api/ex3.dci';
 
 
 @Component({

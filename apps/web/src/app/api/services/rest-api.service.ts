@@ -13,7 +13,7 @@ export class RestApiService {
   private path: string;
 
   constructor(private httpClient: HttpClient) {
-    this.path = environment.path;
+    this.path = environment.apiPrefix;
   }
 
   public get<T>(url: string, option?: Option): Observable<T> {
