@@ -31,7 +31,7 @@
     "api:format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "api:start:dev": "nest start --watch",
     "api:serve": "ng serve",
-    "api:nodemon": "nodemon --config nodemon-debug.json",
+    "api:nodemon": "nodemon",
     "api:start:prod": "node dist/main",
     "api:lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "api:test": "jest",

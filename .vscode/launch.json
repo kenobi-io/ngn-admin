@@ -14,8 +14,10 @@
                 "<node_internals>/**",
                 "!${workspaceFolder}/node_modules/math/**/*.js"
             ],
-            "runtimeExecutable": "nodemon",
+            "runtimeExecutable": "npm",
             "runtimeArgs": [
+                "run",
+                "api:nodemon",
                 "--inspect=9222"
             ],
             "program": "${workspaceFolder}/apps/api/auth/src/main.ts",
@@ -39,8 +41,10 @@
                 "<node_internals>/**",
                 "!${workspaceFolder}/node_modules/math/**/*.js"
             ],
-            "runtimeExecutable": "nodemon",
+            "runtimeExecutable": "npm",
             "runtimeArgs": [
+                "run",
+                "api:nodemon",
                 "--inspect=9222"
             ],
             "program": "${workspaceFolder}/apps/api/user/src/main.ts",
