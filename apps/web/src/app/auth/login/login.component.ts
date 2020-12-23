@@ -1,18 +1,13 @@
-import { ThrowStmt } from '@angular/compiler';
 import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  Input,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
-import { HeroById } from '@api/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Main } from '../../api/ex3.dci';
-
-import { RestApiService } from '../../api/services/rest-api.service';
-import { Hero } from '../services/proto/hero/hero_pb';
 
 
 @Component({
@@ -21,21 +16,33 @@ import { Hero } from '../services/proto/hero/hero_pb';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   count = 0;
   test: Observable<object>;
+  uns: Subscription;
 
   constructor(private authService: AuthService,
               private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.test = new Observable<HeroById.AsObject>();
+    // this.test = new Observable<HeroById.AsObject>();
+  }
+
+  ngOnDestroy(): void {
+    this.uns.unsubscribe();
   }
 
   add() {
-    Main();
+    // Main();
     // this.count++;
     // this.test = this.authService.test1();
+    
+    this.uns = this.authService.test1().subscribe(
+      response => console.log('Response: ', response ),
+      error => console.log('Error: ', error),
+      () => console.log('Complete'),
+    );
+    //.subscribe((res) => console.log('LoginComponent end: ', res));
     // this.authService.test(1).then((data: Hero) => console.log('Hero => ', data));
   }
 }

@@ -10,10 +10,8 @@ services:
       - ./../../../apps/api/auth:/home/envuser/apphome
       - /home/envuser/apphome/node_modules
     ports:
-      - 3001:3001
-      - 50051:50051
-    networks:
-      - envoymesh
+      - "3001:3001"
+      - "50051:50051"
 
   # frontend:
   #   build: frontend
@@ -24,17 +22,21 @@ services:
   #     - ./frontend:/usr/src/app:rw
   #     - /usr/src/app/node_modules
 
-  proxy-envoy:
+  # proxy-envoy:
+  #   image: envoyproxy/envoy-alpine:v1.16.1
+  #   container_name: envoy_api_dev
+  #   working_dir: /home/envoy
+  #   ports:
+  #     - 8080:8080
+  #     - 8081:8081
+  #   volumes:
+  #     - ./../../../tools/docker/develop/envoy.yaml:/etc/envoy/envoy.yaml
+  envoy:
     image: envoyproxy/envoy-alpine:v1.16.1
     container_name: envoy_api_dev
-    working_dir: /home/envoy
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
     ports:
-      - 8080:8080
-      - 8081:8081
-    networks:
-      - envoymesh
+      - "8080:8080"
+      - "8081:8081"
     volumes:
       - ./../../../tools/docker/develop/envoy.yaml:/etc/envoy/envoy.yaml
-
-networks:
-  envoymesh: {}

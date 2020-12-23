@@ -1,30 +1,36 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 import { Metadata } from 'grpc';
 
 import { 
-  AuthServiceControllerSr, 
-  AuthServiceControllerMethodsSr, 
-  ReqAuthSr, 
-  ResAuthSr,
-  GetCertStreamReAuthSr,
-  StubSr
+  AuthServiceController, 
+  AuthServiceControllerMethods, 
+  ReqAuth, 
+  ResAuth,
+  GetCertStreamReAuth,
+  Stub
 } from '@api/core/gen';
 import { Observable, of } from 'rxjs';
 @Controller('auth')
-@AuthServiceControllerMethodsSr()
-export class AuthController implements AuthServiceControllerSr {
+@AuthServiceControllerMethods()
+export class AuthController implements AuthServiceController {
 
-  private readonly resAuth: ResAuthSr = { token: 'asdfasdfasfdasdf'}
+  private readonly resAuth: ResAuth = { token: 'Grpc work))'}
 
-  auth(request: ReqAuthSr, metadata: Metadata, ...rest: any): Observable<ResAuthSr> {
+  @Get()
+  gettering(): string {
+    console.log('Rest work))');
+    return 'Rest work))';
+  }
+
+  auth(request: ReqAuth, metadata: Metadata, ...rest: any): Observable<ResAuth> {
     console.log('its work))');
     return of(this.resAuth);
   }
-  update(request: StubSr, metadata: Metadata, ...rest: any): Observable<ResAuthSr> {
+  update(request: Stub, metadata: Metadata, ...rest: any): Observable<ResAuth> {
     throw new Error('Method not implemented.');
   }
-  getCertStream(request: StubSr, metadata: Metadata, ...rest: any): Observable<GetCertStreamReAuthSr> {
+  getCertStream(request: Stub, metadata: Metadata, ...rest: any): Observable<GetCertStreamReAuth> {
     throw new Error('Method not implemented.');
   }
 

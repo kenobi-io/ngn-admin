@@ -13,3 +13,8 @@ docker run -d -v "$(pwd)":/envoy.yaml:/etc/envoy/envoy.yaml:ro -p 3001:3001 envo
  .\curl.exe -vv  -k --raw -X GET --http2 -H "Content-Type: application/grpc" -d '{"id": "1"}' http://127.0.0.1:3001/hero.HeroService/FindOne
 
  docker run -d -v "$(pwd)"/envoy.yaml:/etc/envoy/envoy.yaml:ro -p 8080:8080 -p 8081:8081 envoyproxy/envoy:v1.16.1
+
+ -d '{"email": "asdf", "password": "asdfasdfasdf"}'
+ --data "email=asdf&password=asdfasdfasdf"
+
+ grpcc -i --proto .\libs\api\src\lib\core\proto\auth.proto --address localhost:50051

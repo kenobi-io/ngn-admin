@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  path: 'api',
   port: 3333,
-  hostUrl: 'api'
+  apiPrefix: 'api',
+  grpcProxyUrl: 'http://localhost:8080'
 };
 
 /*
