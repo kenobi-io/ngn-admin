@@ -26,7 +26,7 @@
 	"forwardPorts": [50051, 8080, 8081],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "docker-compose run --publish 8080:8080 -p envoy",
+	"postCreateCommand": "npm rebuild grpc --force",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
