@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 
 
 @Component({
-  selector: 'ngn-admin-login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

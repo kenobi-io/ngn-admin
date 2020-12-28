@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { GrpcCoreModule } from '@ngx-grpc/core';
 import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 import { environment } from '@web/env';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { environment } from '@web/env';
     GrpcWebClientModule.forRoot({
       settings: { host: environment.grpcProxyUrl },
     }),
+    LayoutModule,
     ],
   providers: [],
   bootstrap: [AppComponent],

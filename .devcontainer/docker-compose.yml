@@ -20,7 +20,6 @@ services:
     # Overrides default command so things don't shut down after the process ends.
     entrypoint: /usr/local/share/docker-init.sh
     command: sleep infinity
-
   envoy:
     image: envoyproxy/envoy-alpine:v1.16.1
     container_name: envoy_api_dev
