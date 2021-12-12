@@ -7,6 +7,6 @@
     "target": "es2015",
     "sourceMap": true
   },
-  "exclude": ["**/*.spec.ts"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
   "include": ["**/*.ts"]
 }
