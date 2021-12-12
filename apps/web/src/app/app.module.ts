@@ -22,8 +22,8 @@ import { environment } from '@web/env';
     GrpcWebClientModule.forRoot({
       settings: { host: environment.grpcProxyUrl },
     }),
-    ],
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LoginComponent } from './login.component';
+import { UserModule } from '../../user/user.module';
 // import { environment } from '@web/env';
 
 // const GRPC_CLIENTS: FactoryProvider[] = [
@@ -16,7 +17,7 @@ import { LoginComponent } from './login.component';
 // ];
 @NgModule({
   declarations: [LoginComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, UserModule],
   exports: [LoginComponent],
   // providers: [...GRPC_CLIENTS],
 })
