@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddUserDirective } from './directives/add-user.directive';
+import { AddUserDirective } from './directives/add-user/add-user.directive';
+
+// Array.prototype.mapToNumbers = () => console.log('!!!!!!!!!');
 
 @NgModule({
   declarations: [AddUserDirective],

@@ -9,6 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { GrpcCoreModule } from '@ngx-grpc/core';
 import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 import { environment } from '@web/env';
+import { RouterModule } from '@angular/router';
+import { LoginModule } from './auth/login/login.module';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,12 +19,15 @@ import { environment } from '@web/env';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    RouterModule,
     AppRoutingModule,
     ApiModule,
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
       settings: { host: environment.grpcProxyUrl },
     }),
+    LoginModule,
+    UserModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

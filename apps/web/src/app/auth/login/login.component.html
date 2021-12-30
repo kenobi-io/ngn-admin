@@ -24,6 +24,20 @@
     </div>
 </div> -->
 
-<p i18n>login works!</p>
-<button i18n addUser>Add</button>
-{{ count }}
+<form name="user">
+  <p i18n>login works2!</p>
+  <!-- <span>{{ count }}</span> -->
+  <fieldset>
+    <legend>Set your personal data</legend>
+
+    <input type="text" id="lastName" name="lastName" />
+    <label for="lastName">Last name</label><br />
+
+    <input type="text" id="firstName" name="firstName" />
+    <label for="firstName">First name</label><br />
+
+    <input type="text" id="fatherName" name="fatherName" />
+    <label for="fatherName">Father name</label>
+  </fieldset>
+  <button type="submit" i18n>Add2</button>
+</form>

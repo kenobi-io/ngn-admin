@@ -5,7 +5,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { AddUserDirective } from './add-user.directive';
-import { AddUseHostComponent } from './fixtures';
+import { AddUseHostComponent } from '../fixtures';
 
 describe('AddUserDirective', () => {
   let fixture: ComponentFixture<AddUseHostComponent>;
@@ -29,10 +29,10 @@ describe('AddUserDirective', () => {
   });
 
   it('should', fakeAsync(() => {
-    spyOn(directive, 'submitHandler');
+    spyOn(directive, 'onSubmit');
     let button = fixture.debugElement.nativeElement.querySelector('button');
     button.click();
     tick();
-    expect(directive.submitHandler).toHaveBeenCalled();
+    expect(directive.onSubmit).toHaveBeenCalled();
   }));
 });
