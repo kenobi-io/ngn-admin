@@ -22,6 +22,9 @@
       "@api/core": ["libs/api/src/lib/core/index.ts"],
       "@api/core/gen": ["libs/api/src/lib/core/generated/server/index.ts"],
       "@api/env-auth": ["apps/api/auth/src/environments/index.ts"],
+      "@business-logic/api": ["libs/business-logic/api/src/index.ts"],
+      "@business-logic/core": ["libs/business-logic/core/src/index.ts"],
+      "@business-logic/web": ["libs/business-logic/web/src/index.ts"],
       "@web/api": ["apps/web/src/app/api/index.ts"],
       "@web/env": ["apps/web/src/environments/index.ts"]
     }
