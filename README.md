@@ -1,4 +1,4 @@
-# NgnAdmin
+# angular + nestjs template starter (ngn-template)
 ## GRPS
 
 ## Develop
