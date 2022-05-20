@@ -1,6 +1,6 @@
 import { User } from '../../user';
-import { Descriptions } from './Descriptions';
-import { Descriptor } from './Descriptor';
+import { Descriptions } from './descriptions';
+import { Descriptor } from './descriptor';
 
 export const descriptors: Descriptions = new Map<Descriptor, Function>()
   .set('get.elements', (form) => {

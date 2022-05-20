@@ -13,14 +13,10 @@
             "jestConfig": "libs/api/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/api"
-          ]
+          "outputs": ["coverage/libs/api"]
         }
       },
-      "tags": [
-        "api-shared"
-      ]
+      "tags": ["api-shared"]
     },
     "api-auth": {
       "root": "apps/api/auth",
@@ -58,9 +54,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -75,14 +69,10 @@
             "jestConfig": "apps/api/auth/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/api/auth"
-          ]
+          "outputs": ["coverage/apps/api/auth"]
         }
       },
-      "tags": [
-        "api-auth"
-      ]
+      "tags": ["api-auth"]
     },
     "api-e2e": {
       "root": "apps/e2e/api-e2e",
@@ -95,14 +85,10 @@
             "jestConfig": "apps/e2e/api-e2e/jest-e2e.json",
             "tsConfig": "apps/e2e/api-e2e/tsconfig.spec.json"
           },
-          "outputs": [
-            "coverage/apps/e2e/api-e2e"
-          ]
+          "outputs": ["coverage/apps/e2e/api-e2e"]
         }
       },
-      "tags": [
-        "api-e2e"
-      ]
+      "tags": ["api-e2e"]
     },
     "api-user": {
       "root": "apps/api/user",
@@ -139,9 +125,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -155,14 +139,109 @@
             "jestConfig": "apps/api/user/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/api/user"
-          ]
+          "outputs": ["coverage/apps/api/user"]
         }
       },
-      "tags": [
-        "api-user"
-      ]
+      "tags": ["api-user"]
+    },
+    "business-logic-api": {
+      "root": "libs/business-logic/api",
+      "sourceRoot": "libs/business-logic/api/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/js:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/business-logic/api",
+            "main": "libs/business-logic/api/src/index.ts",
+            "tsConfig": "libs/business-logic/api/tsconfig.lib.json",
+            "assets": ["libs/business-logic/api/*.md"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/business-logic/api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/business-logic/api"],
+          "options": {
+            "jestConfig": "libs/business-logic/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["business-logic/api"]
+    },
+    "business-logic-core": {
+      "root": "libs/business-logic/core",
+      "sourceRoot": "libs/business-logic/core/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/js:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/business-logic/core",
+            "main": "libs/business-logic/core/src/index.ts",
+            "tsConfig": "libs/business-logic/core/tsconfig.lib.json",
+            "assets": ["libs/business-logic/core/*.md"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/business-logic/core/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/business-logic/core"],
+          "options": {
+            "jestConfig": "libs/business-logic/core/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["business-logic/core"]
+    },
+    "business-logic-web": {
+      "root": "libs/business-logic/web",
+      "sourceRoot": "libs/business-logic/web/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/js:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/business-logic/web",
+            "main": "libs/business-logic/web/src/index.ts",
+            "tsConfig": "libs/business-logic/web/tsconfig.lib.json",
+            "assets": ["libs/business-logic/web/*.md"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/business-logic/web/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/business-logic/web"],
+          "options": {
+            "jestConfig": "libs/business-logic/web/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["business-logic/web"]
     },
     "web": {
       "projectType": "application",
@@ -184,18 +263,13 @@
             "main": "apps/web/src/main.ts",
             "polyfills": "apps/web/src/polyfills.ts",
             "tsConfig": "apps/web/tsconfig.app.json",
-            "assets": [
-              "apps/web/src/favicon.ico",
-              "apps/web/src/assets"
-            ],
+            "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "apps/web/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "apps/web/src/theming"
-              ]
+              "includePaths": ["apps/web/src/theming"]
             },
             "scripts": [],
             "vendorChunk": true,
@@ -234,9 +308,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "defaultConfiguration": ""
         },
         "serve": {
@@ -263,14 +335,10 @@
             "jestConfig": "apps/web/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/web"
-          ]
+          "outputs": ["coverage/apps/web"]
         }
       },
-      "tags": [
-        "web"
-      ]
+      "tags": ["web"]
     },
     "web-e2e": {
       "root": "apps/e2e/web-e2e",
@@ -291,12 +359,8 @@
           }
         }
       },
-      "tags": [
-        "web-e2e"
-      ],
-      "implicitDependencies": [
-        "web"
-      ]
+      "tags": ["web-e2e"],
+      "implicitDependencies": ["web"]
     }
   }
 }

@@ -1,7 +1,6 @@
-/// <reference path="./app/user/directives/add-user/add-user.ts" />
+/// <reference path="./app/user/directives/add-user" />
+import { addUser } from './app/user/directives/add-user/add-user';
 import { Observable } from 'rxjs';
-
-export {};
 declare global {
   declare var chain: <T>(model?: T) => Platform.Chainable<T>;
   declare namespace Platform {
@@ -9,6 +8,7 @@ declare global {
       _chain: <T>(model?: T) => Chainable<T>,
       addCommands: <T>(_chain: <T>(model?: T) => Chainable<T>) => void
     ): <T>(model?: T) => Chainable<T>;
+
     declare var _localChainVariable: Chainable<T>;
     interface Chainable<T> {
       model: T;

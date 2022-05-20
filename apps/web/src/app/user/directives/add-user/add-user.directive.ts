@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { RestApiService } from '@web/api';
 import { User } from '../../user';
+import { addUser } from './add-user';
 
 @Directive({
   selector: '[addUser]',
@@ -47,7 +48,10 @@ export class AddUserDirective {
           return user;
         },
       })
-      .addUser({ descriptors: ['get.elements', 'set.user'], params: [form] });
+      .addUser({
+        descriptors: ['get.elements', 'set.user'],
+        params: [form],
+      });
     // .addCar({ 'get.data.from', server, 'set.car');
   }
 }
