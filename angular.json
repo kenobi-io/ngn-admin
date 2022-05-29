@@ -4,6 +4,7 @@
   "projects": {
     "api": "apps/api",
     "api-interfaces": "libs/api-interfaces",
+    "bff": "apps/bff",
     "web": "apps/web",
     "web-e2e": "apps/web-e2e"
   }
