@@ -2,10 +2,10 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "api": "apps/api",
+    "profile-api": "apps/apis/profile",
     "api-interfaces": "libs/api-interfaces",
-    "bff": "apps/bff",
-    "web": "apps/web",
-    "web-e2e": "apps/web-e2e"
+    "bff": "apps/apis/bff",
+    "profile-web": "apps/clients/webs/profile",
+    "web-e2e": "apps/e2es/web-e2e"
   }
 }
