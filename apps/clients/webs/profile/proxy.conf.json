@@ -1,6 +1,0 @@
-{
-  "/api/v1/bff": {
-    "target": "http://localhost:3330",
-    "secure": false
-  }
-}

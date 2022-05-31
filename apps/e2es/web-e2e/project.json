@@ -28,7 +28,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "profile-web"
-  ]
+  "implicitDependencies": []
 }
