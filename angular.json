@@ -4,6 +4,9 @@
   "projects": {
     "api-interfaces": "libs/api-interfaces",
     "bff": "apps/apis/bff",
+    "auth-web": "apps/clients/webs/auth",
+    "profile-web": "apps/clients/webs/profile",
+    "shell": "apps/clients/webs/shell",
     "profile-api": "apps/apis/profile",
     "web-e2e": "apps/e2es/web-e2e"
   }
