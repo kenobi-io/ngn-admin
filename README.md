@@ -30,6 +30,11 @@ Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cy
 
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
-## Understand your workspace
+## Create tag
 
-Run `nx graph` to see a diagram of the dependencies of your projects.
+```js
+$ git commite
+$ git tag v...
+$ git push --tag
+$ git push
+```

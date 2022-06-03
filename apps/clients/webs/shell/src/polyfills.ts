@@ -42,6 +42,8 @@
  *
  */
 
+(window as any).process = { env: { PORT: undefined } };
+
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */

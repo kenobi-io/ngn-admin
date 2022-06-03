@@ -1,4 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Message } from '@ngn-template/api-interfaces';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 /* eslint-disable */
 
@@ -532,8 +536,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
                   d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
                 />
               </svg>
-              <span>
-                Blog
+              <span *ngIf="hello$ | async as mes">
+                Blog {{ mes.message }}
                 <span> Changelog, features & events </span>
               </span>
               <svg
@@ -844,7 +848,17 @@ nx affected:e2e</pre>
   encapsulation: ViewEncapsulation.None,
 })
 export class NxWelcomeComponent implements OnInit {
-  constructor() {}
+  public hello$!: Observable<Message>;
+  constructor(private http: HttpClient) {
+    console.log('env', environment.prefix);
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.hello$ = this.http.get<Message>(environment.prefix).pipe(
+      map((res) => {
+        console.log('res', res.message);
+        return res;
+      })
+    );
+  }
 }

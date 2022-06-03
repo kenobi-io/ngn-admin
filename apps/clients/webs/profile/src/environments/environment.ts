@@ -1,15 +1,14 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import { Environment, prefix, port, inc } from '@ngn-template/api-interfaces';
-
-const { global, bff } = prefix;
+import { Environment, port, extra, Prefix } from '@ngn-template/api-interfaces';
 
 export const environment: Environment = {
   production: false,
-  prefix: `${global}/${bff}`,
-  port: port + inc.bff,
+  prefix: `${Prefix.GLOBAL}/${Prefix.BFF}`,
+  port: port + extra.bff,
 };
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

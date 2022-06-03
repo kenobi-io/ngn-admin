@@ -1,14 +1,11 @@
-export const target = {
-  port: 3330,
-  inc: {
-    bff: 0,
-    profile: 1,
-  },
-  prefix: {
-    global: 'api/v1',
-    bff: 'bff',
-    profile: 'profile',
+let start = 0;
+const target = {
+  port: process?.env['PORT'] ? +process.env['PORT'] : 3330,
+  extra: {
+    bff: start,
+    profile: ++start,
+    auth: ++start,
   },
 };
 
-export const { prefix, port, inc } = target;
+export const { port, extra } = target;

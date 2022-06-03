@@ -9,15 +9,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { environment as env } from './environments/environment';
 
-const { port, prefix } = env;
-
 async function bootstrap() {
+  const { port, prefix } = env;
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix(prefix);
-  const servicePort = process.env.PORT || port;
-  await app.listen(servicePort);
+  await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${servicePort}/${prefix}`
+    `🚀 Application is running on: http://localhost:${port}/${prefix}`
   );
 }
 

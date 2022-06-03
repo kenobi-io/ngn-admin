@@ -1,9 +1,7 @@
-import { Environment, prefix, port, inc } from '@ngn-template/api-interfaces';
-
-const { global, bff } = prefix;
+import { Environment, port, extra, Prefix } from '@ngn-template/api-interfaces';
 
 export const environment: Environment = {
   production: true,
-  prefix: `${global}/${bff}`,
-  port: port + inc.bff,
+  prefix: `${Prefix.GLOBAL}/${Prefix.BFF}`,
+  port: port + extra.bff,
 };

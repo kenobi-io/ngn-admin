@@ -13,6 +13,8 @@
  *
  * Learn more in https://angular.io/guide/browser-support
  */
+// TODO: replace by dotenv
+(window as any).process = { env: { PORT: undefined } };
 
 /***************************************************************************************************
  * BROWSER POLYFILLS
