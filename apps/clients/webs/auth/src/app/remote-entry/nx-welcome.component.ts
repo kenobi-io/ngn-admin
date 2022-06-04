@@ -1,8 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Message } from '@ngn-template/api-interfaces';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 
 /* eslint-disable */
 
@@ -849,16 +849,9 @@ nx affected:e2e</pre>
 })
 export class NxWelcomeComponent implements OnInit {
   public hello$!: Observable<Message>;
-  constructor(private http: HttpClient) {
-    console.log('env', environment.prefix);
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.hello$ = this.http.get<Message>(environment.prefix).pipe(
-      map((res) => {
-        console.log('res', res.message);
-        return res;
-      })
-    );
+    this.hello$ = this.http.get<Message>(environment.prefix);
   }
 }
