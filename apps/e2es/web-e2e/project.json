@@ -28,5 +28,9 @@
     }
   },
   "tags": [],
-  "implicitDependencies": []
+  "implicitDependencies": [
+    "auth-web",
+    "shell",
+    "profile-web"
+  ]
 }
