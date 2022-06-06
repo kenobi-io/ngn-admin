@@ -1,7 +1,7 @@
 import { Environment, port, extra, Prefix } from '@ngn-template/api-interfaces';
 
 export const environment: Environment = {
-  production: false,
-  prefix: `${Prefix.GLOBAL}/${Prefix.PROFILE}`,
-  port: port + extra.profile,
+    production: false,
+    prefix: `${Prefix.GLOBAL}/${Prefix.PROFILE}`,
+    port: port + extra.profile,
 };

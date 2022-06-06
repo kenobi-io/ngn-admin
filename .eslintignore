@@ -1,0 +1,8 @@
+package.json
+package-lock.json
+dist
+#**/e2es/**
+commitlint.config.js
+decorate-angular-cli.js
+jest.preset.js
+jest.config.ts

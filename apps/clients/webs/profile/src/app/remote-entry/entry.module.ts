@@ -6,17 +6,17 @@ import { RemoteEntryComponent } from './entry.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 
 @NgModule({
-  declarations: [RemoteEntryComponent, NxWelcomeComponent],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: RemoteEntryComponent,
-      },
-    ]),
-  ],
-  providers: [],
+    declarations: [RemoteEntryComponent, NxWelcomeComponent],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: RemoteEntryComponent,
+            },
+        ]),
+    ],
+    providers: [],
 })
 export class RemoteEntryModule {}
