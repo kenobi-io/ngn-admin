@@ -42,7 +42,7 @@ pre {
 }
 svg {
     display: block;
-    vertical-align: middle;
+    //vertical-align: middle;
 }
 
 svg {
@@ -221,8 +221,8 @@ pre {
     color: rgba(255, 255, 255, 1);
     background-color: hsla(162, 47%, 50%, 1);
 }
-.list-item-link:hover > span {
-}
+//.list-item-link:hover > span {
+//}
 .list-item-link:hover > span > span {
     color: rgba(243, 244, 246, 1);
 }
@@ -230,8 +230,8 @@ pre {
     transform: translateX(0.25rem);
 }
 
-#other-links {
-}
+//#other-links {
+//}
 .button-pill {
     padding: 1.5rem 2rem;
     transition-duration: 300ms;
