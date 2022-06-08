@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { Message } from '@ngn-template/api-interfaces';
-import { environment } from '../environments/environment';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'ngn-root',
@@ -10,6 +7,4 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
     title = 'shell';
-    hello$ = this.http.get<Message>(environment.prefix);
-    constructor(private http: HttpClient) {}
 }

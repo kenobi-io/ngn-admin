@@ -4,14 +4,14 @@ import {
     Component,
     ViewEncapsulation,
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'ngn-auth-entry',
+    selector: 'ngn-forgot',
     standalone: true,
-    imports: [CommonModule, RouterModule],
-    template: '<router-outlet></router-outlet>',
+    imports: [CommonModule],
+    templateUrl: './forgot.component.html',
+    styleUrls: ['./forgot.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntryComponent {}
+export class ForgotComponent {}

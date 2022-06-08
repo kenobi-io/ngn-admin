@@ -32,8 +32,8 @@ Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
 ## Create tag
 
-```js
-$ git commite
+```bash
+$ git commit
 $ git tag v...
 $ git push --tag
 $ git push

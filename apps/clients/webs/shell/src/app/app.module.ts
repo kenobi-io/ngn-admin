@@ -1,20 +1,19 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-    declarations: [AppComponent, NxWelcomeComponent],
+    declarations: [AppComponent],
     imports: [
         BrowserModule,
         HttpClientModule,
         RouterModule.forRoot(
             [
                 {
-                    path: 'home',
+                    path: '',
                     component: NxWelcomeComponent,
                 },
                 {
@@ -30,10 +29,6 @@ import { HttpClientModule } from '@angular/common/http';
                         import('profile-web/Module').then(
                             (m) => m.RemoteEntryModule
                         ),
-                },
-                {
-                    path: '',
-                    component: NxWelcomeComponent,
                 },
             ],
             { initialNavigation: 'enabledBlocking' }

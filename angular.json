@@ -1,13 +1,12 @@
 {
-  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
-  "version": 2,
-  "projects": {
-    "api-interfaces": "libs/api-interfaces",
-    "auth-web": "apps/clients/webs/auth",
-    "bff": "apps/apis/bff",
-    "profile-api": "apps/apis/profile",
-    "profile-web": "apps/clients/webs/profile",
-    "shell": "apps/clients/webs/shell",
-    "web-e2e": "apps/e2es/web-e2e"
-  }
+    "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+    "version": 2,
+    "projects": {
+        "api-interfaces": "libs/api-interfaces",
+        "auth-web": "apps/clients/webs/auth",
+        "bff": "apps/apis/bff",
+        "profile-web": "apps/clients/webs/profile",
+        "shell": "apps/clients/webs/shell",
+        "web-e2e": "apps/e2es/web-e2e"
+    }
 }

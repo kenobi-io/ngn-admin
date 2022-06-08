@@ -4,14 +4,14 @@ import {
     Component,
     ViewEncapsulation,
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'ngn-auth-entry',
+    selector: 'ngn-login',
     standalone: true,
-    imports: [CommonModule, RouterModule],
-    template: '<router-outlet></router-outlet>',
+    imports: [CommonModule],
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntryComponent {}
+export class LoginComponent {}
