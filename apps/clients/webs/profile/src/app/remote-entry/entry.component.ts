@@ -1,7 +1,17 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ViewEncapsulation,
+} from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'ngn-profile-entry',
-    template: `<ngn-nx-welcome></ngn-nx-welcome>`,
+    selector: 'ngn-auth-entry',
+    standalone: true,
+    imports: [CommonModule, RouterModule],
+    template: '<router-outlet></router-outlet>',
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RemoteEntryComponent {}
+export class EntryComponent {}

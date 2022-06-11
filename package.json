@@ -3,15 +3,16 @@
     "version": "2.0.2",
     "license": "MIT",
     "scripts": {
+        "build": "nx build",
+        "format": "prettier \"**/*.{js,ts,html,scss}\" --write",
+        "lint": "nx run-many --all --target=lint --quiet --fix",
+        "lint-style": "stylelint **/*.scss --fix --cache --quiet  --cache-location '.angular/cache/.stylelintcache/'",
         "ng": "nx",
         "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
-        "web:serve": "nx run shell:serve:development --devRemotes=auth-web,profile-web",
-        "bff:serve": "nx run bff:serve:development",
-        "build": "nx build",
-        "test": "npx nx run-many --all --target=test",
-        "lint": "npx nx run-many --all --target=lint -- --quiet --fix",
-        "format": "npx prettier \"**/*.{js,ts,html,scss}\" --write",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "serve:bff": "nx run bff:serve:development",
+        "serve:web": "nx run shell:serve:development --devRemotes=auth-web,profile-web",
+        "test": "nx run-many --all --target=test"
     },
     "private": true,
     "dependencies": {
@@ -65,6 +66,9 @@
         "jest-preset-angular": "^11.1.1",
         "nx": "14.1.9",
         "prettier": "^2.6.2",
+        "stylelint": "^14.9.0",
+        "stylelint-config-prettier-scss": "^0.0.1",
+        "stylelint-config-standard-scss": "^4.0.0",
         "ts-jest": "28.0.4",
         "ts-node": "10.8.1",
         "typescript": "~4.7.2"
