@@ -5,8 +5,8 @@
     "scripts": {
         "build": "nx build",
         "format": "prettier \"**/*.{js,ts,html,scss}\" --write -c",
-        "lint": "nx run-many --all --target=lint --quiet --fix --cache",
-        "lint-style": "stylelint **/*.scss --fix --cache --quiet  --cache-location '.angular/cache/.stylelintcache/'",
+        "lint": "nx run-many --all --target=lint --quiet --fix --cache --cache-location '.angular/cache/.eslintcache'",
+        "lint-style": "stylelint **/*.scss --fix --cache --quiet --cache-location '.angular/cache/.stylelintcache'",
         "ng": "nx",
         "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
         "prepare": "husky install",
