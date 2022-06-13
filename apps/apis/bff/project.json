@@ -5,16 +5,12 @@
     "targets": {
         "build": {
             "executor": "@nrwl/node:webpack",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "dist/apps/apis/bff",
                 "main": "apps/apis/bff/src/main.ts",
                 "tsConfig": "apps/apis/bff/tsconfig.app.json",
-                "assets": [
-                    "apps/apis/bff/src/assets"
-                ]
+                "assets": ["apps/apis/bff/src/assets"]
             },
             "configurations": {
                 "production": {
@@ -49,20 +45,14 @@
         },
         "lint": {
             "executor": "@nrwl/linter:eslint",
-            "outputs": [
-                "{options.outputFile}"
-            ],
+            "outputs": ["{options.outputFile}"],
             "options": {
-                "lintFilePatterns": [
-                    "apps/apis/bff/**/*.ts"
-                ]
+                "lintFilePatterns": ["apps/apis/bff/**/*.ts"]
             }
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": [
-                "coverage/apps/apis/bff"
-            ],
+            "outputs": ["coverage/apps/apis/bff"],
             "options": {
                 "jestConfig": "apps/apis/bff/jest.config.ts",
                 "passWithNoTests": true

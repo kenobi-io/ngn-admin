@@ -7,22 +7,28 @@
             "executor": "@nrwl/cypress:cypress",
             "options": {
                 "cypressConfig": "apps/e2es/web-e2e/cypress.json",
-                "devServerTarget": "web:serve:development"
+                "devServerTarget": "shell:serve:development"
             },
             "configurations": {
                 "production": {
-                    "devServerTarget": "web:serve:production"
+                    "devServerTarget": "shell:serve:production"
                 }
             }
         },
         "lint": {
             "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+                "{options.outputFile}"
+            ],
             "options": {
-                "lintFilePatterns": ["apps/e2es/web-e2e/**/*.{js,ts}"]
+                "lintFilePatterns": [
+                    "apps/e2es/web-e2e/**/*.{js,ts}"
+                ]
             }
         }
     },
     "tags": [],
-    "implicitDependencies": ["auth-web", "profile-web", "shell"]
+    "implicitDependencies": [
+        "shell"
+    ]
 }
