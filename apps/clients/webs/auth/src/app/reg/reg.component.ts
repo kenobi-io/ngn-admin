@@ -6,7 +6,6 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { Message } from '@ngn-template/api-interfaces';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -14,7 +13,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'ngn-reg',
     standalone: true,
-    imports: [CommonModule, HttpClientModule, RouterModule],
+    imports: [CommonModule, HttpClientModule],
     templateUrl: './reg.component.html',
     styleUrls: ['./reg.component.scss'],
     encapsulation: ViewEncapsulation.None,

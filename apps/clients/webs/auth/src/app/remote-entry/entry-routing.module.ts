@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ForgotComponent } from '../forgot/forgot.component';
-import { LoginComponent } from '../login/login.component';
-import { RegComponent } from '../reg/reg.component';
 import { EntryComponent } from './entry.component';
 
 const routes: Routes = [
@@ -13,16 +10,22 @@ const routes: Routes = [
             { path: '', pathMatch: 'full', redirectTo: 'login' },
             {
                 path: 'forgot',
-                component: ForgotComponent,
+                loadComponent: () =>
+                    import('../forgot/forgot.component').then(
+                        (c) => c.ForgotComponent
+                    ),
             },
             {
                 path: 'login',
-                component: LoginComponent,
-                pathMatch: 'prefix',
+                loadComponent: () =>
+                    import('../login/login.component').then(
+                        (c) => c.LoginComponent
+                    ),
             },
             {
                 path: 'reg',
-                component: RegComponent,
+                loadComponent: () =>
+                    import('../reg/reg.component').then((c) => c.RegComponent),
             },
         ],
     },
@@ -32,4 +35,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class Entry1RoutingModule {}
+export class EntryRoutingModule {}

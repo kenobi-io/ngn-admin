@@ -16,5 +16,5 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
-    "cSpell.words": ["stylelint", "stylelintcache"]
+    "cSpell.words": ["kafkajs", "stylelint", "stylelintcache"]
 }
