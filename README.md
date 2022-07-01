@@ -26,6 +26,7 @@ Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 $ git commit
 $ git commit -m '[upd] version ...;'
 $ git tag v...
+$ git commit -m '[upd] version ...;'
 $ git push --tag
 $ git push
 ```
