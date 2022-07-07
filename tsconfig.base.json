@@ -4,7 +4,6 @@
         "strict": true,
         "strictBindCallApply": true,
         "noImplicitAny": true,
-        "rootDir": ".",
         "sourceMap": true,
         "declaration": false,
         "moduleResolution": "node",
@@ -18,7 +17,9 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@ngn-template/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+            "@ngn-template/core": ["libs/core/src/index.ts"],
+            "@core-template": ["../core-template/src/index.ts"],
+            "@relax": ["../relax/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

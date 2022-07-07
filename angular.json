@@ -2,7 +2,7 @@
     "$schema": "./node_modules/nx/schemas/workspace-schema.json",
     "version": 2,
     "projects": {
-        "api-interfaces": "libs/api-interfaces",
+        "core": "libs/core",
         "auth-web": "apps/clients/webs/auth",
         "bff": "apps/apis/bff",
         "profile-web": "apps/clients/webs/profile",

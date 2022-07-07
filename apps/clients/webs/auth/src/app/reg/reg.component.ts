@@ -6,7 +6,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { Message } from '@ngn-template/api-interfaces';
+import { Account } from '@core-template';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -20,14 +20,14 @@ import { environment } from '../../environments/environment';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegComponent implements OnInit {
-    public hello$!: Observable<Message>;
+    public hello$!: Observable<Account>;
     constructor(private http: HttpClient) {}
 
     ngOnInit(): void {
-        this.hello$ = this.http.get<Message>(environment.prefix).pipe(
-            map((message) => {
+        this.hello$ = this.http.get<Account>(environment.prefix).pipe(
+            map((account) => {
                 console.log('auth');
-                return message;
+                return account;
             })
         );
     }
