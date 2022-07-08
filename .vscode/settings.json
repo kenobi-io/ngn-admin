@@ -21,6 +21,7 @@
         "kafkajs",
         "microservices",
         "nestjs",
+        "ngcc",
         "nrwl",
         "packagr",
         "serializers",

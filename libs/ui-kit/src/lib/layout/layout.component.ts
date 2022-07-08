@@ -4,15 +4,15 @@ import {
     Component,
     ViewEncapsulation,
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'ngn-nx-welcome',
+    selector: 'ngn-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule],
-    templateUrl: 'nx-welcome.component.html',
-    styleUrls: ['nx-welcome.component.scss'],
+    imports: [CommonModule],
+    exportAs: 'ngn-layout',
+    templateUrl: './layout.component.html',
+    styleUrls: ['./layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NxWelcomeComponent {}
+export class LayoutComponent {}
