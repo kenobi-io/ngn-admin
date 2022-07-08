@@ -22,7 +22,10 @@
         "microservices",
         "nestjs",
         "nrwl",
+        "packagr",
+        "serializers",
         "stylelint",
-        "stylelintcache"
+        "stylelintcache",
+        "tailwindcss"
     ]
 }
