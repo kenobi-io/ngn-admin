@@ -15,7 +15,12 @@
                 "inlineStyleLanguage": "scss",
                 "assets": [
                     "apps/clients/webs/shell/src/favicon.ico",
-                    "apps/clients/webs/shell/src/assets"
+                    "apps/clients/webs/shell/src/assets",
+                    {
+                        "glob": "**/*",
+                        "input": "libs/ui-kit/src/assets",
+                        "output": "/assets/"
+                    }
                 ],
                 "styles": ["apps/clients/webs/shell/src/styles.scss"],
                 "scripts": [],
