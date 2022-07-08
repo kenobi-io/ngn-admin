@@ -17,6 +17,7 @@
         "editor.formatOnSave": true
     },
     "cSpell.words": [
+        "@tailwind",
         "devkit",
         "kafkajs",
         "microservices",
@@ -27,6 +28,7 @@
         "serializers",
         "stylelint",
         "stylelintcache",
-        "tailwindcss"
+        "tailwind",
+        "tailwindcss",
     ]
 }

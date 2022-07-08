@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { Environment, port, extra, Prefix } from '@ngn-template/core';
+import { Environment, extra, port, Prefix } from '@ngn-template/access';
 
 export const environment: Environment = {
     production: false,

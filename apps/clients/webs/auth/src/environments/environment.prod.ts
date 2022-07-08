@@ -1,4 +1,4 @@
-import { Environment, port, extra, Prefix } from '@ngn-template/core';
+import { Environment, extra, port, Prefix } from '@ngn-template/access';
 
 export const environment: Environment = {
     production: true,
