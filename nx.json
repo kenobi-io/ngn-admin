@@ -60,6 +60,6 @@
             "skipImport": true,
             "standalone": true,
             "viewEncapsulation": "None"
-       }
+        }
     }
 }
