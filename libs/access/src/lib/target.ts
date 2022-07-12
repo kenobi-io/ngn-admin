@@ -1,11 +1,13 @@
+type WindowProcess = Window & { process: { env: { PORT: undefined } } };
 let start = 0;
+const process = (window as unknown as WindowProcess).process;
 const target = {
-    port: process?.env['PORT'] ? +process.env['PORT'] : 3330,
     extra: {
+        auth: ++start,
         bff: start,
         profile: ++start,
-        auth: ++start,
     },
+    port: process?.env['PORT'] ? +process.env['PORT'] : 3330,
 };
 
-export const { port, extra } = target;
+export const { extra, port } = target;

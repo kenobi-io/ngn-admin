@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [CommonModule],
     selector: 'ngn-login',
     standalone: true,
-    imports: [CommonModule],
-    templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './login.component.html',
 })
 export class LoginComponent {}

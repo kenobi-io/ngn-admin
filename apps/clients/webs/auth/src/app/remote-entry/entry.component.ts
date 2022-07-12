@@ -7,11 +7,11 @@ import {
 import { RouterModule } from '@angular/router';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [CommonModule, RouterModule],
     selector: 'ngn-auth-entry',
     standalone: true,
-    imports: [CommonModule, RouterModule],
     template: '<router-outlet></router-outlet>',
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EntryComponent {}

@@ -7,12 +7,12 @@ import {
 } from '@angular/core';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [CommonModule, HttpClientModule],
     selector: 'ngn-setting',
     standalone: true,
-    imports: [CommonModule, HttpClientModule],
-    templateUrl: './setting.component.html',
     styleUrls: ['./setting.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './setting.component.html',
 })
 export class SettingComponent {}

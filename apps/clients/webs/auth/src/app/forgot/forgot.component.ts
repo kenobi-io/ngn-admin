@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [CommonModule],
     selector: 'ngn-forgot',
     standalone: true,
-    imports: [CommonModule],
-    templateUrl: './forgot.component.html',
     styleUrls: ['./forgot.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './forgot.component.html',
 })
 export class ForgotComponent {}

@@ -42,12 +42,12 @@
  *
  */
 // TODO: replace by dotenv
-(window as any).process = { env: { PORT: undefined } };
-
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js'; // Included with Angular CLI.
+import 'zone.js';
+
+(window as any).process = { env: { PORT: undefined } }; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

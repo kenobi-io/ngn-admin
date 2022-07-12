@@ -8,16 +8,17 @@ import {
 } from '@angular/core';
 import { Account } from '@core-template';
 import { map, Observable } from 'rxjs';
+
 import { environment } from '../../environments/environment';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [CommonModule, HttpClientModule],
     selector: 'ngn-reg',
     standalone: true,
-    imports: [CommonModule, HttpClientModule],
-    templateUrl: './reg.component.html',
     styleUrls: ['./reg.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './reg.component.html',
 })
 export class RegComponent implements OnInit {
     public hello$!: Observable<Account>;

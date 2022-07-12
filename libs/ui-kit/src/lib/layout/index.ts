@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
-import { LayoutComponent } from './layout.component';
+import { ShellLayoutComponent } from './shell-layout/shell-layout.component';
 
-export { LayoutComponent } from './layout.component';
-export let LAYOUT_KITS = [LayoutComponent];
+export { ShellLayoutComponent } from './shell-layout/shell-layout.component';
+
+export let LAYOUT_KITS = [ShellLayoutComponent];

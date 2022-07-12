@@ -1,7 +1,14 @@
 {
     "root": true,
     "ignorePatterns": ["**/*"],
-    "plugins": ["@nrwl/nx"],
+    "plugins": [
+        "@nrwl/nx",
+        "import",
+        "jsdoc",
+        "simple-import-sort",
+        "sort-class-members",
+        "sort"
+    ],
     "overrides": [
         {
             "files": ["*.ts", "*.js"],
@@ -23,8 +30,49 @@
         },
         {
             "files": ["*.ts"],
-            "extends": ["plugin:@nrwl/nx/typescript"],
-            "rules": {}
+            "extends": [
+                "plugin:@nrwl/nx/typescript",
+                "plugin:@typescript-eslint/recommended",
+                "plugin:sort/recommended"
+            ],
+            "rules": {
+                "simple-import-sort/imports": [
+                    "error",
+                    {
+                        "groups": [
+                            ["^\\u0000"],
+                            ["^@?(?!medium-stories)\\w"],
+                            ["^@medium-stories?\\w"],
+                            ["^[^.]"],
+                            ["^\\."]
+                        ]
+                    }
+                ],
+                "import/first": ["error"],
+                "import/newline-after-import": ["error"],
+                "import/no-duplicates": ["error"],
+                "sort-class-members/sort-class-members": [
+                    2,
+                    {
+                        "order": [
+                            "[static-properties]",
+                            "[static-methods]",
+                            "[properties]",
+                            "[conventional-private-properties]",
+                            "constructor",
+                            "[methods]",
+                            "[conventional-private-methods]"
+                        ],
+                        "accessorPairPositioning": "getThenSet"
+                    }
+                ],
+                "sort/destructuring-properties": ["error"],
+                "sort/exports": ["error"],
+                "sort/export-members": ["error"],
+                "sort/imports": ["off"],
+                "sort/imports-members": ["off"],
+                "sort/object-properties": ["error"]
+            }
         },
         {
             "files": ["*.js"],

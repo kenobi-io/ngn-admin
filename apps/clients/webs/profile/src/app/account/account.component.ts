@@ -7,17 +7,19 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { Account } from '@core-template';
+import { SEARCH_KITS } from '@ngn-template/ui-kit';
 import { map, Observable } from 'rxjs';
+
 import { environment } from '../../environments/environment';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [CommonModule, HttpClientModule, SEARCH_KITS],
     selector: 'ngn-account',
     standalone: true,
-    imports: [CommonModule, HttpClientModule],
-    templateUrl: './account.component.html',
     styleUrls: ['./account.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './account.component.html',
 })
 export class AccountComponent implements OnInit {
     public hello$!: Observable<Account>;

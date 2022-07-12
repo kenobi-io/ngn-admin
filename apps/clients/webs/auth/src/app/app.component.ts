@@ -7,11 +7,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    imports: [BrowserModule, RouterModule],
     selector: 'ngn-root',
     standalone: true,
-    imports: [BrowserModule, RouterModule],
     template: '<router-outlet></router-outlet>',
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {}

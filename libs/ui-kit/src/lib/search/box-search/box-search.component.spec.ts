@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayoutComponent } from './layout.component';
+import { BoxSearchComponent } from './box-search.component';
 
-describe('LayoutComponent', () => {
-    let component: LayoutComponent;
-    let fixture: ComponentFixture<LayoutComponent>;
+describe('BoxSearchComponent', () => {
+    let component: BoxSearchComponent;
+    let fixture: ComponentFixture<BoxSearchComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [LayoutComponent],
+            imports: [BoxSearchComponent],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(LayoutComponent);
+        fixture = TestBed.createComponent(BoxSearchComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

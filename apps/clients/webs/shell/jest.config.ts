@@ -11,7 +11,7 @@ export default {
     },
     coverageDirectory: '../../../../coverage/apps/clients/webs/shell',
     transform: {
-        '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
+        '^.+\\.(ts|mjs|js|html|svg)$': 'jest-preset-angular',
     },
     transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
     snapshotSerializers: [

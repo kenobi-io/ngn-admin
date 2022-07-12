@@ -43,7 +43,23 @@
             "unitTestRunner": "jest"
         },
         "@nrwl/angular:component": {
-            "style": "scss"
-        }
+            "style": "scss",
+            "changeDetection": "OnPush",
+            "export": true,
+            "path": "apps/clients/webs/",
+            "skipImport": true,
+            "standalone": true,
+            "viewEncapsulation": "None"
+        },
+        "@schematics/angular:component": {
+            "style": "scss",
+            "changeDetection": "OnPush",
+            "export": true,
+            "path": "libs/ui-kit/src/lib/",
+            "prefix": "ngn",
+            "skipImport": true,
+            "standalone": true,
+            "viewEncapsulation": "None"
+       }
     }
 }

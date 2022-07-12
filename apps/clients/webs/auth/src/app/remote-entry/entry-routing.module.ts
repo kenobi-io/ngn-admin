@@ -1,38 +1,39 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { EntryComponent } from './entry.component';
 
 const routes: Routes = [
     {
-        path: '',
-        component: EntryComponent,
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'login' },
             {
-                path: 'forgot',
                 loadComponent: () =>
                     import('../forgot/forgot.component').then(
                         (c) => c.ForgotComponent
                     ),
+                path: 'forgot',
             },
             {
-                path: 'login',
                 loadComponent: () =>
                     import('../login/login.component').then(
                         (c) => c.LoginComponent
                     ),
+                path: 'login',
             },
             {
-                path: 'reg',
                 loadComponent: () =>
                     import('../reg/reg.component').then((c) => c.RegComponent),
+                path: 'reg',
             },
         ],
+        component: EntryComponent,
+        path: '',
     },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
 })
 export class EntryRoutingModule {}
