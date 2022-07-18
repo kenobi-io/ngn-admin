@@ -28,7 +28,6 @@ export class AccountComponent implements OnInit {
     ngOnInit(): void {
         this.hello$ = this.http.get<Account>(environment.prefix).pipe(
             map((message) => {
-                console.log('profile');
                 return message;
             })
         );

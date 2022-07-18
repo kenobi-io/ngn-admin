@@ -24,6 +24,7 @@
         "@tailwind",
         "devkit",
         "kafkajs",
+        "lapi",
         "microservices",
         "nestjs",
         "ngcc",
@@ -34,5 +35,6 @@
         "stylelintcache",
         "tailwind",
         "tailwindcss",
+        "unsub"
     ]
 }

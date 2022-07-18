@@ -47,7 +47,8 @@
  */
 import 'zone.js';
 
-(window as any).process = { env: { PORT: undefined } }; // Included with Angular CLI.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).process = { env: { PORT: null } }; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

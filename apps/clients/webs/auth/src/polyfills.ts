@@ -48,7 +48,7 @@
  */
 import 'zone.js';
 
-(window as any).process = { env: { PORT: undefined } }; // Included with Angular CLI.
+(window as any).process = { env: { PORT: null } }; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

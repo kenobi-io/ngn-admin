@@ -1,7 +1,5 @@
-import { WindowProcess } from './window-process';
-
 let start = 0;
-const process = (window as unknown as WindowProcess).process;
+
 const target = {
     extra: {
         auth: ++start,
