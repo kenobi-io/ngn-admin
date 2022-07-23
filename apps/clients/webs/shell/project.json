@@ -71,13 +71,13 @@
                     "browserTarget": "shell:build:production"
                 },
                 "development": {
-                    "browserTarget": "shell:build:development"
+                    "browserTarget": "shell:build:development",
+                    "proxyConfig": "apps/clients/webs/shell/proxy.conf.json"
                 }
             },
             "defaultConfiguration": "development",
             "options": {
                 "port": 4200,
-                "proxyConfig": "apps/clients/webs/shell/proxy.conf.json",
                 "publicHost": "http://localhost:4200",
                 "browserTarget": "shell:build"
             }

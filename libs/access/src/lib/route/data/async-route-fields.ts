@@ -1,4 +1,4 @@
-export const ASYNC_FIELD_ROUTES = [
+export const ASYNC_ROUTE_FIELDS = [
     'data',
     'fragment',
     'paramMap',

@@ -9,7 +9,7 @@ import {
     UrlSegment,
 } from '@angular/router';
 
-import { ContextUse } from '../directive';
+import { ContextUse } from '../../directive';
 
 export type KeyofContextRoute = ContextRoute[keyof ContextRoute];
 

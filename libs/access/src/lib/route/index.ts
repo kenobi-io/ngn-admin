@@ -1,7 +1,8 @@
-import { RouteDirective } from './route.directive';
+import { RouteDirective } from './directives/route.directive';
+import { RouterDirective } from './directives/router.directive';
 
-export * from './async-field-routes';
-export * from './context-route';
-export * from './route.directive';
+export * from './data/index';
+export * from './directives/index';
+export * from './interactions/index';
 
-export const ROUTE_ACCESSES = [RouteDirective];
+export const ROUTE_ACCESSES = [RouteDirective, RouterDirective];

@@ -15,7 +15,10 @@ describe('AppService', () => {
 
     describe('getData', () => {
         it('should return "Welcome to bff!"', () => {
-            expect(service.getData()).toEqual({ message: 'Welcome to bff!' });
+            expect(service.getData()).toHaveProperty(
+                'additionalName',
+                'additionalName'
+            );
         });
     });
 });

@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { HttpRequest } from '@core-template';
 import { lapi } from '@relax';
-import { catchError, MonoTypeOperatorFunction, Observable, of } from 'rxjs';
+import { catchError, MonoTypeOperatorFunction, of } from 'rxjs';
 
 import { unsubscribeFromAll } from '../../directive';
-import { OptionHttp } from '../option-http';
-import { UseHttp } from '../use-http';
+import { UseHttp } from '../data';
 
 /**
  * `Role` creates http request. Subscribe on result after unsubscribe automation.
@@ -12,32 +12,36 @@ import { UseHttp } from '../use-http';
  * @param operators
  * @returns `Use` reference
  */
-export function request<T extends UseHttp, Result>(
+export function requestHttp<T extends UseHttp, K>(
     useHttp: T,
-    ...operators: MonoTypeOperatorFunction<Result>[]
+    ...operators: MonoTypeOperatorFunction<K>[]
 ): T {
     if (useHttp.strategy) {
         lapi(
             (useHttp: T) => {
-                const { optionHttp, strategy } = useHttp;
+                const { input, strategy } = useHttp;
                 useHttp.params = strategy?.changes.map(
-                    (field) => optionHttp[field]
+                    (field) => input[field]
                 ) as [];
 
                 return useHttp;
             },
             unsubscribeFromAll,
             (useHttp: T) => {
-                const { context, params, strategy, subscriptions, viewRef } =
-                    useHttp;
-                const methodName = strategy ? strategy.type : 'request'; // TODO: add request to strategy http
+                const {
+                    context,
+                    httpClient,
+                    params,
+                    strategy,
+                    subscriptions,
+                    viewRef,
+                } = useHttp;
+                const method = strategy && strategy.type;
 
-                const method = useHttp.http[methodName] as unknown as (
-                    ...params: OptionHttp[]
-                ) => Observable<Result>;
-
-                if (params) {
-                    const subscription = method(...params)
+                if (params && method) {
+                    const sub = (httpClient[method] as HttpRequest<K>)(
+                        ...params
+                    )
                         .pipe(
                             ...(operators as []),
                             catchError((e: Error) => {
@@ -45,11 +49,11 @@ export function request<T extends UseHttp, Result>(
                                 return of(e);
                             })
                         )
-                        .subscribe((data: unknown) => {
+                        .subscribe((data: K | Error) => {
                             context && (context.$implicit = data);
                             viewRef?.markForCheck();
                         });
-                    subscriptions?.push(subscription);
+                    subscriptions?.push(sub);
                 }
 
                 return useHttp;

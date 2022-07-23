@@ -1,4 +1,4 @@
-import { Use } from './use';
+import { EmbedNull, Use } from './use';
 
 /**
  * `Role` creates embedded view.
@@ -7,7 +7,10 @@ import { Use } from './use';
  */
 export const createViewRef = <T extends Use>(use: T): T => {
     const { context, templateRef, viewContainerRef } = use;
-    viewContainerRef.createEmbeddedView(templateRef, context);
+    use.viewRef = viewContainerRef.createEmbeddedView(
+        templateRef,
+        context
+    ) as EmbedNull;
 
     return use;
 };

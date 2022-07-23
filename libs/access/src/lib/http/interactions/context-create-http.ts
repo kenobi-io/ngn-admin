@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Use } from '../../directive/use';
+import { UseHttp } from '../data';
 
-export const contextCreateHttp = <T extends Use>(use: T): T => {
-    let { context } = use;
+export const contextCreateHttp = <T extends UseHttp>(useHttp: T): T => {
+    let { context } = useHttp;
     context = {
         $implicit: null,
         get data() {
@@ -10,5 +10,5 @@ export const contextCreateHttp = <T extends Use>(use: T): T => {
         },
     };
 
-    return use;
+    return useHttp;
 };

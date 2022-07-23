@@ -1,44 +1,44 @@
 import { Type } from '@angular/core';
 import { convertToParamMap } from '@angular/router';
 
-import { UseRoute } from '../use-route';
+import { UseRoute } from '../data/use-route';
 
 export const createContextRoute = <T extends UseRoute>(useRoute: T): T => {
     const { route } = useRoute;
     useRoute.context = {
         $implicit: route,
         get children() {
-            return route.children;
+            return this.$implicit.children;
         },
         get component() {
-            return route.component as Type<unknown> | string;
+            return this.$implicit.component as Type<unknown> | string;
         },
         data: null,
         get firstChild() {
-            return route.firstChild;
+            return this.$implicit.firstChild;
         },
         fragment: null,
         get outlet() {
-            return route.outlet;
+            return this.$implicit.outlet;
         },
         paramMap: convertToParamMap({}),
         params: {},
         get parent() {
-            return route.parent;
+            return this.$implicit.parent;
         },
         get pathFromRoot() {
-            return route.pathFromRoot;
+            return this.$implicit.pathFromRoot;
         },
         queryParamMap: convertToParamMap({}),
         queryParams: {},
         get root() {
-            return route.root;
+            return this.$implicit.root;
         },
         get routeConfig() {
-            return route.routeConfig;
+            return this.$implicit.routeConfig;
         },
         get snapshot() {
-            return route.snapshot;
+            return this.$implicit.snapshot;
         },
         url: [],
     };

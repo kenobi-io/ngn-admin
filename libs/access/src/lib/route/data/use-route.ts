@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 
-import { Use } from '../directive/use';
+import { Use } from '../../directive/use';
 import { ContextRoute } from './context-route';
 
 export interface UseRoute extends Use {

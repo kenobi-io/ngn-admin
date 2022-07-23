@@ -16,9 +16,10 @@ describe('AppController', () => {
     describe('getData', () => {
         it('should return "Welcome to bff!"', () => {
             const appController = app.get<AppController>(AppController);
-            expect(appController.getData()).toEqual({
-                message: 'Welcome to bff!',
-            });
+            expect(appController.getData()).toHaveProperty(
+                'additionalName',
+                'additionalName'
+            );
         });
     });
 });
