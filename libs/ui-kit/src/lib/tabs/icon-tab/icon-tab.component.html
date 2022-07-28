@@ -1,0 +1,11 @@
+<div #container class="border-b border-gray-200 dark:border-gray-700">
+    <ul
+        #menu
+        class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400"
+    >
+        <ng-content select="[menuTab]"> </ng-content>
+    </ul>
+</div>
+<div>
+    <ng-content select="[contentTab]"> </ng-content>
+</div>

@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { SimpleChanges } from '@angular/core';
 
-import { ContextUse, Use } from '../../directive';
+import { Use } from '../../directive';
+import { ContextHttp } from './context-http';
 import { OptionHttp } from './option-http';
 import { StrategyHttp } from './strategy-http';
 
 export interface UseHttp extends Use {
     changes?: SimpleChanges;
-    context: ContextUse | null;
+    context: ContextHttp | null;
+    data?: unknown;
     input: OptionHttp;
     fields?: StrategyHttp[] | null;
     httpClient: HttpClient;

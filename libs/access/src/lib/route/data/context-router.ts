@@ -14,6 +14,7 @@ export type KeyofContextRouter = ContextRouter[keyof ContextRouter];
 export interface ContextRouter extends ContextUse {
     [name: string]: ContextRouter[keyof ContextRouter];
     $implicit: Router;
+    data: unknown;
     events: Observable<unknown>;
     routerState: RouterState;
     navigated: boolean;
