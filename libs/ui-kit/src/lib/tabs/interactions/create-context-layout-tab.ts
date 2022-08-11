@@ -10,6 +10,7 @@ export const createContextLayoutTab = <T extends UseLayoutTab>(
             const { templateRef } = useTab;
             useTab.context = {
                 $implicit: templateRef,
+                tabs: [],
             };
             return useTab;
         },

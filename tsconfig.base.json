@@ -23,5 +23,6 @@
             "@relax": ["../relax/packages/index.ts"]
         }
     },
-    "exclude": ["node_modules", "tmp"]
+    "exclude": ["node_modules", "tmp"],
+    "include": ["../core-template/packages/**/*.ts"]
 }

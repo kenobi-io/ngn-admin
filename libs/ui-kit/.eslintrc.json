@@ -13,7 +13,6 @@
                     "error",
                     {
                         "type": "attribute",
-                        "prefix": "ngn",
                         "style": "camelCase"
                     }
                 ],
@@ -24,7 +23,8 @@
                         "prefix": "ngn",
                         "style": "kebab-case"
                     }
-                ]
+                ],
+                "@nrwl/nx/enforce-module-boundaries": "off" /* TODO: fix access-lib to publishable and turn on rule */
             }
         },
         {

@@ -7,10 +7,11 @@ import { EmbedNull, Use } from './use';
  */
 export const createViewRef = <T extends Use>(use: T): T => {
     const { context, templateRef, viewContainerRef } = use;
-    use.viewRef = viewContainerRef.createEmbeddedView(
-        templateRef,
-        context
-    ) as EmbedNull;
-
+    if (templateRef) {
+        use.viewRef = viewContainerRef.createEmbeddedView(
+            templateRef,
+            context
+        ) as EmbedNull;
+    }
     return use;
 };

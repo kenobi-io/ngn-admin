@@ -1,4 +1,4 @@
-import { SimpleChanges } from '@angular/core';
+import { Renderer2, SimpleChanges } from '@angular/core';
 import { ContextUse, Use } from '@ngn-template/access';
 
 import { Tab } from './tab';
@@ -11,8 +11,9 @@ export interface UseTab extends Use {
         tabActiveStyle: string;
         tabInactiveStyle: string;
         tabOrderId: string;
+        tabTabs: Tab[];
         tabShow: (...params: unknown[]) => unknown | void;
     };
-    orderId?: string | null;
+    renderer: Renderer2;
     tabs?: Tab[] | null;
 }

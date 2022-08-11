@@ -1,5 +1,4 @@
 import {
-    AfterContentInit,
     Directive,
     EmbeddedViewRef,
     Input,
@@ -28,10 +27,10 @@ import { createContextLayoutTab } from '../interactions';
     standalone: true,
 })
 export class LayoutTabDirective
-    implements AfterContentInit, OnChanges, OnDestroy
+    implements /* AfterContentInit, */ OnChanges, OnDestroy
 {
-    @Input() layoutTabMenuStyle!: string;
-    @Input() layoutTabContainerStyle!: string;
+    @Input() layoutTabMenu!: string;
+    @Input() layoutTabContainer!: string;
 
     private useLayoutTab: UseLayoutTab;
 
@@ -39,11 +38,13 @@ export class LayoutTabDirective
         private readonly templateRef: TemplateRef<ContextUse>,
         private readonly viewContainerRef: ViewContainerRef // @Inject(TAB_TOKEN) private readonly tabComponent: TabComponent
     ) {
-        lapi(createViewRef)(
+        lapi(
+            createContextLayoutTab,
+            createViewRef
+        )(
             (this.useLayoutTab = {
                 context: null,
                 input: this,
-                // tabComponent,
                 templateRef,
                 viewContainerRef,
                 viewRef: {} as EmbeddedViewRef<ContextUse> | null,
@@ -55,9 +56,9 @@ export class LayoutTabDirective
         this.useLayoutTab.changes = changes;
     }
 
-    ngAfterContentInit(): void {
-        createContextLayoutTab(this.useLayoutTab);
-    }
+    // ngAfterContentInit(): void {
+    //     createContextLayoutTab(this.useLayoutTab);
+    // }
 
     ngOnDestroy() {
         lapi(

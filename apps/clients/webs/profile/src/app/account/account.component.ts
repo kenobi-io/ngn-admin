@@ -1,35 +1,27 @@
+import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import {
     ChangeDetectionStrategy,
     Component,
-    OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { Account } from '@core-template';
-import { SEARCH_KITS } from '@ngn-template/ui-kit';
-import { map, Observable } from 'rxjs';
-
-import { environment } from '../../environments/environment';
+import { HTTP_ACCESSES } from '@ngn-template/access';
+import { SEARCH_KITS, SVG_KITS, TAB_KITS } from '@ngn-template/ui-kit';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
-    imports: [CommonModule, HttpClientModule, SEARCH_KITS],
+    imports: [
+        CommonModule,
+        HTTP_ACCESSES,
+        PortalModule,
+        TAB_KITS,
+        SEARCH_KITS,
+        SVG_KITS,
+    ],
     selector: 'ngn-account',
     standalone: true,
     styleUrls: ['./account.component.scss'],
     templateUrl: './account.component.html',
 })
-export class AccountComponent implements OnInit {
-    public hello$!: Observable<Account>;
-    constructor(private http: HttpClient) {}
-
-    ngOnInit(): void {
-        this.hello$ = this.http.get<Account>(environment.prefix).pipe(
-            map((message) => {
-                return message;
-            })
-        );
-    }
-}
+export class AccountComponent {}
