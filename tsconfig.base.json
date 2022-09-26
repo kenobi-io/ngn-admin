@@ -9,6 +9,7 @@
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "noImplicitThis": false,
         "importHelpers": true,
         "target": "ES2020",
         "module": "esnext",

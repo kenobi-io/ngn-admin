@@ -6,18 +6,19 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ContextUse } from './context-use';
+import { ContextTemplate } from './context-template';
 
-export type EmbedNull = EmbeddedViewRef<ContextUse> | null;
+export type EmbedNull<T> = EmbeddedViewRef<ContextTemplate<T>> | null;
 
 /**
- * Description structure data by interaction with directive.
+ * Description structure data by interaction with directive - \
+ * the facade of the directive.
  */
-export interface Use {
-    context: ContextUse | null;
-    elRef?: ElementRef<HTMLElement>;
-    subscriptions?: Subscription[] | null;
-    templateRef?: TemplateRef<ContextUse>;
+export interface Use<T> {
+    context: ContextTemplate<T>;
+    elementRef: ElementRef<ContextTemplate<T>>;
+    subscriptions: Subscription[] | null;
+    templateRef: TemplateRef<ContextTemplate<T>>;
     viewContainerRef: ViewContainerRef;
-    viewRef: EmbeddedViewRef<ContextUse> | null;
+    viewRef: EmbeddedViewRef<ContextTemplate<T>> | null;
 }

@@ -7,19 +7,18 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { ContextUse } from '../../directive';
+import { ContextTemplate } from '../../directive';
 
 export type KeyofContextRouter = ContextRouter[keyof ContextRouter];
 
-export interface ContextRouter extends ContextUse {
+export interface ContextRouter extends ContextTemplate<Router> {
     [name: string]: ContextRouter[keyof ContextRouter];
-    $implicit: Router;
     data: unknown;
-    events: Observable<unknown>;
-    routerState: RouterState;
-    navigated: boolean;
-    urlHandlingStrategy: UrlHandlingStrategy;
-    routeReuseStrategy: RouteReuseStrategy;
-    titleStrategy?: TitleStrategy;
+    events: Observable<unknown> | null;
+    routerState: RouterState | null;
+    navigated: boolean | null;
+    urlHandlingStrategy: UrlHandlingStrategy | null;
+    routeReuseStrategy: RouteReuseStrategy | null;
+    titleStrategy: TitleStrategy | null;
     url: string;
 }

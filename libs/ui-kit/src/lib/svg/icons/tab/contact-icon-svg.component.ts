@@ -11,6 +11,7 @@ import {
     imports: [CommonModule],
     selector: 'ngn-contact-icon-svg',
     standalone: true,
+    styleUrls: ['contact-icon-svg.component.scss'],
     templateUrl: './contact-icon-svg.component.svg',
 })
 export class ContactIconSvgComponent {}

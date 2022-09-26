@@ -1,13 +1,20 @@
-import { lapi } from '@relax';
+import { Optional } from '@core-template';
+import { pipe } from 'rxjs';
 
 import { UseTab } from '../data';
 
-export const createContextTab = <T extends UseTab>(useTab: T): T => {
-    lapi(
+export type CreateContextUseTab = Optional<
+    UseTab,
+    'activeTab' | 'input' | 'tabs' | 'templateRef'
+>;
+
+export const createContextUseTab = <T extends CreateContextUseTab>(
+    useTab: T
+): UseTab => {
+    pipe(
         (useTab: T) => {
-            const { templateRef } = useTab;
             useTab.context = {
-                $implicit: templateRef,
+                $implicit: null,
             };
             // useTab.tabs = [];
             return useTab;
@@ -25,5 +32,5 @@ export const createContextTab = <T extends UseTab>(useTab: T): T => {
         }
     )(useTab);
 
-    return useTab;
+    return useTab as UseTab;
 };

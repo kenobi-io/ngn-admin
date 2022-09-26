@@ -9,13 +9,12 @@ import {
     UrlSegment,
 } from '@angular/router';
 
-import { ContextUse } from '../../directive';
+import { ContextTemplate } from '../../directive';
 
 export type KeyofContextRoute = ContextRoute[keyof ContextRoute];
 
-export interface ContextRoute extends ContextUse {
+export interface ContextRoute extends ContextTemplate<ActivatedRoute> {
     [name: string]: ContextRoute[keyof ContextRoute];
-    $implicit: ActivatedRoute;
     children: ActivatedRoute[];
     component: Type<unknown> | string;
     data: Data | null;

@@ -6,13 +6,13 @@ import { ContextHttp } from './context-http';
 import { OptionHttp } from './option-http';
 import { StrategyHttp } from './strategy-http';
 
-export interface UseHttp extends Use {
-    changes?: SimpleChanges;
-    context: ContextHttp | null;
-    data?: unknown;
+export interface UseHttp extends Use<HttpClient> {
+    changes: SimpleChanges;
+    context: ContextHttp;
+    data: unknown;
     input: OptionHttp;
-    fields?: StrategyHttp[] | null;
+    fields: StrategyHttp[] | null;
     httpClient: HttpClient;
-    params?: OptionHttp[] | null;
-    strategy?: StrategyHttp | null;
+    params: OptionHttp[] | null;
+    strategy: StrategyHttp | null;
 }

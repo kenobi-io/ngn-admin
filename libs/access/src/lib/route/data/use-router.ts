@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Use } from '../../directive/use';
 import { ContextRouter } from './context-router';
 
-export interface UseRouter extends Use {
+export interface UseRouter extends Use<Router> {
     router: Router;
-    context: ContextRouter | null;
+    context: ContextRouter;
     fields: string[] | null;
 }
