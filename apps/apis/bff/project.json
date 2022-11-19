@@ -1,16 +1,19 @@
 {
+    "name": "bff",
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "apps/apis/bff/src",
     "projectType": "application",
     "targets": {
         "build": {
-            "executor": "@nrwl/node:webpack",
+            "executor": "@nrwl/webpack:webpack",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "dist/apps/apis/bff",
                 "main": "apps/apis/bff/src/main.ts",
                 "tsConfig": "apps/apis/bff/tsconfig.app.json",
-                "assets": ["apps/apis/bff/src/assets"]
+                "assets": ["apps/apis/bff/src/assets"],
+                "target": "node",
+                "compiler": "tsc"
             },
             "configurations": {
                 "production": {
@@ -52,7 +55,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/apps/apis/bff"],
+            "outputs": ["{workspaceRoot}/coverage/apps/apis/bff"],
             "options": {
                 "jestConfig": "apps/apis/bff/jest.config.ts",
                 "passWithNoTests": true

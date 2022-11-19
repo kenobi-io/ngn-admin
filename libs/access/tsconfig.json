@@ -1,7 +1,5 @@
 {
     "extends": "../../tsconfig.base.json",
-    "files": [],
-    "include": [],
     "references": [
         {
             "path": "./tsconfig.lib.json"
@@ -26,6 +24,7 @@
         "enableI18nLegacyMessageIdFormat": false,
         "strictInjectionParameters": true,
         "strictInputAccessModifiers": true,
-        "strictTemplates": true
+        "strictTemplates": true,
+        "strictContextGenerics": true
     }
 }

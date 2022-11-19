@@ -2,7 +2,6 @@
     "compileOnSave": false,
     "compilerOptions": {
         "strict": true,
-        "strictBindCallApply": true,
         "noImplicitAny": true,
         "sourceMap": true,
         "declaration": false,

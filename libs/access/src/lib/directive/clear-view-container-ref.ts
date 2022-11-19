@@ -1,8 +1,8 @@
-import { Optional } from '@core-template';
+import { Bounden } from '@core-template';
 
 import { Use } from './use';
 
-export type ClearViewContainerRefUse<T> = Optional<Use<T>, 'viewContainerRef'>;
+export type ClearViewContainerRefUse<T> = Bounden<Use<T>, 'viewContainerRef'>;
 
 /**
  * `Role` clears container reference in view.
@@ -14,6 +14,6 @@ export const clearViewContainerRef = <T>(
 ): Use<T> => {
     const { viewContainerRef } = use;
     viewContainerRef.clear();
-
+    delete use.context; // TODO: = undefined ?
     return use as Use<T>;
 };

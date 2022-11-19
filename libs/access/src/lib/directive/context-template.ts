@@ -1,3 +1,3 @@
 export interface ContextTemplate<T> {
-    $implicit: T | null;
+    $implicit: T;
 }

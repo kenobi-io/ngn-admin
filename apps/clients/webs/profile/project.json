@@ -1,125 +1,132 @@
 {
-    "projectType": "application",
-    "sourceRoot": "apps/clients/webs/profile/src",
-    "prefix": "ngn",
-    "targets": {
-        "build": {
-            "executor": "@nrwl/angular:webpack-browser",
-            "outputs": ["{options.outputPath}"],
-            "options": {
-                "outputPath": "dist/apps/clients/webs/profile",
-                "index": "apps/clients/webs/profile/src/index.html",
-                "main": "apps/clients/webs/profile/src/main.ts",
-                "polyfills": "apps/clients/webs/profile/src/polyfills.ts",
-                "tsConfig": "apps/clients/webs/profile/tsconfig.app.json",
-                "inlineStyleLanguage": "scss",
-                "assets": [
-                    "apps/clients/webs/profile/src/favicon.ico",
-                    "apps/clients/webs/profile/src/assets",
-                    {
-                        "glob": "**/*",
-                        "input": "libs/ui-kit/src/assets",
-                        "output": "/assets/"
-                    }
-                ],
-                "styles": ["apps/clients/webs/profile/src/styles.scss"],
-                "scripts": [],
-                "customWebpackConfig": {
-                    "path": "apps/clients/webs/profile/webpack.config.js"
-                }
-            },
-            "configurations": {
-                "production": {
-                    "budgets": [
-                        {
-                            "type": "initial",
-                            "maximumWarning": "500kb",
-                            "maximumError": "1mb"
-                        },
-                        {
-                            "type": "anyComponentStyle",
-                            "maximumWarning": "2kb",
-                            "maximumError": "4kb"
-                        }
-                    ],
-                    "fileReplacements": [
-                        {
-                            "replace": "apps/clients/webs/profile/src/environments/environment.ts",
-                            "with": "apps/clients/webs/profile/src/environments/environment.prod.ts"
-                        }
-                    ],
-                    "outputHashing": "all",
-                    "customWebpackConfig": {
-                        "path": "apps/clients/webs/profile/webpack.prod.config.js"
-                    }
-                },
-                "development": {
-                    "buildOptimizer": false,
-                    "optimization": false,
-                    "vendorChunk": true,
-                    "extractLicenses": false,
-                    "sourceMap": true,
-                    "namedChunks": true
-                }
-            },
-            "defaultConfiguration": "production"
-        },
-        "serve": {
-            "executor": "@nrwl/angular:webpack-server",
-            "configurations": {
-                "production": {
-                    "browserTarget": "profile-web:build:production"
-                },
-                "development": {
-                    "browserTarget": "profile-web:build:development"
-                }
-            },
-            "defaultConfiguration": "development",
-            "options": {
-                "port": 4202,
-                "proxyConfig": "apps/clients/webs/profile/proxy.conf.json",
-                "publicHost": "http://localhost:4202"
-            }
-        },
-        "extract-i18n": {
-            "executor": "@angular-devkit/build-angular:extract-i18n",
-            "options": {
-                "browserTarget": "profile-web:build"
-            }
-        },
-        "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "options": {
-                "lintFilePatterns": [
-                    "apps/clients/webs/profile/**/*.ts",
-                    "apps/clients/webs/profile/**/*.html"
-                ]
-            }
-        },
-        "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/apps/clients/webs/profile"],
-            "options": {
-                "jestConfig": "apps/clients/webs/profile/jest.config.ts",
-                "passWithNoTests": true
-            }
-        },
-        "serve-static": {
-            "executor": "@nrwl/angular:file-server",
-            "defaultConfiguration": "development",
-            "options": {
-                "buildTarget": "profile-web:build",
-                "port": 4202
-            },
-            "configurations": {
-                "development": {
-                    "buildTarget": "profile-web:build:development"
-                },
-                "production": {
-                    "buildTarget": "profile-web:build:production"
-                }
-            }
+  "name": "profile-web",
+  "projectType": "application",
+  "sourceRoot": "apps/clients/webs/profile/src",
+  "prefix": "ngn",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/clients/webs/profile",
+        "index": "apps/clients/webs/profile/src/index.html",
+        "main": "apps/clients/webs/profile/src/main.ts",
+        "polyfills": "apps/clients/webs/profile/src/polyfills.ts",
+        "tsConfig": "apps/clients/webs/profile/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/clients/webs/profile/src/favicon.ico",
+          "apps/clients/webs/profile/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/ui-kit/src/assets",
+            "output": "/assets/"
+          }
+        ],
+        "styles": [
+          "apps/clients/webs/profile/src/styles.scss"
+        ],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/clients/webs/profile/webpack.config.js"
         }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/clients/webs/profile/src/environments/environment.ts",
+              "with": "apps/clients/webs/profile/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/clients/webs/profile/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
     },
-    "tags": []
+    "serve": {
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "profile-web:build:production"
+        },
+        "development": {
+          "browserTarget": "profile-web:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4202,
+        "proxyConfig": "apps/clients/webs/profile/proxy.conf.json",
+        "publicHost": "http://localhost:4202"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "profile-web:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/clients/webs/profile/**/*.ts",
+          "apps/clients/webs/profile/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/clients/webs/profile"
+      ],
+      "options": {
+        "jestConfig": "apps/clients/webs/profile/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/angular:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "profile-web:build",
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "profile-web:build:development"
+        },
+        "production": {
+          "buildTarget": "profile-web:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
 }

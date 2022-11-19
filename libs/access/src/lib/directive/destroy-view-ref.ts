@@ -1,8 +1,8 @@
-import { Optional } from '@core-template';
+import { Bounden } from '@core-template';
 
 import { Use } from './use';
 
-export type DestroyViewRefUse<T> = Optional<Use<T>, 'viewRef'>;
+export type DestroyViewRefUse<T> = Bounden<Use<T>, 'viewRef'>;
 
 /**
  * `Role` destroys view reference.

@@ -1,11 +1,12 @@
 {
+    "name": "ui-kit",
     "projectType": "library",
     "sourceRoot": "libs/ui-kit/src",
     "prefix": "ngn",
     "targets": {
         "build": {
             "executor": "@nrwl/angular:package",
-            "outputs": ["dist/libs/ui-kit"],
+            "outputs": ["{workspaceRoot}/dist/libs/ui-kit"],
             "options": {
                 "project": "libs/ui-kit/ng-package.json",
                 "tailwindConfig": "libs/ui-kit/tailwind.config.js"
@@ -22,7 +23,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/ui-kit"],
+            "outputs": ["{workspaceRoot}/coverage/libs/ui-kit"],
             "options": {
                 "jestConfig": "libs/ui-kit/jest.config.ts",
                 "passWithNoTests": true

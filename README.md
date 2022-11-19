@@ -59,7 +59,7 @@ $ git push
         <button (click)="ctrl.next()">
 ```
 
-```js
+```ts
     const context = {
         $implicit: null ,
         controller: {
@@ -68,7 +68,21 @@ $ git push
     }
 ```
 
-<p> использование ngTemplateOutlet для проекции контента </p>
+> <p> получение host component в директиве </p>
+
+```ts
+// дочерняя директива/компонент совершенно спокойно может получить инстанс родителя через DI
+import { Directive } from "@angular/core"; import { CountComponent } from "./count.component";
+
+@Directive({ selector: "[increment]" })
+export class IncrementDirective {
+  constructor(private countComponent: CountComponent) {
+    this.countComponent.count += 1;
+  }
+}
+```
+
+> <p> использование ngTemplateOutlet для проекции контента </p>
 
 ```html
     <div class="content">
@@ -86,10 +100,63 @@ $ git push
     </app-container>
 ```
 
-```js
-  selector: 'app-container'
-  ...
-  @ContentChild('itemTemplate', { static: false }) itemTemplateRef!: TemplateRef<any>;
+```ts
+import { ContentChild, TemplateRef } from '@angular/core'
+// selector: 'app-container'
+// ...
+@ContentChild('itemTemplate', { static: false }) item: TemplateRef<any>;
+```
+
+***
+#### Interaction directives
+***
+
+```html
+<div class="container" *context="let method = method">
+    <ngn [context]="{method}"> </ngn>
+    <button
+        fireDirective
+        (outputEvent)="method($event)">
+        <!-- outputEvent: EventEmitter<Facade>
+            fireDirective.HostListener.clickOrAnyEvent() => outputEvent.emit(facade);
+            ...
+            contextDirective.method(event) => event is Facade; // true
+        -->
+        Ok
+    </button>
+</div>
+```
+
+```ts
+// InjectToken
+import { InjectionToken, ContentChild, Inject, NgModule, Component } from '@angular/core';
+
+type OrderAction;
+export const ORDER_ACTION = new InjectionToken<OrderAction>('OrderAction');
+
+class Service {
+    public constructor(@Inject(ORDER_ACTION) private orderAction: OrderAction) {}
+}
+
+export const OTHER_ACTION: OrderAction = {/*... */};
+
+@NgModule({
+    providers: [{ provide: ORDER_ACTION, useValue: OTHER_ACTION }]
+  })
+
+export class AppModule {}
+
+@Component({
+  providers: [
+    {
+      provide: ORDER_ACTION,
+      useExisting: CComponent,
+    },
+  ],
+})
+class CComponent implements OrderAction { 
+    @ContentChild(ORDER_ACTION, { static: true }) orderAction: "OrderAction"; // this OTHER_ACTION for AppModule
+}
 ```
 
 ***

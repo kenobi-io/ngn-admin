@@ -2,8 +2,7 @@
 import { UseHttp } from '../data';
 
 export const contextCreateHttp = <T extends UseHttp>(useHttp: T): T => {
-    let { context } = useHttp;
-    context = {
+    useHttp.context = {
         $implicit: null,
         get data() {
             return this.$implicit;
