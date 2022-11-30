@@ -1,5 +1,8 @@
-import { ContextUse } from '../../directive';
+import { Observable } from 'rxjs';
 
-export interface ContextHttp extends ContextUse {
-    data?: unknown;
+import { Context } from '../../directive';
+
+export interface ContextHttp<T> extends Context<T> {
+    $implicit: Observable<T>;
+    data: Observable<T>;
 }

@@ -1,5 +1,8 @@
-export type OptionHttp = {
-    [propName: string]: string | unknown;
+import { UseHttp } from '.';
+
+export type Http<T> = {
+    httpTypeof: T;
+    httpCallback: string;
     httpDelete: string;
     httpGet: string;
     httpHead: string;
@@ -9,6 +12,6 @@ export type OptionHttp = {
     httpPost: string;
     httpPut: string;
     httpSend: unknown;
-    httpCallback: string;
     httpWith: unknown;
+    use: UseHttp<T>;
 };

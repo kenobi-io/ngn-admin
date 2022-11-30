@@ -1,32 +1,39 @@
-import { HttpClient } from '@angular/common/http';
 import {
     Directive,
     Input,
     OnChanges,
     OnDestroy,
     SimpleChanges,
-    TemplateRef,
-    ViewContainerRef,
 } from '@angular/core';
-import { lapi } from '@relax';
+import { pipe } from 'rxjs';
 
 import {
     clearViewContainerRef,
-    ContextUse,
     createViewRef,
     destroyViewRef,
-    EmbedNull,
-    unsubscribeFromAll,
 } from '../../directive';
-import { CONFIG_STRATEGY_HTTP, OptionHttp, UseHttp } from '../data';
+import { ContextHttp, UseHttp } from '../data';
+import { Http } from '../data/http';
 import {
     contextCreateHttp,
+    createUseHttp,
     findStrategyHttp,
     requestHttp,
 } from '../interactions';
 
-@Directive({ selector: '[http]', standalone: true })
-export class HttpDirective implements OnChanges, OnDestroy {
+@Directive({
+    exportAs: 'httpProperty',
+    selector: '[http]',
+    standalone: true,
+})
+export class HttpDirective<T> implements Http<T>, OnChanges, OnDestroy {
+    static ngTemplateContextGuard<T>(
+        dir: HttpDirective<T>,
+        ctx: unknown
+    ): ctx is ContextHttp<T> {
+        return true;
+    }
+    @Input() httpTypeof!: T;
     @Input() httpCallback!: string;
     @Input() httpDelete!: string;
     @Input() httpGet!: string;
@@ -38,42 +45,96 @@ export class HttpDirective implements OnChanges, OnDestroy {
     @Input() httpPut!: string;
     @Input() httpSend!: unknown;
     @Input() httpWith!: unknown;
-
-    private useHttp: UseHttp;
-
-    constructor(
-        private readonly httpClient: HttpClient,
-        private readonly templateRef: TemplateRef<ContextUse>,
-        private readonly viewContainerRef: ViewContainerRef
-    ) {
-        lapi(
-            contextCreateHttp,
-            createViewRef
-        )(
-            (this.useHttp = {
-                context: {} as ContextUse,
-                fields: CONFIG_STRATEGY_HTTP,
-                httpClient,
-                input: this as unknown as OptionHttp,
-                templateRef,
-                viewContainerRef,
-                viewRef: {} as EmbedNull,
-            })
-        );
-    }
+    use: UseHttp<T> = createUseHttp(this);
 
     ngOnChanges(changes: SimpleChanges): void {
-        lapi(
+        pipe(
+            (use: UseHttp<T>) => (use.changes = changes) && use,
+            contextCreateHttp,
+            createViewRef<T, UseHttp<T>>,
             findStrategyHttp,
             requestHttp
-        )((this.useHttp.changes = changes) && this.useHttp);
+        )(this.use);
     }
 
     ngOnDestroy(): void {
-        lapi(
-            unsubscribeFromAll,
-            clearViewContainerRef,
-            destroyViewRef
-        )(this.useHttp);
+        pipe(clearViewContainerRef, destroyViewRef)(this.use);
     }
 }
+
+//export type Actions = unknown;
+//export type ActionResults = any;
+
+//<form *backendRoute="'GetReservations'; let params;">
+//export class ContextRoute<T> {
+//    $implicit!: T;
+//    subscribe!: T;
+//
+//    constructor(value: T) {
+//        this.$implicit = value;
+//        this.subscribe = value;
+//    }
+//}
+
+//    <T extends keyof Actions & keyof ActionResults> {
+//    static ngTemplateContextGuard<
+//        T extends keyof Actions & keyof ActionResults
+//    >(dir: RouteDirective<T>, ctx: unknown): ctx is Context<Actions[T]> {
+//        return true;
+//    }
+//
+//    @Input('backendRoute') typeToken!:
+//        | T
+//        | [T, (result: ActionResults[T]) => void];
+//
+//    constructor(
+//        // eslint-disable-next-line no-use-before-define
+//        private tpl: TemplateRef<Context<
+//        [T]>>,
+//        private vcr: ViewContainerRef
+//    ) {
+//        console.log('type');
+//        vcr.createEmbeddedView<Context<T>>(tpl);
+//    }
+
+//@Directive({
+//selector: '[http]',
+//    standalone: true,
+//})
+//export class UserHttpDirective extends HttpDirective<User> {
+//    static ngTemplateContextGuard(
+//        dir: UserHttpDirective,
+//        ctx: unknown
+//    ): ctx is ContextHttp<User[]> {
+//        return true;
+//    }
+//    templateRef = inject(TemplateRef<ContextHttp<User>>);
+//
+//    viewContainerRef = inject(ViewContainerRef);
+//
+//    constructor() {
+//        super();
+//    }
+//
+//constructor() {
+//    super();
+//    this.use.operators = [
+//        map((result) => {
+//            console.log('result', result);
+//            return result;
+//        }) as never,
+//    ];
+//    const dir = inject(HttpDirective<User>);
+//    console.log('dir', dir.httpGet);
+//}
+//
+//ngOnChanges(changes: SimpleChanges): void {
+//    pipe(
+//        () =>
+//            (this.use.operators = [
+//                map((result) => console.log('result', result) && result)
+//            ]),
+//        () => super.ngOnChanges(changes)
+//    )(this.use);
+//}
+//}

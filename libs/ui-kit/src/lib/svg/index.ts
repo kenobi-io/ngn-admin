@@ -17,7 +17,7 @@ export { DashboardIconSvgComponent } from './icons/tab/dashboard-icon-svg.compon
 export { ProfileIconSvgComponent } from './icons/tab/profile-icon-svg.component';
 export { SettingIconSvgComponent } from './icons/tab/setting-icon-svg.component';
 
-export let SVG_KITS = [
+export const SVG_KITS = [
     AddIconSvgComponent,
     ContactIconSvgComponent,
     DashboardIconSvgComponent,

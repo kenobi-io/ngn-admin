@@ -1,16 +1,16 @@
 import { SimpleChanges } from '@angular/core';
-import { ContextUse, Use } from '@ngn-template/access';
+import { Context, Use } from '@ngn-template/access';
 
 import { Tab } from './tab';
 
-// import { TabComponent } from './tab-component';
+export type ContextTab = Context<Tab> & { tabs: Tab[] };
 
-export interface UseLayoutTab extends Use {
-    changes?: SimpleChanges;
-    // tabComponent: TabComponent;
-    context: (ContextUse & { tabs: Tab[] }) | null;
+export interface UseLayoutTab extends Use<Tab> {
+    changes: SimpleChanges;
+    context: ContextTab;
     input: {
         layoutTabContainer: string;
         layoutTabMenu: string;
+        layoutTabList: [] | null;
     };
 }

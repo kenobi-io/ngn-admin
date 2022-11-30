@@ -1,7 +1,7 @@
-import { HttpDirective } from './directives/http.directive';
+import { HttpDirective } from './directives/index';
 
 export * from './data/index';
-export * from './directives/index';
+export { HttpDirective } from './directives/index';
 export * from './interactions/index';
 
 export const HTTP_ACCESSES = [HttpDirective];

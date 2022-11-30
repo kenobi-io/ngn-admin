@@ -1,3 +1,3 @@
-export interface ContextTemplate<T> {
-    $implicit: T;
+export interface Context<T> {
+    $implicit: T | unknown;
 }

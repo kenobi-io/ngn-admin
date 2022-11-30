@@ -25,6 +25,7 @@
         "strictInjectionParameters": true,
         "strictInputAccessModifiers": true,
         "strictTemplates": true,
-        "strictContextGenerics": true
+        "strictContextGenerics": true,
+        "strict": true
     }
 }

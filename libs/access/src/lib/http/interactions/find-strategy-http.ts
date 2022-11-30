@@ -1,14 +1,20 @@
-// import { OptionHttp } from './option-http';
+import { Bounden } from '@core-template';
 
-import { StrategyHttp, UseHttp } from '../data';
+import { UseHttp } from '../data';
 
-export const findStrategyHttp = <T extends UseHttp>(useHttp: T): T => {
-    const { changes, fields, input } = useHttp;
-    useHttp.strategy = fields?.find((strategy) => {
-        return (
-            strategy.changes.some((field) => changes && !!changes[field]) &&
-            strategy.require.every((field) => !!input[`${field}`])
-        );
-    }) as StrategyHttp | null;
-    return useHttp;
+export type FindStrategyHttp<T> = Bounden<
+    UseHttp<T>,
+    'changes' | 'fields' | 'input'
+>;
+
+export const findStrategyHttp = <T>(use: FindStrategyHttp<T>): UseHttp<T> => {
+    const { changes, fields, input } = use;
+    !use.strategy &&
+        (use.strategy = fields.find((strategy) => {
+            return (
+                strategy.changes.some((field) => changes && !!changes[field]) &&
+                strategy.require.every((field) => !!input[`${field}`])
+            );
+        }));
+    return use as UseHttp<T>;
 };

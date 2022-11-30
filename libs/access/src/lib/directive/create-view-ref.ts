@@ -1,6 +1,6 @@
 import { Bounden } from '@core-template';
 
-import { ContextTemplate } from './context-template';
+import { Context } from './context-template';
 import { Use } from './use';
 
 export type CreateViewRefUse<T> = Bounden<
@@ -13,7 +13,9 @@ export type CreateViewRefUse<T> = Bounden<
  * @param use
  * @returns `Use` instance reference
  */
-export const createViewRef = <T>(use: CreateViewRefUse<T>): Use<T> => {
+export const createViewRef = <T, K extends Use<T>>(
+    use: CreateViewRefUse<T>
+): K => {
     const {
         context,
         optionsEmbeddedViewRef,
@@ -22,10 +24,10 @@ export const createViewRef = <T>(use: CreateViewRefUse<T>): Use<T> => {
         viewRef,
     } = use;
     !viewRef &&
-        (use.viewRef = viewContainerRef.createEmbeddedView<ContextTemplate<T>>(
+        (use.viewRef = viewContainerRef.createEmbeddedView<Context<T>>(
             templateRef,
             context,
             optionsEmbeddedViewRef
         ));
-    return use as Use<T>;
+    return use as K;
 };

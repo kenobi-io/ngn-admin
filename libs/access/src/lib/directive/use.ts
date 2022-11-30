@@ -2,23 +2,24 @@ import {
     ElementRef,
     EmbeddedViewRef,
     TemplateRef,
+    Type,
     ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ContextTemplate } from './context-template';
-
-export type EmbedNull<T> = EmbeddedViewRef<ContextTemplate<T>> | null;
+import { Context } from './context-template';
+import { OptionsEmbeddedViewRef } from './options-embedded-view';
 
 /**
  * Description structure data by interaction with directive - \
  * the facade of the directive.
  */
-export interface Use<T> {
-    context: ContextTemplate<T>;
-    elementRef: ElementRef<ContextTemplate<T>>;
+export interface Use<T, K = HTMLElement | Type<T>> {
+    context: Context<T>;
+    elementRef: ElementRef<K>;
+    optionsEmbeddedViewRef: OptionsEmbeddedViewRef;
     subscriptions: Subscription[] | null;
-    templateRef: TemplateRef<ContextTemplate<T>>;
+    templateRef: TemplateRef<Context<T>>;
     viewContainerRef: ViewContainerRef;
-    viewRef: EmbeddedViewRef<ContextTemplate<T>> | null;
+    viewRef: EmbeddedViewRef<Context<T>> | null;
 }

@@ -1,18 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { SimpleChanges } from '@angular/core';
 
 import { Use } from '../../directive';
+import { RestApi } from '../interactions';
 import { ContextHttp } from './context-http';
-import { OptionHttp } from './option-http';
+import { InputPropertyHttp } from './input-property-http';
 import { StrategyHttp } from './strategy-http';
 
-export interface UseHttp extends Use<HttpClient> {
+export interface UseHttp<T> extends Use<T> {
     changes: SimpleChanges;
-    context: ContextHttp;
-    data: unknown;
-    input: OptionHttp;
-    fields: StrategyHttp[] | null;
-    httpClient: HttpClient;
-    params: OptionHttp[] | null;
-    strategy: StrategyHttp | null;
+    context: ContextHttp<T>;
+    input: InputPropertyHttp;
+    fields: StrategyHttp[];
+    restApi: RestApi;
+    params: InputPropertyHttp[];
+    strategy: StrategyHttp;
 }
