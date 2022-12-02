@@ -17,6 +17,7 @@ export interface OptionsOpenPopover<T = Popover> {
     data: T;
     template: TemplateRef<ContextPopover<T>>;
     component: Type<T>;
+    text: string;
     height: string | number;
     origin: HTMLElement;
     width: string | number;

@@ -1,7 +1,7 @@
-import { UseHttp } from '.';
+import { UseHttp } from '../data';
 
 export type Http<T> = {
-    httpTypeof: T;
+    httpInstanceof: T;
     httpCallback: string;
     httpDelete: string;
     httpGet: string;

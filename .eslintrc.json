@@ -1,39 +1,36 @@
 {
     "root": true,
     "ignorePatterns": ["**/*"],
+    "parser": "@typescript-eslint/parser",
     "plugins": [
         "@nrwl/nx",
         "import",
         "jsdoc",
         "simple-import-sort",
         "sort-class-members",
-        "sort"
+        "sort",
+        "@typescript-eslint",
+        "unicorn",
+        "rxjs"
     ],
+    "env": {
+        "browser": true,
+        "node": true,
+        "jest": true
+    },
     "overrides": [
         {
             "files": ["*.ts", "*.js"],
-            "rules": {
-                "@nrwl/nx/enforce-module-boundaries": [
-                    "error",
-                    {
-                        "enforceBuildableLibDependency": true,
-                        "allow": [],
-                        "depConstraints": [
-                            {
-                                "sourceTag": "*",
-                                "onlyDependOnLibsWithTags": ["*"]
-                            }
-                        ]
-                    }
-                ]
-            }
+            "rules": {}
         },
         {
             "files": ["*.ts"],
             "extends": [
                 "plugin:@nrwl/nx/typescript",
                 "plugin:@typescript-eslint/recommended",
-                "plugin:sort/recommended"
+                "plugin:sort/recommended",
+                "eslint:recommended"
+                // "plugin:rxjs/recommended" //TODO: fix - not found rules
             ],
             "rules": {
                 "@typescript-eslint/no-unused-vars": [
@@ -60,13 +57,13 @@
                     2,
                     {
                         "order": [
-                            "[static-properties]",
-                            "[static-methods]",
                             "[properties]",
                             "[conventional-private-properties]",
                             "constructor",
                             "[methods]",
-                            "[conventional-private-methods]"
+                            "[conventional-private-methods]",
+                            "[static-properties]",
+                            "[static-methods]"
                         ],
                         "accessorPairPositioning": "getThenSet"
                     }
@@ -76,7 +73,76 @@
                 "sort/export-members": ["error"],
                 "sort/imports": ["off"],
                 "sort/imports-members": ["off"],
-                "sort/object-properties": ["error"]
+                "sort/object-properties": ["error"],
+                "@typescript-eslint/no-useless-constructor": "off",
+                "no-prototype-builtins": "off",
+                "@typescript-eslint/no-unnecessary-type-constraint": "error",
+                "prefer-template": "error",
+                "@typescript-eslint/explicit-function-return-type": [
+                    "error",
+                    {
+                        "allowExpressions": true,
+                        "allowTypedFunctionExpressions": true,
+                        "allowHigherOrderFunctions": true,
+                        "allowDirectConstAssertionInArrowFunctions": true,
+                        "allowConciseArrowFunctionExpressionsStartingWithVoid": true
+                    }
+                ],
+                "@typescript-eslint/ban-types": "error",
+                "@typescript-eslint/no-for-in-array": "error",
+                "@typescript-eslint/prefer-optional-chain": "error",
+                "unicorn/prefer-string-slice": "error",
+                "unicorn/no-array-push-push": "error",
+                "unicorn/require-number-to-fixed-digits-argument": "error",
+                "unicorn/no-empty-file": "error",
+                "unicorn/new-for-builtins": "error",
+                "unicorn/no-useless-spread": "error",
+                "unicorn/escape-case": "error",
+                "unicorn/no-unsafe-regex": "error",
+                "unicorn/filename-case": [
+                    "error",
+                    {
+                        "case": "kebabCase"
+                    }
+                ],
+                "rxjs/ban-observables": "error",
+                "rxjs/ban-operators": "error",
+                //"rxjs/finnish": "error",
+                "rxjs/just": "error",
+                //"rxjs/no-async-subscribe": "error",
+                "rxjs/no-compat": "error",
+                //"rxjs/no-connectable": "error",
+                //"rxjs/no-create": "error",
+                //"rxjs/no-cyclic-action": "error",
+                "rxjs/no-explicit-generics": "error",
+                //"rxjs/no-exposed-subjects": "error",
+                //"rxjs/no-finnish": "error",
+                //"rxjs/no-ignored-error": "error",
+                //"rxjs/no-ignored-notifier": "error",
+                //"rxjs/no-ignored-observable": "error",
+                "rxjs/no-ignored-replay-buffer": "error",
+                //"rxjs/no-ignored-subscribe": "error",
+                //"rxjs/no-ignored-subscription": "error",
+                "rxjs/no-ignored-takewhile-value": "error",
+                //"rxjs/no-implicit-any-catch": "error",
+                "rxjs/no-index": "error",
+                "rxjs/no-internal": "error",
+                //"rxjs/no-nested-subscribe": "error",
+                //"rxjs/no-redundant-notify": "error",
+                "rxjs/no-sharereplay": "error"
+                //"rxjs/no-subclass": "error",
+                //"rxjs/no-subject-value": "error",
+                //"rxjs/no-subscribe-handlers": "error",
+                //"rxjs/no-topromise": "error",
+                //"rxjs/no-unbound-methods": "error",
+                //"rxjs/no-unsafe-catch": "error",
+                //"rxjs/no-unsafe-first": "error",
+                //"rxjs/no-unsafe-subject-next": "error",
+                //"rxjs/no-unsafe-switchmap": "error",
+                //"rxjs/no-unsafe-takeuntil": "error",
+                //"rxjs/prefer-observer": "error",
+                //"rxjs/suffix-subjects": "error",
+                //"rxjs/throw-error": "error"
             }
         },
         {
