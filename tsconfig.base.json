@@ -19,6 +19,7 @@
         "paths": {
             "@core-template": ["../core-template/src/index.ts"],
             "@ngn-template/access": ["libs/access/src/index.ts"],
+            "@ngn-template/cdk": ["libs/cdk/src/index.ts"],
             "@ngn-template/ui-kit": ["libs/ui-kit/src/index.ts"],
             "@relax": ["../relax/packages/index.ts"]
         }
