@@ -24,7 +24,7 @@ export class RestApiService implements RestApi {
         const { log, method, url } = options;
         const message = log ? log : `[http ${method}]: ${url}`;
         return httpRequest().pipe(
-            tap(() => this.logger && this.logger.log(message)),
+            tap(() => this.logger?.log(message)),
             catchError(this.handleErrorRequest)
         );
     }

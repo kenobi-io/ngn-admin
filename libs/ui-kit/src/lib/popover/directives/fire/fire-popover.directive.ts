@@ -3,8 +3,7 @@ import {
     clearViewContainerRef,
     createViewRef,
     destroyViewRef,
-    unsubscribesFinal,
-} from '@ngn-template/access';
+} from '@ngn-template/cdk';
 import { pipe } from 'rxjs';
 
 import {
@@ -14,7 +13,7 @@ import {
     InputOptionsOpenPopover,
 } from '../../data';
 import {
-    createContextPopover,
+    createContextUsePopover,
     createListenerFireBtnPopover,
     createUsePopover,
     openPopover,
@@ -23,8 +22,8 @@ import {
 
 @Directive({ selector: '[firePopover]', standalone: true })
 export class FirePopoverDirective<T> implements OnDestroy, OnChanges {
-    @Input('firePopoverOptions') options!: InputOptionsOpenPopover<T>;
     @Input() firePopoverInstanceof!: T;
+    @Input('firePopoverOptions') options!: InputOptionsOpenPopover<T>;
     use!: FireUsePopover<T>;
 
     constructor() {
@@ -34,23 +33,19 @@ export class FirePopoverDirective<T> implements OnDestroy, OnChanges {
     ngOnChanges(changes: ChangesPopover<T>): void {
         pipe(
             (use: FireUsePopover<T>) =>
-                (use.optionsOpen = changes.options.currentValue),
-            createContextPopover,
+                (use.optionsOpen = changes.options.currentValue) && use,
+            createContextUsePopover,
             createViewRef<T, FireUsePopover<T>>,
             createListenerFireBtnPopover
         )(this.use);
     }
 
-    onClick() {
+    onClick(): void {
         pipe(setOptionsOpenPopover, openPopover)(this.use);
     }
 
-    ngOnDestroy() {
-        pipe(
-            unsubscribesFinal,
-            clearViewContainerRef,
-            destroyViewRef
-        )(this.use);
+    ngOnDestroy(): void {
+        pipe(clearViewContainerRef, destroyViewRef)(this.use);
     }
 
     static ngTemplateContextGuard<T>(

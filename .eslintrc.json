@@ -33,6 +33,7 @@
                 // "plugin:rxjs/recommended" //TODO: fix - not found rules
             ],
             "rules": {
+                "@typescript-eslint/no-explicit-any": "error",
                 "@typescript-eslint/no-unused-vars": [
                     "warn",
                     { "ignoreRestSiblings": true }
@@ -108,7 +109,7 @@
                 "rxjs/ban-observables": "error",
                 "rxjs/ban-operators": "error",
                 //"rxjs/finnish": "error",
-                "rxjs/just": "error",
+                "rxjs/just": "off",
                 //"rxjs/no-async-subscribe": "error",
                 "rxjs/no-compat": "error",
                 //"rxjs/no-connectable": "error",
@@ -139,7 +140,7 @@
                 //"rxjs/no-unsafe-first": "error",
                 //"rxjs/no-unsafe-subject-next": "error",
                 //"rxjs/no-unsafe-switchmap": "error",
-                //"rxjs/no-unsafe-takeuntil": "error",
+                //"rxjs/no-unsafe-takeuntil": "error"
                 //"rxjs/prefer-observer": "error",
                 //"rxjs/suffix-subjects": "error",
                 //"rxjs/throw-error": "error"

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpRequest } from '@core-template';
 import { pipe } from 'rxjs';
 
 import { UseHttp } from '../data';
 
-const setParamsUseHttp = <T>(use: UseHttp<T>) => {
+const setParamsUseHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
     const { input, strategy } = use;
     if (strategy) {
         use.params = strategy.changes.map((field) => input[field]) as [];
@@ -14,15 +13,15 @@ const setParamsUseHttp = <T>(use: UseHttp<T>) => {
     return use;
 };
 
-const createRequestHttp = <T>(use: UseHttp<T>) => {
+const createRequestHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
     const { context, params, restApi, strategy } = use;
-    const method = strategy && strategy.type;
+    const method = strategy?.type;
 
     if (params && method && context) {
         context.$implicit = (restApi[method] as HttpRequest<T>)(...params);
     } else {
         throw new Error(
-            'params | method | context http request not initialized'
+            'params or method or context http request not initialized'
         );
     }
     return use;

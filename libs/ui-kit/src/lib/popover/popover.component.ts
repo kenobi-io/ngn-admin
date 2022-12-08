@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { OverlayModule } from '@angular/cdk/overlay';
+import { ComponentType, OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
     Input,
     TemplateRef,
-    Type,
     ViewEncapsulation,
 } from '@angular/core';
-import { Context } from '@ngn-template/access';
+import { Context } from '@ngn-template/cdk';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,7 +20,7 @@ import { Context } from '@ngn-template/access';
     templateUrl: './popover.component.html',
 })
 export class PopoverComponent<T> {
-    @Input() componentRef!: Type<T>;
+    @Input() componentRef!: ComponentType<T>;
     @Input() componentRefContent!: any[][];
     @Input() templateRef!: TemplateRef<Context<T>>;
     @Input() templateRefContext!: Context<T>;

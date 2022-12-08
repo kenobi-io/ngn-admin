@@ -1,5 +1,5 @@
 import { SimpleChanges } from '@angular/core';
-import { Context, Use } from '@ngn-template/access';
+import { Context, Use } from '@ngn-template/cdk';
 
 import { Tab } from './tab';
 

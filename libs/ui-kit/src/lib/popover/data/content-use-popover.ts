@@ -1,3 +1,4 @@
+import { ComponentType } from '@angular/cdk/portal';
 import { TemplateRef, Type } from '@angular/core';
 
 import { ContextPopover } from './context-popover';
@@ -16,7 +17,7 @@ export interface OptionsOpenPopover<T = Popover> {
     [name: string]: OptionsOpenPopover<T>[keyof OptionsOpenPopover<T>];
     data: T;
     template: TemplateRef<ContextPopover<T>>;
-    component: Type<T>;
+    component: ComponentType<T>;
     text: string;
     height: string | number;
     origin: HTMLElement;

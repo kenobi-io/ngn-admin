@@ -1,7 +1,7 @@
 import { inject, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Bounden } from '@core-template';
+import { Context } from '@ngn-template/cdk';
 
-import { Context } from '../../directive';
 import { CONFIG_STRATEGY_HTTP, UseHttp } from '../data';
 import { Http } from '../data/http';
 import { REST_API_SERVICE } from './rest/rest-api.service';

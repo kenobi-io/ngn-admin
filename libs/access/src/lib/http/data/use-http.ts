@@ -1,6 +1,6 @@
 import { SimpleChanges } from '@angular/core';
+import { Use } from '@ngn-template/cdk';
 
-import { Use } from '../../directive';
 import { RestApi } from '../interactions';
 import { ContextHttp } from './context-http';
 import { InputPropertyHttp } from './input-property-http';

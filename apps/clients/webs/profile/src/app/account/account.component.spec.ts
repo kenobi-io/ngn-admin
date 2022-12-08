@@ -1,6 +1,14 @@
+import { PortalModule } from '@angular/cdk/portal';
+import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SEARCH_KITS, SVG_KITS, TAB_KITS } from '@ngn-template/ui-kit';
+import {
+    ComponentFixture,
+    fakeAsync,
+    TestBed,
+    tick,
+} from '@angular/core/testing';
+import { HTTP_ACCESSES } from '@ngn-template/access';
+import { POPOVER_KITS } from '@ngn-template/ui-kit';
 
 import { AccountComponent } from './account.component';
 
@@ -11,11 +19,12 @@ describe('AccountComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [
+                CommonModule,
                 AccountComponent,
                 HttpClientTestingModule,
-                SEARCH_KITS,
-                TAB_KITS,
-                SVG_KITS,
+                POPOVER_KITS,
+                HTTP_ACCESSES,
+                PortalModule,
             ],
         }).compileComponents();
 
@@ -24,7 +33,11 @@ describe('AccountComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
+    it('should create AccountComponent', fakeAsync(() => {
         expect(component).toBeTruthy();
-    });
+        const popoverBtn = fixture.nativeElement.querySelector('button');
+        popoverBtn.click();
+        tick();
+        fixture.detectChanges();
+    }));
 });

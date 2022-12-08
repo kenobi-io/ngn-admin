@@ -5,13 +5,13 @@ import {
     OnDestroy,
     SimpleChanges,
 } from '@angular/core';
-import { pipe } from 'rxjs';
-
 import {
     clearViewContainerRef,
     createViewRef,
     destroyViewRef,
-} from '../../directive';
+} from '@ngn-template/cdk';
+import { pipe } from 'rxjs';
+
 import { ContextHttp, UseHttp } from '../data';
 import { Http } from '../data/http';
 import {

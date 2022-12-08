@@ -27,7 +27,7 @@ interface Popover {
                     height: '200px',
                     template: tpl
                 };
-                typeof: Popover
+                instanceof: Popover
             "
         ></button>
         <ng-template #tpl let-fire> {{ fire }} </ng-template>
@@ -37,7 +37,7 @@ class FirePopoverDirectiveTestComponent {
     Popover!: Popover;
 }
 
-describe('FirePopoverDirective', <T>() => {
+describe('FirePopoverDirective', () => {
     let component: FirePopoverDirectiveTestComponent;
     let fixture: ComponentFixture<FirePopoverDirectiveTestComponent>;
 
@@ -51,7 +51,7 @@ describe('FirePopoverDirective', <T>() => {
         fixture.detectChanges();
     });
 
-    it('should create', fakeAsync(() => {
+    it('popoverBtn click', fakeAsync(() => {
         expect(component).toBeTruthy();
         const popoverBtn = fixture.nativeElement.querySelector('button');
         popoverBtn.click();

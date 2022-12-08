@@ -1,9 +1,9 @@
-import { Optional } from '@core-template';
+import { Bounden } from '@core-template';
 import { pipe } from 'rxjs';
 
 import { UseTab } from '../data';
 
-export type CreateContextUseTab = Optional<
+export type CreateContextUseTab = Bounden<
     UseTab,
     'activeTab' | 'input' | 'tabs' | 'templateRef'
 >;

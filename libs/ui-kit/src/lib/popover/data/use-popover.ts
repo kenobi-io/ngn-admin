@@ -1,6 +1,6 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Injector } from '@angular/core';
-import { Use } from '@ngn-template/access';
+import { Use } from '@ngn-template/cdk';
 
 import { ContextPopover } from './context-popover';
 import { Popover } from './popover';

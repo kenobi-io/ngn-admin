@@ -1,20 +1,20 @@
 import { Bounden } from '@core-template';
 
-import { Use } from './use';
+import { Subscruse } from './subscruse';
 
-export type UnsubscribeUse<T> = Bounden<Use<T>, 'subscriptions'>;
+export type UnsubscribeUse<T> = Bounden<Subscruse<T>, 'subscriptions'>;
 
 /**
  * `Role` unsubscribe from all subscribes in directive.
  * @param use
  * @returns `Use` instance reference
  */
-export const unsubscribesFinal = <T>(use: UnsubscribeUse<T>): Use<T> => {
+export const unsubscribing = <T>(use: UnsubscribeUse<T>): Subscruse<T> => {
     const { subscriptions } = use;
     subscriptions?.forEach((subscription) => {
         subscription.unsubscribe();
     });
     use.subscriptions = null;
 
-    return use as Use<T>;
+    return use as Subscruse<T>;
 };

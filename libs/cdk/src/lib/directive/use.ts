@@ -1,24 +1,27 @@
 import {
+    ComponentRef,
     ElementRef,
     EmbeddedViewRef,
+    NgZone,
     TemplateRef,
-    Type,
     ViewContainerRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import { Context } from './context-template';
 import { OptionsEmbeddedViewRef } from './options-embedded-view';
+
+export interface Ref {
+    ngZone: NgZone;
+}
 
 /**
  * Description structure data by interaction with directive - \
  * the facade of the directive.
  */
-export interface Use<T, K = HTMLElement | Type<T>> {
+export interface Use<T, K = HTMLElement | ComponentRef<T>> extends Ref {
     context: Context<T>;
     elementRef: ElementRef<K>;
     optionsEmbeddedViewRef: OptionsEmbeddedViewRef;
-    subscriptions: Subscription[] | null;
     templateRef: TemplateRef<Context<T>>;
     viewContainerRef: ViewContainerRef;
     viewRef: EmbeddedViewRef<Context<T>> | null;
