@@ -1,37 +1,26 @@
 import { Injector } from '@angular/core';
 
-import { FireUsePopover } from '../../data/fire-use-popover';
+import { FireUsePopover } from '../../data';
 import { componentAttach } from './component-attach';
 import { templateAttach } from './template-attach';
 
 export const strategyAttaching = <T>(
     dataOfAttach: FireUsePopover<T> & {
         injectorRef: Injector;
-        /*container: HTMLElement;*/
     }
 ): void => {
-    const {
-        /*container,*/
-        /*context,*/ injectorRef,
-        optionsOpen,
-        overlayRef,
-        viewContainerRef,
-    } = dataOfAttach;
+    const { injectorRef, optionsOpen, overlay, viewContainerRef } =
+        dataOfAttach;
     // TODO: handlers content case.
-    const { component, /*content, */ template } = optionsOpen;
-    overlayRef &&
+    const { component, template } = optionsOpen;
+    overlay &&
         (component
-            ? componentAttach(
-                  component,
-                  injectorRef,
-                  overlayRef,
-                  viewContainerRef
-              )
+            ? componentAttach(component, injectorRef, overlay, viewContainerRef)
             : template
             ? templateAttach(
                   null,
                   injectorRef,
-                  overlayRef,
+                  overlay,
                   template,
                   viewContainerRef
               )

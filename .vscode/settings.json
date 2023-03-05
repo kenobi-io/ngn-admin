@@ -25,6 +25,7 @@
         "@tailwind",
         "devkit",
         "kafkajs",
+        "kindof",
         "lapi",
         "microservices",
         "nestjs",
@@ -34,8 +35,11 @@
         "serializers",
         "stylelint",
         "stylelintcache",
+        "Subscruse",
         "tailwind",
         "tailwindcss",
-        "unsub"
+        "unsub",
+        "viewports",
+        "Zonality"
     ]
 }

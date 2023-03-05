@@ -6,6 +6,7 @@
         "@nrwl/nx",
         "import",
         "jsdoc",
+        "prefer-arrow",
         "simple-import-sort",
         "sort-class-members",
         "sort",
@@ -21,7 +22,15 @@
     "overrides": [
         {
             "files": ["*.ts", "*.js"],
-            "rules": {}
+            "rules": {
+                "spaced-comment": [
+                    "error",
+                    "always",
+                    {
+                        "markers": ["/"]
+                    }
+                ]
+            }
         },
         {
             "files": ["*.ts"],
@@ -79,6 +88,8 @@
                 "no-prototype-builtins": "off",
                 "@typescript-eslint/no-unnecessary-type-constraint": "error",
                 "prefer-template": "error",
+                "prefer-arrow/prefer-arrow-functions": "error",
+                "@typescript-eslint/prefer-for-of": "error",
                 "@typescript-eslint/explicit-function-return-type": [
                     "error",
                     {
@@ -108,42 +119,14 @@
                 ],
                 "rxjs/ban-observables": "error",
                 "rxjs/ban-operators": "error",
-                //"rxjs/finnish": "error",
                 "rxjs/just": "off",
-                //"rxjs/no-async-subscribe": "error",
                 "rxjs/no-compat": "error",
-                //"rxjs/no-connectable": "error",
-                //"rxjs/no-create": "error",
-                //"rxjs/no-cyclic-action": "error",
                 "rxjs/no-explicit-generics": "error",
-                //"rxjs/no-exposed-subjects": "error",
-                //"rxjs/no-finnish": "error",
-                //"rxjs/no-ignored-error": "error",
-                //"rxjs/no-ignored-notifier": "error",
-                //"rxjs/no-ignored-observable": "error",
                 "rxjs/no-ignored-replay-buffer": "error",
-                //"rxjs/no-ignored-subscribe": "error",
-                //"rxjs/no-ignored-subscription": "error",
                 "rxjs/no-ignored-takewhile-value": "error",
-                //"rxjs/no-implicit-any-catch": "error",
                 "rxjs/no-index": "error",
                 "rxjs/no-internal": "error",
-                //"rxjs/no-nested-subscribe": "error",
-                //"rxjs/no-redundant-notify": "error",
                 "rxjs/no-sharereplay": "error"
-                //"rxjs/no-subclass": "error",
-                //"rxjs/no-subject-value": "error",
-                //"rxjs/no-subscribe-handlers": "error",
-                //"rxjs/no-topromise": "error",
-                //"rxjs/no-unbound-methods": "error",
-                //"rxjs/no-unsafe-catch": "error",
-                //"rxjs/no-unsafe-first": "error",
-                //"rxjs/no-unsafe-subject-next": "error",
-                //"rxjs/no-unsafe-switchmap": "error",
-                //"rxjs/no-unsafe-takeuntil": "error"
-                //"rxjs/prefer-observer": "error",
-                //"rxjs/suffix-subjects": "error",
-                //"rxjs/throw-error": "error"
             }
         },
         {

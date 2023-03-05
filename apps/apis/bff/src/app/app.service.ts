@@ -1,16 +1,22 @@
 // import { Account } from '@core-template';
 import { Injectable } from '@nestjs/common';
 
+export interface User {
+    lastName: string;
+    name: string;
+    orderId: number;
+}
+
 @Injectable()
 export class AppService {
-    getData(): any {
+    getData(): User[] {
         return [
-            { name: `Profile`, orderId: 0 },
-            { name: `Dashboard`, orderId: 2 },
-            { name: `Settings`, orderId: 3 },
-            { name: `Contacts`, orderId: 4 },
-            { name: `Disabled`, orderId: 5 },
-        ];
+            { lastName: `A.A.`, name: `Profile`, orderId: 0 },
+            { lastName: `B.B.`, name: `Dashboard`, orderId: 2 },
+            { lastName: `C.C.`, name: `Settings`, orderId: 3 },
+            { lastName: `D.D.`, name: `Contacts`, orderId: 4 },
+            { lastName: `E.E.`, name: `Disabled`, orderId: 5 },
+        ] as User[];
         // return {
         //     additionalName: 'additionalName',
         //     bio: 'bio',

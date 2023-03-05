@@ -15,6 +15,5 @@ export const contextCreateHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
                   return this.$implicit;
               },
           });
-
-    return use as UseHttp<T>;
+    return use;
 };

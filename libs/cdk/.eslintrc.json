@@ -13,7 +13,6 @@
                     "error",
                     {
                         "type": "attribute",
-                        "prefix": "ngnTemplate",
                         "style": "camelCase"
                     }
                 ],
@@ -21,7 +20,7 @@
                     "error",
                     {
                         "type": "element",
-                        "prefix": "ngn-template",
+                        "prefix": "ngn",
                         "style": "kebab-case"
                     }
                 ]

@@ -1,14 +1,15 @@
-import { OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
+import { ComponentType } from '@angular/cdk/portal';
 import { Injector, ViewContainerRef } from '@angular/core';
+import { attachOverlayRef, Overlay } from '@ngn-template/cdk';
 
 export const componentAttach = <T>(
     content: ComponentType<T>,
     injectorRef: Injector,
-    overlayRef: OverlayRef,
+    overlay: Overlay<T>,
     viewContainerRef: ViewContainerRef
 ): void => {
-    overlayRef.attach(
-        new ComponentPortal(content, viewContainerRef, injectorRef)
+    attachOverlayRef(
+        overlay.ref
+        // new ComponentPortal(content, viewContainerRef, injectorRef)
     );
 };

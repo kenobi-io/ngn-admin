@@ -8,27 +8,26 @@ import {
     Route,
     UrlSegment,
 } from '@angular/router';
+import { Context } from '@ngn-template/cdk';
 
-import { ContextTemplate } from '../../directive';
-
-export type KeyofContextRoute = ContextRoute[keyof ContextRoute];
-
-export interface ContextRoute extends ContextTemplate<ActivatedRoute> {
+export interface ContextRoute extends Context<ActivatedRoute> {
     [name: string]: ContextRoute[keyof ContextRoute];
     children: ActivatedRoute[];
     component: Type<unknown> | string;
-    data: Data | null;
-    firstChild: ActivatedRoute | null;
-    fragment: string | null;
+    data: Data;
+    firstChild: ActivatedRoute;
+    fragment: string;
     outlet: string;
     paramMap: ParamMap;
     params: Params;
-    parent: ActivatedRoute | null;
+    parent: ActivatedRoute;
     pathFromRoot: ActivatedRoute[];
     queryParamMap: ParamMap;
     queryParams: Params;
     root: ActivatedRoute;
-    routeConfig: Route | null;
+    routeConfig: Route;
     snapshot: ActivatedRouteSnapshot;
     url: UrlSegment[];
 }
+
+export type KeyofContextRoute = ContextRoute[keyof ContextRoute];

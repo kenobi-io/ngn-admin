@@ -13,7 +13,7 @@ export type AfterClosedEventPopover<T> = {
     closeEventKind: CloseEventKindPopover;
 };
 
-export interface OptionsOpenPopover<T = Popover> {
+export interface OptionsOpenPopover<T> {
     [name: string]: OptionsOpenPopover<T>[keyof OptionsOpenPopover<T>];
     data: T;
     template: TemplateRef<ContextPopover<T>>;
@@ -24,5 +24,5 @@ export interface OptionsOpenPopover<T = Popover> {
     width: string | number;
 }
 
-export type KeyofOptionsOpenPopover =
-    OptionsOpenPopover[keyof OptionsOpenPopover];
+export type KeyofOptionsOpenPopover<T> =
+    OptionsOpenPopover<T>[keyof OptionsOpenPopover<T>];

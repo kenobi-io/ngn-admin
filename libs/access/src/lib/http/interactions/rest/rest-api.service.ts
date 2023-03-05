@@ -1,7 +1,7 @@
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import { catchError, Observable, tap } from 'rxjs';
 
-import { HTTP_HANDLER_ERROR } from './handle-error-request';
+import { HTTP_HANDLER_ERROR, HttpHandlerError } from './handle-error-request';
 import { HTTP_CLIENT } from './http-client';
 import { HTTP_LOGGER } from './http-logger';
 import { OptionsRest } from './options-rest';
@@ -11,7 +11,8 @@ import { RestApi } from './rest-api';
 export class RestApiService implements RestApi {
     private readonly httpClient = inject(HTTP_CLIENT);
     private readonly logger = inject(HTTP_LOGGER);
-    private readonly handleErrorRequest = inject(HTTP_HANDLER_ERROR);
+    private readonly handleErrorRequest: HttpHandlerError =
+        inject(HTTP_HANDLER_ERROR);
 
     private requestWithLog<T>(
         httpRequest: () => Observable<T>,

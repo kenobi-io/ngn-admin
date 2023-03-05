@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
+import { Use } from '@ngn-template/cdk';
 
-import { Use } from '../../directive/use';
 import { ContextRoute } from './context-route';
 
-export interface UseRoute extends Use {
+export interface UseRoute extends Use<ActivatedRoute> {
     route: ActivatedRoute;
-    context: ContextRoute | null;
+    context: ContextRoute;
     fields: string[] | null;
 }

@@ -9,7 +9,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 // import { environment as env } from './environments/environment';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
     // const { port, prefix } = env;
     const app = await NestFactory.create(AppModule);
     // TODO: add rule to linter for prefix (globalPrefix only from lib) var name and port nam

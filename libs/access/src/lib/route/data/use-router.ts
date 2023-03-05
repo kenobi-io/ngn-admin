@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
+import { Use } from '@ngn-template/cdk';
 
-import { Use } from '../../directive/use';
 import { ContextRouter } from './context-router';
 
 export interface UseRouter extends Use<Router> {

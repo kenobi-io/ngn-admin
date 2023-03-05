@@ -13,7 +13,7 @@ const setParamsUseHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
     return use;
 };
 
-const createRequestHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
+const invokeRequestHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
     const { context, params, restApi, strategy } = use;
     const method = strategy?.type;
 
@@ -32,6 +32,6 @@ const createRequestHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
  * @param use
  * @returns `UseHttp` reference
  */
-export function requestHttp<T>(use: UseHttp<T>): UseHttp<T> {
-    return pipe(setParamsUseHttp, createRequestHttp)(use);
-}
+export const requestHttp = <T>(use: UseHttp<T>): UseHttp<T> => {
+    return pipe(setParamsUseHttp, invokeRequestHttp)(use);
+};

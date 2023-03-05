@@ -1,11 +1,11 @@
 import { Type } from '@angular/core';
 import { convertToParamMap } from '@angular/router';
 
-import { UseRoute } from '../data/use-route';
+import { UseRoute } from '../data';
 
-export const createContextRoute = <T extends UseRoute>(useRoute: T): T => {
-    const { route } = useRoute;
-    useRoute.context = {
+export const createContextRoute = <T extends UseRoute>(use: T): T => {
+    const { route } = use;
+    use.context = {
         $implicit: route,
         get children() {
             return this.$implicit.children;
@@ -13,11 +13,11 @@ export const createContextRoute = <T extends UseRoute>(useRoute: T): T => {
         get component() {
             return this.$implicit.component as Type<unknown> | string;
         },
-        data: null,
+        data: undefined,
         get firstChild() {
             return this.$implicit.firstChild;
         },
-        fragment: null,
+        fragment: undefined,
         get outlet() {
             return this.$implicit.outlet;
         },
@@ -42,5 +42,5 @@ export const createContextRoute = <T extends UseRoute>(useRoute: T): T => {
         },
         url: [],
     };
-    return useRoute;
+    return use;
 };

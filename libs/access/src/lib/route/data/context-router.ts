@@ -5,20 +5,19 @@ import {
     TitleStrategy,
     UrlHandlingStrategy,
 } from '@angular/router';
+import { Context } from '@ngn-template/cdk';
 import { Observable } from 'rxjs';
 
-import { ContextTemplate } from '../../directive';
-
-export type KeyofContextRouter = ContextRouter[keyof ContextRouter];
-
-export interface ContextRouter extends ContextTemplate<Router> {
+export interface ContextRouter extends Context<Router> {
     [name: string]: ContextRouter[keyof ContextRouter];
     data: unknown;
-    events: Observable<unknown> | null;
-    routerState: RouterState | null;
-    navigated: boolean | null;
-    urlHandlingStrategy: UrlHandlingStrategy | null;
-    routeReuseStrategy: RouteReuseStrategy | null;
-    titleStrategy: TitleStrategy | null;
+    events: Observable<unknown>;
+    routerState: RouterState;
+    navigated: boolean;
+    urlHandlingStrategy: UrlHandlingStrategy;
+    routeReuseStrategy: RouteReuseStrategy;
+    titleStrategy: TitleStrategy;
     url: string;
 }
+
+export type KeyofContextRouter = ContextRouter[keyof ContextRouter];

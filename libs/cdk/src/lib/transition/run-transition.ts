@@ -1,11 +1,11 @@
 import { Bounden } from '@core-template';
 import { EMPTY, fromEvent, Observable, of, race, Subject, timer } from 'rxjs';
-//import { environment } from '../../environment';
+// import { environment } from '../../environment';
 import { endWith, filter, takeUntil } from 'rxjs/operators';
 
 import { Context, Use } from '../directive';
-import { runInZone } from '../run-in-zone';
-import { transitionDurationInMs } from '../transition-duration-in-ms';
+import { outZone, transitionDurationInMs } from '../platform';
+import { runInZonable } from '../platform/interactions/zone/run-in-zonable';
 
 export type EndFnTransition = () => void;
 export type StartFnTransition<T> = (
@@ -39,11 +39,11 @@ const noopFn: EndFnTransition = () => {
     return;
 };
 
-//const runningTransitions = new Map<HTMLElement, ContextTransition<T>>();
+// const runningTransitions = new Map<HTMLElement, ContextTransition<T>>();
 
 export const runTransition = <T>(
     use: UseRunTransition<T>
-): Use<T> /*Observable<void>*/ => {
+): Use<T> /* Observable<void>*/ => {
     const {
         elementRef: { nativeElement },
         ngZone,
@@ -57,7 +57,7 @@ export const runTransition = <T>(
 
     // Checking if there are already running transitions on the given element.
     const running = runningTransitions.get(nativeElement);
-    //if (running) {
+    // if (running) {
     const transitions = new Map<'continue' | 'stop', () => void>()
         // If there is one running and we want for it to 'continue' to run, we have to cancel the new one.
         // We're not emitting any values, but simply completing the observable (EMPTY).
@@ -87,7 +87,7 @@ export const runTransition = <T>(
         window.getComputedStyle(nativeElement).transitionProperty === 'none'
     ) {
         ngZone.run(() => endFn());
-        use.transit = of(data).pipe(runInZone(ngZone));
+        use.transit = of(data).pipe(runInZonable(ngZone));
     }
 
     // Starting a new transition
@@ -111,7 +111,7 @@ export const runTransition = <T>(
     // guarantees, that we'll release the DOM element and complete 'runTransition'.
     // 2. We need to filter transition end events, because they might bubble from shorter transitions
     // on inner DOM elements. We're only interested in the transition on the 'element' itself.
-    ngZone.runOutsideAngular(() => {
+    outZone(ngZone, () => {
         const transitionEnd = fromEvent(nativeElement, 'transitionend').pipe(
             filter(({ target }) => target === nativeElement),
             takeUntil(stop$)
