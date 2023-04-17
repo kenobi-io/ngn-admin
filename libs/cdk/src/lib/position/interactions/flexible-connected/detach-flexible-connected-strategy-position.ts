@@ -1,5 +1,7 @@
-import { FlexibleConnectedStrategyPosition } from './flexible-connected-strategy-position';
-import { ResultFlexibleConnectedStrategyPosition } from './result-flexible-connected-strategy-position';
+import {
+    FlexibleConnectedStrategyPosition,
+    ResultFlexibleConnectedStrategyPosition,
+} from '../../data';
 
 type DetachFlexibleConnectedStrategyPosition = <T>(
     clearPanelClasses: ResultFlexibleConnectedStrategyPosition<T>

@@ -1,12 +1,5 @@
-import { FlexibleConnectedStrategyPosition } from '../../../position/data';
+import { FlexibleConnectedStrategyPosition as Fcsp } from '../../../position/data';
 
 /** Whether the we're dealing with an RTL context */
-export const isOverlayRefDirectionRtl = <T>(
-    flexibleConnectedStrategyPosition: FlexibleConnectedStrategyPosition<T>
-): boolean => {
-    const { overlay } = flexibleConnectedStrategyPosition;
-    if (overlay) {
-        return overlay.ref.direction === 'rtl';
-    }
-    return false;
-};
+export const isOverlayRefDirectionRtl = <T>({ overlay }: Fcsp<T>): boolean =>
+    overlay ? overlay.ref.direction === 'rtl' : false; // TODO: refactoring by analogy all const { ... } = ...

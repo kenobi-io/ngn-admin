@@ -63,7 +63,7 @@ $ git push
     const context = {
         $implicit: null ,
         controller: {
-          next: () => this.next()
+          next: () => this.next() // next: this.next.bind(this, param);
         }
     }
 ```
@@ -159,6 +159,69 @@ class CComponent implements OrderAction {
 }
 ```
 
+```ts
+import { Directive, Inject} from "@angular/core"; 
+
+abstract class  AbstractTuiTableFilter<T, K> {}
+
+///..
+
+@Directive({
+    selector: `[tuiGenericFilter]`,
+    providers: [
+        {
+            provide: AbstractTuiTableFilter,
+            useExisting: TuiGenericFilterDirective,
+        },
+    ],
+})
+class TuiGenericFilterDirective<T> {}
+
+///...
+class ComponentWithDirective<T> {
+    constructor(@Inject(AbstractTuiTableFilter)private delegate: AbstractTuiTableFilter<T[keyof T], any>) { }
+}
+```
+
+> Extends Model and templated transform method of pipe
+
+```ts
+import { inject,Pipe,PipeTransform } from '@angular/core'; import { Observable} from 'rxjs';
+
+@Pipe({ name: 'filterUsers', pure: true, standalone: true })
+export class FilterUsersPipe implements PipeTransform {
+    private filter = inject(FILTER_USERS_PIPE);
+    transform<T extends User>(value: Observable<T[]>): Observable<T[]> {
+        return this.filter(value) as Observable<T[]>;
+    }
+}
+`<ng-container *http="let hotTabs; get: url; typeof: ExUser">
+    <ng-container *ngFor="let tabContent of hotTabs | filterUsers | async">` // tabContent is ExUser
+```
+
+```ts
+`<ng-template [ngTemplateContextGuard]="guardFn" let-article>`
+
+export class FooComponent {
+    public readonly guardFn = (ctx: any): ctx is Context<Article> => true;
+}
+```
+
+> async next observable
+
+```ts
+import { ReplaySubject} from 'rxjs';
+
+const editor$ = new ReplaySubject<typeof Editor>(1);
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+import(`@tiptap/core`).then(m => editor$.next(m.Editor));
+```
+
+> using (runOutsideAngular)
+1. addEventListener
+2. removeEventListener
+
 ***
 ##### How to mock backend response
 ***
@@ -170,3 +233,24 @@ class CComponent implements OrderAction {
    >  - auto [mocker-data-generator](https://github.com/danibram/mocker-data-generator), 
    >  [json-generator.com](http://www.json-generator.com)
    >  - manual [faker.js](https://github.com/Marak/faker.js)
+
+# ES LINTER
+
+***
+##### rules
+***
+
+1. **[rx]** don't use *ngIf (don't create inside variable  | async as variable)
+2. **[naming]** use 'create' prefix for method except for only methods using inside inject </br>
+    > **create...**() { let value = { prop: **inject(TOKEN)**}}
+3. **[naming]** don't use redundant 'postfix' entity name: </br>
+    > StrategyScroll ->  dispatcherScroll (incorrect) </br>
+    > StrategyScroll ->  dispatcher (correct)
+4. **[naming]** method interactions: </br>
+    > internal methods have short name without postfix of main type</br>
+    > external methods have this is postfix
+4. **[dci]** create roles(methods): </br>
+    > if method takes parameters it must returns UnaryFunction for pipe </br>
+    > 
+5. **[dci]** data: </br>
+    > all utilities instead of the returned result should set value to same named property of ```ChangesType<T>```</br>

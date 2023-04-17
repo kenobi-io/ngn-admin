@@ -1,4 +1,4 @@
-import { FlexibleConnectedStrategyPosition } from './flexible-connected-strategy-position';
+import { FlexibleConnectedStrategyPosition } from '../../data';
 
 /** @internal Clears the classes that the position strategy has applied from the overlay panel. */
 export const clearClassesPanel = <T>(

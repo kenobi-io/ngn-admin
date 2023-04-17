@@ -3,7 +3,7 @@ import {
     validateVerticalPosition,
 } from '@angular/cdk/overlay';
 
-import { FlexibleConnectedStrategyPosition } from './flexible-connected-strategy-position';
+import { FlexibleConnectedStrategyPosition } from '../../data';
 
 /** Validates that the current position match the expected values. */
 export const validateFlexibleConnectedStrategyPosition = <T>(

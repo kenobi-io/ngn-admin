@@ -1,3 +1,5 @@
+import { XOverlayPosition, YOverlayPosition } from '../overlay';
+
 interface ChangesFlexibleConnectedPosition {
     weight: number;
     offsetX: number;
@@ -7,9 +9,8 @@ interface ChangesFlexibleConnectedPosition {
 /** A connected position as specified by the user. */
 export interface FlexibleConnectedPosition
     extends Partial<ChangesFlexibleConnectedPosition> {
-    originX: 'start' | 'center' | 'end';
-    originY: 'top' | 'center' | 'bottom';
-
-    overlayX: 'start' | 'center' | 'end';
-    overlayY: 'top' | 'center' | 'bottom';
+    originX: XOverlayPosition;
+    originY: YOverlayPosition;
+    overlayX: XOverlayPosition;
+    overlayY: YOverlayPosition;
 }

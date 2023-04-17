@@ -1,33 +1,26 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { ViewportScrollPosition } from '@angular/cdk/scrolling';
+import { unary } from '@core-template';
 
 import { Point } from '../../../platform';
-import { FlexibleConnectedPosition } from './flexible-connected-position';
 import {
-    FlexibleConnectedStrategyPosition,
-    pushOverlayOnScreen,
-} from './flexible-connected-strategy-position';
-import { overlayPoint } from './overlay-point';
-import { ResultFlexibleConnectedStrategyPosition } from './result-flexible-connected-strategy-position';
+    FlexibleConnectedPosition,
+    ResultFlexibleConnectedStrategyPosition,
+} from '../../data';
+import { overlayPoint, pushOverlayOnScreen } from '../overlay';
 
 /** @internal Gets the exact top/bottom for the overlay when not using flexible sizing or when pushing. */
 export const exactOverlayY = <T>(
     position: FlexibleConnectedPosition,
     originPoint: Point,
     scrollPosition: ViewportScrollPosition
-): ResultFlexibleConnectedStrategyPosition<T> => {
-    return (
-        strategyPosition: FlexibleConnectedStrategyPosition<T>
-    ): FlexibleConnectedStrategyPosition<T> => {
+): ResultFlexibleConnectedStrategyPosition<T> =>
+    unary((strategyPosition) => {
         const { document, fallback, isPushed, overlayRect } = strategyPosition;
         // Reset any existing styles. This is necessary in case the
         // preferred position has changed since the last `apply`.
         const styles = { bottom: '', top: '' };
-        overlayPoint({
-            originPoint,
-            overlayRect,
-            position,
-        })(strategyPosition);
+        overlayPoint(originPoint, overlayRect, position)(strategyPosition);
 
         if (fallback) {
             const { overlayPoint } = fallback;
@@ -49,7 +42,4 @@ export const exactOverlayY = <T>(
             }
         }
         strategyPosition.styleOverlayY = styles;
-
-        return strategyPosition;
-    };
-};
+    });
