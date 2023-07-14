@@ -4,29 +4,27 @@ import { Model } from '@core-template';
 import { fromEvent, Observable, Observer, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Scrollable } from '../../../directive';
 import {
     changes,
     outZone,
     VIEW_CONTAINER_REF_TOKEN,
     ZONE_TOKEN,
 } from '../../../platform';
-import { UseScrollable } from '../../data';
-import { DISPATCHER_SCROLL } from '../dispatcher';
 
-export const CHANGE_USE_SCROLLABLE = new InjectionToken<UseScrollable<Model>>(
-    '[CHANGE_USE_SCROLLABLE]'
+export const CHANGE_REF_SCROLLABLE = new InjectionToken<Scrollable<Model>>(
+    '[CHANGE_REF_SCROLLABLE]'
 );
 
-export const createUseScrollable = <T>(
-    change?: Partial<UseScrollable<T>>
-): UseScrollable<T> => {
+export const createRefScrollable = <T>(
+    change?: Partial<Scrollable<T>>
+): Scrollable<T> => {
     const ngZone: NgZone = inject(ZONE_TOKEN);
     const elementRef: ElementRef<HTMLElement> = inject(ElementRef<HTMLElement>);
     const destroyed: Subject<void> = new Subject<void>();
-    const use: UseScrollable<T> = {
+    const ref: Scrollable<T> = {
         destroyed,
         dir: inject(Directionality),
-        dispatcherScroll: inject(DISPATCHER_SCROLL),
         elementRef,
         elementScrolled: new Observable((observer: Observer<Event>) =>
             outZone(ngZone, () =>
@@ -38,14 +36,14 @@ export const createUseScrollable = <T>(
         ngZone,
         viewContainerRef: inject(VIEW_CONTAINER_REF_TOKEN),
     };
-    changes(use, change, CHANGE_USE_SCROLLABLE);
+    changes(ref, change, CHANGE_REF_SCROLLABLE);
 
-    return use;
+    return ref;
 };
 
-export const USE_SCROLLABLE = new InjectionToken<UseScrollable<Model>>(
-    '[USE_SCROLLABLE]',
+export const REF_SCROLLABLE = new InjectionToken<Scrollable<Model>>(
+    '[REF_SCROLLABLE]',
     {
-        factory: () => createUseScrollable(),
+        factory: () => createRefScrollable(),
     }
 );

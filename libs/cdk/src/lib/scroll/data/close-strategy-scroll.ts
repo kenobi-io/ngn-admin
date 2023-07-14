@@ -1,9 +1,10 @@
+// import { CloseScrollStrategy } from '@angular/cdk/overlay';
 import { Subscription } from 'rxjs';
 
 import { Zonality } from '../../directive';
 import { Overlay } from '../../overlay';
 import { DispatcherScroll } from './dispatcher-scroll';
-import { ViewportRulerScroll } from './viewport-rule-scroll';
+import { StrategyScroll } from './strategy-scroll';
 
 /**
  * Config options for the CloseScrollStrategy.
@@ -15,17 +16,15 @@ export type ConfigCloseStrategyScroll<T> = {
 };
 
 type ChangesCloseStrategyScroll<T> = Zonality & {
-    config: ConfigCloseStrategyScroll<T>;
+    config: Partial<ConfigCloseStrategyScroll<T>>;
     initialScrollPosition: number;
-    overlay: Overlay<T>;
     scrollSubscriptions: Subscription[];
 };
 
 /**
  * Strategy that will close the overlay as soon as the user starts scrolling.
  */
-export type CloseStrategyScroll<T> = Zonality &
+export type CloseStrategyScroll<T> = StrategyScroll<T> &
     Partial<ChangesCloseStrategyScroll<T>> & {
         dispatcher: DispatcherScroll<T>;
-        viewportRuler: ViewportRulerScroll;
     };

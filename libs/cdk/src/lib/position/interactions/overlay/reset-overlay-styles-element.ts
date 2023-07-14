@@ -10,17 +10,19 @@ import {
 export const resetOverlayStylesElement = <T>({
     pane,
 }: FlexibleConnectedStrategyPosition<T>): ResultFlexibleConnectedStrategyPosition<T> =>
-    unary(() =>
-        extendStyle(
-            pane.style,
-            {
-                bottom: '',
-                left: '',
-                position: '',
-                right: '',
-                top: '',
-                transform: '',
-            },
-            false
-        )
+    unary(
+        () =>
+            pane &&
+            extendStyle(
+                pane.style,
+                {
+                    bottom: '',
+                    left: '',
+                    position: '',
+                    right: '',
+                    top: '',
+                    transform: '',
+                },
+                false
+            )
     );

@@ -1,8 +1,15 @@
+import { tube, Unary, unary } from '@core-template';
 import { filter } from 'rxjs/operators';
 
+import { Scrollable } from '../../../directive';
 import { DispatcherScroll } from '../../data';
 import { scrolledDispatcherScroll } from './scrolled-dispatcher-scroll';
 import { setAncestorContainersDispatcherScroll } from './set-ancestor-containers-dispatcher-scroll';
+
+type AncestorDispatcherScroll<T> = DispatcherScroll<T> & {
+    directive?: Scrollable<T>;
+    directives?: Scrollable<T>[];
+};
 
 /**
  * Returns an observable that emits whenever any of the
@@ -11,19 +18,22 @@ import { setAncestorContainersDispatcherScroll } from './set-ancestor-containers
  * @dispatcher auditTimeInMs Time to throttle the scroll events.
  */
 export const ancestorDispatcherScroll = <T>(
-    dispatcher: DispatcherScroll<T>
-): DispatcherScroll<T> => {
-    const { directives, scrolled } = dispatcher;
+    directive: Scrollable<T>
+): Unary<AncestorDispatcherScroll<T>> =>
+    unary((dispatcher) =>
+        tube(
+            setAncestorContainersDispatcherScroll(directive),
+            scrolledDispatcherScroll(),
+            setAncestorEmitsEvent()
+        )(dispatcher)
+    );
 
-    if (directives) {
-        setAncestorContainersDispatcherScroll(dispatcher);
-        scrolledDispatcherScroll(dispatcher);
+const setAncestorEmitsEvent = <T>(): Unary<AncestorDispatcherScroll<T>> =>
+    unary((dispatcher) => {
+        const { directives, scrolled } = dispatcher;
         dispatcher.ancestorEmitsEvent = scrolled.pipe(
             filter((target) => {
-                return !target || directives.includes(target);
+                return !!(!target || directives?.includes(target));
             })
         );
-    }
-
-    return dispatcher;
-};
+    });

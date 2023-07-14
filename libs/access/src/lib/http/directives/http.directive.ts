@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import {
     clearViewContainerRef,
-    createViewRef,
     destroyViewRef,
+    viewRef,
 } from '@ngn-template/cdk';
 import { pipe } from 'rxjs';
 
@@ -43,7 +43,7 @@ export class HttpDirective<T> implements Http<T>, OnChanges, OnDestroy {
         pipe(
             (use: UseHttp<T>) => (use.changes = changes) && use,
             contextCreateHttp,
-            createViewRef<T, UseHttp<T>>,
+            viewRef<T, UseHttp<T>>,
             findStrategyHttp,
             requestHttp
         )(this.use);

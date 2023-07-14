@@ -9,9 +9,17 @@ export default {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../coverage/apps/clients/webs/profile',
+    // coverageDirectory:
+    //     '../../../../coverage/lcov-report/apps/clients/webs/profile',
     transform: {
         '^.+\\.(ts|mjs|js|html|svg)$': 'jest-preset-angular',
+        // '^.+\\.[tj]s$': [
+        //     'ts-jest',
+        //     {
+        //         tsconfig: '<rootDir>/tsconfig.spec.json',
+        //         stringifyContentPathRegex: '\\.(html|svg)$',
+        //     },
+        // ],
     },
     transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
     snapshotSerializers: [

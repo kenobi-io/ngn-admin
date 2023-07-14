@@ -1,48 +1,54 @@
 import { coerceElement } from '@angular/cdk/coercion';
+import { Unary, unary } from '@core-template';
 import { Subscription } from 'rxjs';
 
+import { Scrollable } from '../../../directive';
 import { DispatcherScroll } from '../../data';
-import { Scrollable } from '../../directives';
+
+type SetAncestorContainersDispatcherScroll<T> = DispatcherScroll<T> & {
+    directive?: Scrollable<T>;
+    directives?: Scrollable<T>[];
+};
+type SACDS<T> = Unary<SetAncestorContainersDispatcherScroll<T>>;
 
 /**
  * Registered Scrollable that contain the provided element.
  * @dispatcher directive, elementOrElementRef
  */
 export const setAncestorContainersDispatcherScroll = <T>(
-    dispatcher: DispatcherScroll<T>
-): DispatcherScroll<T> => {
-    /** Defined the element is contained within the provided Scrollable. */
-    const containedElementDispatcherScroll = (
-        dispatcher: DispatcherScroll<T>
-    ): DispatcherScroll<T> => {
-        const { directive, elementOrElementRef } = dispatcher;
-        let element: HTMLElement | undefined | null =
-            coerceElement(elementOrElementRef);
-        // const scrollableElement = directive?.getElementRef().nativeElement;
-        const scrollableElement = directive?.use.elementRef?.nativeElement;
-        // Traverse through the element parents until we reach null, checking if any of the elements
-        // are the scrollable's element.
-        do {
-            if (element == scrollableElement) {
-                dispatcher.withinElementContained = true;
-
-                return dispatcher;
+    directive: Scrollable<T>,
+    elementOrElementRef?: HTMLElement
+): SACDS<T> =>
+    unary((dispatcher) => {
+        dispatcher.directives = [];
+        dispatcher.directive = directive;
+        dispatcher.scrollContainers.forEach(
+            (value: Subscription, key: Scrollable<T>) => {
+                directive = key;
+                if (
+                    containedElementDispatcherScroll(key, elementOrElementRef)
+                ) {
+                    dispatcher.directives?.push(directive);
+                }
             }
-        } while ((element = element?.parentElement));
-        dispatcher.withinElementContained = false;
+        );
+    });
 
-        return dispatcher;
-    };
-    dispatcher.directives = [];
-    dispatcher.subscriptionsOfDirectives.forEach(
-        (value: Subscription, key: Scrollable<T>) => {
-            dispatcher.directive = key;
-            containedElementDispatcherScroll(dispatcher);
-            if (dispatcher.withinElementContained) {
-                dispatcher.directives?.push(key);
-            }
+/** Defined the element is contained within the provided Scrollable. */
+const containedElementDispatcherScroll = <T>(
+    directive: Scrollable<T>,
+    elementOrElementRef?: HTMLElement
+): boolean => {
+    let element: HTMLElement | undefined | null =
+        coerceElement(elementOrElementRef);
+    const { nativeElement } = { ...directive?.elementRef };
+    // Traverse through the element parents until we reach null, checking if any of the elements
+    // are the scrollable's element.
+    do {
+        if (element == nativeElement) {
+            return true;
         }
-    );
+    } while ((element = element?.parentElement));
 
-    return dispatcher;
+    return false;
 };

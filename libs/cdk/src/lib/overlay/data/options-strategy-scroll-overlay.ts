@@ -6,11 +6,12 @@ import {
     ConfigRepositionStrategyScroll,
     DispatcherScroll,
     RepositionStrategyScroll,
+    StrategyScroll,
     ViewportRulerScroll,
 } from '../../scroll';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type NoopStrategyScroll = {};
+export type NoopStrategyScroll<T> = StrategyScroll<T> & {};
 
 type ChangeOptionsStrategyScrollOverlay<T> = {
     /**
@@ -24,6 +25,7 @@ type ChangeOptionsStrategyScrollOverlay<T> = {
      * Allows debouncing the reposition calls.
      */
     configReposition: ConfigRepositionStrategyScroll<T>;
+    noop: NoopStrategyScroll<T>;
 };
 
 /**
@@ -35,12 +37,11 @@ type ChangeOptionsStrategyScrollOverlay<T> = {
 export type OptionsStrategyScrollOverlay<T> = Zonality &
     Partial<ChangeOptionsStrategyScrollOverlay<T>> & {
         /** Block scrolling. */
-        block: BlockStrategyScroll;
+        block: BlockStrategyScroll<T>;
         document: Document;
         close: CloseStrategyScroll<T>;
         reposition: RepositionStrategyScroll<T>;
         /** Do nothing on scroll. */
-        noop: NoopStrategyScroll;
         dispatcher: DispatcherScroll<T>;
         viewportRulerScroll: ViewportRulerScroll;
     };

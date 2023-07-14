@@ -11,4 +11,3 @@ export * from './reposition/create-reposition-strategy-scroll';
 export * from './reposition/detach-reposition-strategy-scroll';
 export * from './reposition/disable-reposition-strategy-scroll';
 export * from './reposition/enable-reposition-strategy-scroll';
-export * from './strategies-scroll';

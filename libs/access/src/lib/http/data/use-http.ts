@@ -7,7 +7,7 @@ import { InputPropertyHttp } from './input-property-http';
 import { StrategyHttp } from './strategy-http';
 
 export interface UseHttp<T> extends Use<T> {
-    changes: SimpleChanges;
+    changes?: SimpleChanges;
     context: ContextHttp<T>;
     input: InputPropertyHttp;
     fields: StrategyHttp[];

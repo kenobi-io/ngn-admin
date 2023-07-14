@@ -4,8 +4,13 @@ import {
     supportsScrollBehavior,
 } from '@angular/cdk/platform';
 import { _Bottom, _Left, _Right, _Top, _Without } from '@angular/cdk/scrolling';
+import { tube, Unary, unary, UnParamsUnary } from '@core-template';
 
-import { UseScrollable } from '../../data';
+import { ExtendedScrollToOptions, Scrollable } from '../../../directive';
+
+type ScrollToScrollable = UnParamsUnary<
+    Scrollable<unknown> & { isRtl?: boolean; options?: ExtendedScrollToOptions }
+>;
 
 /**
  * Scrolls to the specified offsets. This is a normalized version of the browser's native scrollTo
@@ -15,49 +20,85 @@ import { UseScrollable } from '../../data';
  * in an RTL context.
  * @use options specified the offsets to scroll to.
  */
-export const scrollToScrollable = <T>(
-    use: UseScrollable<T>
-): UseScrollable<T> => {
-    const el = use.elementRef.nativeElement;
-    const isRtl = use.dir && use.dir.value == 'rtl';
-    const { options } = use;
+export const scrollToScrollable = <T>(): Unary<Scrollable<T>> =>
+    unary((scrollable) =>
+        tube(
+            setRtl(),
+            startEndAsLeftOffsetRewrite(),
+            startEndAsRightOffsetRewrite(),
+            topOffsetRewrite(),
+            leftAndRightOffsetRewrite(),
+            applyOptionsOfScroll()
+        )(scrollable)
+    );
 
-    const applyScrollToOptions = (use: UseScrollable<T>): UseScrollable<T> => {
-        const { nativeElement } = use.elementRef;
+const setRtl: ScrollToScrollable = () =>
+    unary((scrollable) => {
+        scrollable &&
+            (scrollable.isRtl = !!(
+                scrollable?.dir && scrollable.dir.value === 'rtl'
+            ));
+    });
+
+const applyOptionsOfScroll: ScrollToScrollable = () =>
+    unary((scrollable) => {
+        const { nativeElement } = scrollable.elementRef;
         if (supportsScrollBehavior()) {
-            nativeElement.scrollTo(options);
-        } else if (options) {
-            if (options.top != null) {
-                nativeElement.scrollTop = options.top;
+            nativeElement.scrollTo(scrollable.options);
+        } else if (scrollable.options) {
+            if (scrollable.options.top != undefined) {
+                nativeElement.scrollTop = scrollable.options.top;
             }
-            if (options.left != null) {
-                nativeElement.scrollLeft = options.left;
+            if (scrollable.options.left != undefined) {
+                nativeElement.scrollLeft = scrollable.options.left;
             }
         }
-        return use;
-    };
+    });
 
-    if (options) {
-        // Rewrite start & end offsets as right or left offsets.
-        if (options.left == null) {
-            options.left = isRtl ? options.end : options.start;
-        }
+const startEndAsLeftOffsetRewrite: ScrollToScrollable = () =>
+    unary((scrollable) => {
+        const { isRtl, options } = scrollable;
+        options &&
+            options.left == undefined &&
+            (options.left = isRtl ? options.end : options.start);
+    });
 
-        if (options.right == null) {
-            options.right = isRtl ? options.start : options.end;
-        }
+const startEndAsRightOffsetRewrite: ScrollToScrollable = () =>
+    unary((scrollable) => {
+        const { isRtl, options } = scrollable;
+        options &&
+            options.right == undefined &&
+            (options.right = isRtl ? options.start : options.end);
+    });
 
-        // Rewrite the bottom offset as a top offset.
-        if (options.bottom != null) {
+const topOffsetRewrite: ScrollToScrollable = () =>
+    unary((scrollable) => {
+        const { elementRef, options } = scrollable;
+        const { nativeElement } = elementRef;
+
+        if (options?.bottom != undefined) {
             (options as _Without<_Bottom> & _Top).top =
-                el.scrollHeight - el.clientHeight - options.bottom;
+                nativeElement.scrollHeight -
+                nativeElement.clientHeight -
+                options.bottom;
+        }
+    });
+
+const leftAndRightOffsetRewrite: ScrollToScrollable = () =>
+    unary((scrollable) => {
+        const { elementRef, isRtl, options } = scrollable;
+        const { nativeElement } = elementRef;
+
+        if (!options) {
+            return;
         }
 
-        // Rewrite the right offset as a left offset.
         if (isRtl && getRtlScrollAxisType() != RtlScrollAxisType.NORMAL) {
-            if (options.left != null) {
+            if (options.left != undefined) {
                 (options as _Without<_Left> & _Right).right =
-                    el.scrollWidth - el.clientWidth - options.left;
+                    nativeElement.scrollWidth -
+                    nativeElement.clientWidth -
+                    options.left;
             }
 
             if (getRtlScrollAxisType() == RtlScrollAxisType.INVERTED) {
@@ -66,12 +107,11 @@ export const scrollToScrollable = <T>(
                 options.left = options.right ? -options.right : options.right;
             }
         } else {
-            if (options.right != null) {
+            if (options.right != undefined) {
                 (options as _Without<_Right> & _Left).left =
-                    el.scrollWidth - el.clientWidth - options.right;
+                    nativeElement.scrollWidth -
+                    nativeElement.clientWidth -
+                    options.right;
             }
         }
-    }
-
-    return applyScrollToOptions(use);
-};
+    });

@@ -8,4 +8,4 @@ export * from './immutable-object';
 export * from './options-strategy-scroll-overlay';
 export * from './overlay';
 export * from './overlay-ref';
-export * from './strategies-scroll-overlay';
+export * from './tokens-overlay';

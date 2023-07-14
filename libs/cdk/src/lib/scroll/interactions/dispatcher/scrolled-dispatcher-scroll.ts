@@ -1,9 +1,10 @@
+import { Unary, unary } from '@core-template';
 import { outZone } from '@ngn-template/cdk';
-import { fromEvent, Observable, Observer, of as just } from 'rxjs';
+import { fromEvent, Observable, Observer } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
+import { Scrollable } from '../../../directive';
 import { DispatcherScroll } from '../../data';
-import { Scrollable } from '../../directives';
 import { removeGlobalListenerDispatcherScroll } from './remove-global-listener-dispatcher-scroll';
 
 /**
@@ -17,60 +18,49 @@ import { removeGlobalListenerDispatcherScroll } from './remove-global-listener-d
  * to run the callback using `NgZone.run`.
  * @dispatcher auditTimeInMs, globalSubscription, platform, scrolled
  */
-export const scrolledDispatcherScroll = <T>(
-    dispatcher: DispatcherScroll<T>
-): DispatcherScroll<T> => {
-    const { auditTimeInMs, globalSubscription, platform, scrolled } =
-        dispatcher;
+export const scrolledDispatcherScroll = <T>(): Unary<DispatcherScroll<T>> =>
+    unary((dispatcher) => {
+        const { auditTimeInMs, globalSubscription, scrolled } = dispatcher;
 
-    if (!platform.isBrowser) {
-        dispatcher.registeredEmitsEvent = just<void>();
-
-        return dispatcher;
-    }
-
-    /** Sets up the global scroll listeners. */
-    const addGlobalListenerDispatcherScroll = (
-        dispatcher: DispatcherScroll<T>
-    ): DispatcherScroll<T> => {
-        const { document, ngZone, scrolled } = dispatcher;
-
-        if (ngZone && document) {
-            dispatcher.globalSubscription = outZone(ngZone, () => {
-                const windowRef = document.defaultView || window;
-                return fromEvent(windowRef.document, 'scroll').subscribe(() =>
-                    scrolled.next()
-                );
-            });
-        }
-        return dispatcher;
-    };
-
-    dispatcher.registeredEmitsEvent = new Observable(
-        (observer: Observer<Scrollable<T> | void>) => {
-            if (!globalSubscription) {
-                addGlobalListenerDispatcherScroll(dispatcher);
-            }
-            // In the case of a 0ms delay, use an observable without auditTime
-            // since it does add a perceptible delay in processing overhead.
-            const subscription =
-                auditTimeInMs > 0
-                    ? scrolled
-                          .pipe(auditTime(auditTimeInMs))
-                          .subscribe(observer)
-                    : scrolled.subscribe(observer);
-            dispatcher.count++;
-
-            return () => {
-                subscription.unsubscribe();
-                dispatcher.count--;
-
-                if (!dispatcher.count) {
-                    removeGlobalListenerDispatcherScroll(dispatcher);
+        dispatcher.registeredEmitsEvent = new Observable(
+            (observer: Observer<Scrollable<T> | void>) => {
+                if (!globalSubscription) {
+                    addGlobalListenerDispatcherScroll(dispatcher);
                 }
-            };
-        }
-    );
+                // In the case of a 0ms delay, use an observable without auditTime
+                // since it does add a perceptible delay in processing overhead.
+                const subscription =
+                    auditTimeInMs > 0
+                        ? scrolled
+                              .pipe(auditTime(auditTimeInMs))
+                              .subscribe(observer)
+                        : scrolled.subscribe(observer);
+                dispatcher.count++;
 
-    return dispatcher;
+                return () => {
+                    subscription.unsubscribe();
+                    dispatcher.count--;
+
+                    if (!dispatcher.count) {
+                        removeGlobalListenerDispatcherScroll()(dispatcher);
+                    }
+                };
+            }
+        );
+    });
+
+/** Sets up the global scroll listeners. */
+const addGlobalListenerDispatcherScroll = <T>(
+    dispatcher: DispatcherScroll<T>
+): void => {
+    const { document, ngZone, scrolled } = dispatcher;
+
+    if (ngZone && document) {
+        dispatcher.globalSubscription = outZone(ngZone, () => {
+            const windowRef = document.defaultView || window;
+            return fromEvent(windowRef.document, 'scroll').subscribe(() =>
+                scrolled.next()
+            );
+        });
+    }
 };

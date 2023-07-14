@@ -40,6 +40,8 @@ type ChangesFlexibleConnectedStrategyPosition = {
     offsetY: number;
     /** Cached container dimensions */
     containerRect: Dimension;
+    /** The overlay pane element. */
+    pane: HTMLElement;
 };
 
 /**
@@ -93,9 +95,6 @@ export type FlexibleConnectedStrategyPosition<T> = StrategyPosition<T> &
 
         /** The origin element against which the overlay will be positioned. */
         origin: FlexibleConnectedPositionStrategyOrigin;
-
-        /** The overlay pane element. */
-        pane: HTMLElement;
 
         /** @internal Observable sequence of position changes. */
         positionChange: Observable<ConnectedOverlayPositionChange>;

@@ -1,15 +1,18 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 
-import { KindStrategiesScroll } from '../../scroll';
-import { StrategiesScrollOverlay } from './strategies-scroll-overlay';
+import { StrategyScroll } from '../../scroll/data';
 
-type ChangeConfigOverlay = {
+// type Data<T> = unknown;
+
+type ChangeConfigOverlay<T, StrategiesScrollOverlay> = {
     /**
      * Direction of the text in the overlay panel. If a `Directionality` instance
      * is passed in, the overlay will handle changes to its value automatically.
      */
     direction: Direction | Directionality;
-    kindStrategiesScroll: KindStrategiesScroll;
+    // kindStrategiesScroll: KindStrategiesScroll;
     /** The width of the overlay panel. If a number is provided, pixel units are assumed. */
     width: string | number;
     /** The height of the overlay panel. If a number is provided, pixel units are assumed. */
@@ -22,13 +25,16 @@ type ChangeConfigOverlay = {
     maxWidth: string | number;
     /** The max-height of the overlay panel. If a number is provided, pixel units are assumed. */
     maxHeight: string | number;
-    /** Strategy with which to position the overlay. */
-    positionStrategy: PositionStrategy;
+    // /** Strategy with which to position the overlay. */
+    // positionStrategy: PositionStrategy; // TODO: add dcing PositionStrategy
     /** Strategy to be used when handling scroll events while the overlay is open. */
-    strategiesScroll: StrategiesScrollOverlay;
+    strategyScroll: StrategiesScrollOverlay;
 };
 
-export type ConfigOverlay = Partial<ChangeConfigOverlay> & {
+export type ConfigOverlay<
+    T,
+    StrategyScrollOverlay extends StrategyScroll<T> = StrategyScroll<T>
+> = Partial<ChangeConfigOverlay<T, StrategyScrollOverlay>> & {
     /** Custom class to add to the overlay pane. */
     panelClass?: string | string[];
     /** Whether the overlay has a backdrop. */
