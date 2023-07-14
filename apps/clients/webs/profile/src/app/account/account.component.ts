@@ -8,6 +8,8 @@ import {
 import { HTTP_ACCESSES } from '@ngn-template/access';
 import { SEARCH_KITS, SVG_KITS, TAB_KITS } from '@ngn-template/ui-kit';
 
+type User = { name: string };
+
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -24,4 +26,6 @@ import { SEARCH_KITS, SVG_KITS, TAB_KITS } from '@ngn-template/ui-kit';
     styleUrls: ['./account.component.scss'],
     templateUrl: './account.component.html',
 })
-export class AccountComponent {}
+export class AccountComponent {
+    User!: User[];
+}

@@ -1,5 +1,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { OverlaySizeConfig, PositionStrategy } from '@angular/cdk/overlay';
+import {
+    OverlaySizeConfig /* , PositionStrategy */,
+} from '@angular/cdk/overlay';
 import { ComponentRef, EmbeddedViewRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -9,6 +11,7 @@ import {
     PortalOutlet,
     TemplatePortal,
 } from '../../portal';
+import { StrategyScroll } from '../../scroll/data';
 import { ConfigOverlay } from './config-overlay';
 
 type AttachChangesOverlayRef<T> = {
@@ -21,12 +24,11 @@ type AttachChangesOverlayRef<T> = {
     portal: ComponentPortal<T> | TemplatePortal<T> | Portal;
     sizeConfig: OverlaySizeConfig;
     toggleClasses?: string | string[];
-    togglePositionStrategy: PositionStrategy;
 };
 
 type StrategiesChangesOverlayRef = {
     backdropTimeout: number;
-    positionStrategy: PositionStrategy;
+    // positionStrategy: PositionStrategy;
     /* strategiesScroll: StrategiesScrollOverlay;
     kindStrategiesScroll: KindStrategiesScroll;*/
     /**
@@ -54,5 +56,5 @@ export type ChangesOverlayRef<T> =
             host: HTMLElement;
             pane: HTMLElement;
             portalOutlet: PortalOutlet<T>;
-            config: ConfigOverlay;
+            config: ConfigOverlay<T, StrategyScroll<T>>;
         };

@@ -1,4 +1,4 @@
-import { Condition, tube, unary } from '@core-template';
+import { ConditionFn, tube, unary } from '@core-template';
 import { UnaryFunction } from 'rxjs';
 
 import { isOverlayRefDirectionRtl } from '../../../overlay';
@@ -21,7 +21,7 @@ type Data<T> = FlexibleConnectedStrategyPosition<T> & {
 
 type Unary<T> = UnaryFunction<Data<T>, Data<T>>;
 
-type CD<T> = Condition<Data<T>>;
+type CD<T> = ConditionFn<Data<T>>;
 
 /**
  * @internal

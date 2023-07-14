@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Use } from './use';
+import { Ref } from './ref';
 
 export type Subscribed = {
     subscriptions: Subscription[];
@@ -10,4 +10,4 @@ export type Subscribed = {
  * Description structure data by interaction with directive - \
  * the facade of the directive with subscription option.
  */
-export type Subscruse<T> = Use<T> & Partial<Subscribed>;
+export type Subscruse<T> = Ref<T> & Partial<Subscribed>;

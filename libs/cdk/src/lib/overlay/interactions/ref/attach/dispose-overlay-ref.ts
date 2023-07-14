@@ -18,17 +18,17 @@ export const disposeOverlayRef = <T>(
         outsideClickDispatcher,
         outsidePointerEvents,
         portalOutlet,
-        positionStrategy,
+        // positionStrategy,
     } = overlayRef;
     const isAttached = hasAttached(portalOutlet?.portal);
-    positionStrategy?.dispose();
+    // positionStrategy?.dispose();
     disposeScrollStrategyOverlayRef(overlayRef);
     backdropDisposeOverlayRef(overlayRef);
     locationChanges.unsubscribe();
     // keyboardDispatcher.remove(overlayRef);
     removeDispatcherOverlay(keyboardDispatcher);
     // portalOutlet.dispose();
-    disposePortalOutlet(portalOutlet);
+    portalOutlet && disposePortalOutlet(portalOutlet);
     attachments.complete();
     backdropClick.complete();
     keydownEvents?.complete();

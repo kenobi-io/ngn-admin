@@ -6,10 +6,12 @@ export const addDispatcherOverlay = <T>(
     dispatcher: EventDispatcherOverlay<T>
 ): EventDispatcherOverlay<T> => {
     const { attachedOverlay, attachedOverlays } = dispatcher;
+
     if (attachedOverlay && attachedOverlays) {
         // Ensure that we don't get the same overlay multiple times.
         removeDispatcherOverlay(dispatcher);
         attachedOverlays.push(attachedOverlay);
     }
+
     return dispatcher;
 };

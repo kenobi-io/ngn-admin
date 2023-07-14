@@ -1,9 +1,6 @@
-import { inject, TemplateRef } from '@angular/core';
 import { Bounden } from '@core-template';
-import { Context, VIEW_CONTAINER_REF_TOKEN } from '@ngn-template/cdk';
 
-import { CONFIG_STRATEGY_HTTP, Http, UseHttp } from '../data';
-import { REST_API_SERVICE } from './rest/rest-api.service';
+import { Http, UseHttp } from '../data';
 
 export type PropertyCreateUseHttp =
     | 'fields'

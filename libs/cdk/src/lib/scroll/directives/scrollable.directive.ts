@@ -8,16 +8,14 @@
 
 import { Directive, inject, OnDestroy, OnInit } from '@angular/core';
 
-import { UseScrollable } from '../data';
+import { Scrollable } from '../../directive';
+import { DispatcherScroll } from '../data';
 import {
     deregisterDispatcherScroll,
+    DISPATCHER_SCROLL,
+    REF_SCROLLABLE,
     registerDispatcherScroll,
-    USE_SCROLLABLE,
 } from '../interactions';
-
-export type Scrollable<T> = {
-    use: UseScrollable<T>;
-};
 
 /**
  * Sends an event when the directive's element is scrolled. Registers itself with the
@@ -28,18 +26,22 @@ export type Scrollable<T> = {
     selector: '[scrollable]',
     standalone: true,
 })
-export class ScrollableDirective<T>
-    implements OnInit, OnDestroy, Scrollable<T>
-{
-    use: UseScrollable<T> = inject(USE_SCROLLABLE);
+export class ScrollableDirective<T> implements OnInit, OnDestroy {
+    scrollable: Scrollable<T /* , RefScrollable<T> */> = inject(REF_SCROLLABLE);
+    dispatcher: DispatcherScroll<T /* , RefScrollable<T> */> =
+        inject(DISPATCHER_SCROLL);
+    destroyed: Subject<void>;
+    elementScrolled: Observable<Event>;
+    elementRef: ElementRef<HTMLElement>;
+    dir?: Directionality;
+
     ngOnInit(): void {
-        const { dispatcherScroll } = this.use;
-        dispatcherScroll.directive = this;
-        registerDispatcherScroll(dispatcherScroll);
+        registerDispatcherScroll(this)(this.dispatcher);
     }
+
     ngOnDestroy(): void {
-        const { destroyed, dispatcherScroll } = this.use;
-        deregisterDispatcherScroll(dispatcherScroll);
+        const { destroyed } = this.scrollable;
+        deregisterDispatcherScroll(this)(this.dispatcher);
         destroyed.next();
         destroyed.complete();
     }

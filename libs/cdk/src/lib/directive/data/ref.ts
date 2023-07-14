@@ -28,7 +28,7 @@ interface ChangesUse<T> extends Zonality {
 
 /**
  * Description structure data by interaction with directive - \
- * the facade of the directive.
+ * the facade of the directive. // TODO: rename use to - ref, facade, api ?
  */
-export type Use<T, K = HTMLElement | ComponentRef<T>> = CreateUse<K> &
+export type Ref<T, K = HTMLElement | ComponentRef<T>> = CreateUse<K> &
     Partial<ChangesUse<T>>;

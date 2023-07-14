@@ -20,17 +20,8 @@ import { ContainerOverlay } from './container-overlay';
 import { OptionsStrategyScrollOverlay } from './options-strategy-scroll-overlay';
 import { OverlayRef } from './overlay-ref';
 
-type CreateOverlay<T> = Zonality & {
-    appRef: ApplicationRef;
-    componentFactoryResolver: ComponentFactoryResolver;
-    injector: Injector;
-    positionBuilder: OverlayPositionBuilder;
-    ref: OverlayRef<T>;
-    optionsStrategyScroll: OptionsStrategyScrollOverlay<T>;
-};
-
 type ChangesOverlay<T> = ChangesOverlayRef<T> & {
-    config: ConfigOverlay;
+    config: ConfigOverlay<T>;
     container: ContainerOverlay;
 };
 
@@ -44,4 +35,12 @@ type ChangesOverlay<T> = ChangesOverlayRef<T> & {
  *
  * An overlay *is* a PortalOutlet, so any kind of Portal can be loaded into one.
  */
-export type Overlay<T> = CreateOverlay<T> & Partial<ChangesOverlay<T>>;
+export type Overlay<T> = Zonality &
+    Partial<ChangesOverlay<T>> & {
+        appRef: ApplicationRef;
+        componentFactoryResolver: ComponentFactoryResolver;
+        injector: Injector;
+        positionBuilder: OverlayPositionBuilder;
+        ref: OverlayRef<T>;
+        optionsStrategyScroll: OptionsStrategyScrollOverlay<T>;
+    };

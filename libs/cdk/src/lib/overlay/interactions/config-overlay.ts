@@ -1,5 +1,7 @@
+import { Unary } from '@core-template';
+
 import { changes } from '../../platform';
-import { StrategyScroll, UnaryStrategyScroll } from '../../scroll';
+import { StrategyScroll } from '../../scroll';
 import { ConfigOverlay } from '../data';
 
 export const configOverlay = <
@@ -8,7 +10,7 @@ export const configOverlay = <
 >(
     config?: Partial<ConfigOverlay<T, K>>,
     strategy?: StrategyScroll<T>,
-    strategiesScrollOverlay?: UnaryStrategyScroll<T>
+    strategiesScrollOverlay?: Unary<StrategyScroll<T>>
 ): ConfigOverlay<T, K> => {
     const configOverlay: ConfigOverlay<T, K> = {
         backdropClass: 'cdk-overlay-dark-backdrop',

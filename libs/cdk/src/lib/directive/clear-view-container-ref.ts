@@ -1,8 +1,8 @@
 import { Bounden } from '@core-template';
 
-import { Use } from './data';
+import { Ref } from './data';
 
-export type ClearViewContainerRef<T> = Bounden<Use<T>, 'viewContainerRef'>;
+export type ClearViewContainerRef<T> = Bounden<Ref<T>, 'viewContainerRef'>;
 
 /**
  * `Role` clears container reference in view.
@@ -11,10 +11,10 @@ export type ClearViewContainerRef<T> = Bounden<Use<T>, 'viewContainerRef'>;
  */
 export const clearViewContainerRef = <T>(
     use: ClearViewContainerRef<T>
-): Use<T> => {
+): Ref<T> => {
     const { viewContainerRef } = use;
     viewContainerRef.clear();
     use.context = undefined;
 
-    return use as Use<T>;
+    return use as Ref<T>;
 };

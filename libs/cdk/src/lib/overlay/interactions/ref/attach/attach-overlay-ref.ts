@@ -44,7 +44,7 @@ export const attachOverlayRef = <T>(
             pane,
             portal,
             portalOutlet,
-            positionStrategy,
+            // positionStrategy,
             previousHostParent,
             // strategiesScroll,
         } = overlayRef;
@@ -59,7 +59,7 @@ export const attachOverlayRef = <T>(
             // // attachPortalOutlet(portalOutlet);
             attachPortalOutlet(portalOutlet);
             overlayRef.componentEmbeddedRef = portalOutlet.appendedPortal;
-            positionStrategy?.attach(overlayRef);
+            // positionStrategy?.attach(overlayRef);
         }
         // Insert the host into the DOM before attaching the portal, otherwise
         // the animations module will skip animations on repeat attachments.
@@ -96,7 +96,7 @@ export const attachOverlayRef = <T>(
         ngZone.onStable.pipe(take(1)).subscribe(() => {
             // The overlay could've been detached before the ngZone has stabilized.
             if (hasAttached(portalOutlet?.portal)) {
-                positionStrategy?.apply();
+                // positionStrategy?.apply();
             }
         });
         pane && (pane.style.pointerEvents = 'none');

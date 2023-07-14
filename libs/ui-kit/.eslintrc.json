@@ -44,7 +44,8 @@
                     }
                 ],
                 "@nrwl/nx/enforce-module-boundaries": "off" /* TODO: fix access-lib to publishable and turn on rule */,
-                "@typescript-eslint/member-ordering": "off"
+                "@typescript-eslint/member-ordering": "off",
+                "unicorn/no-empty-file": "off"
             }
         },
         {

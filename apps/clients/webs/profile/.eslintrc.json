@@ -24,7 +24,8 @@
                         "prefix": "ngn",
                         "style": "kebab-case"
                     }
-                ]
+                ],
+                "unicorn/no-empty-file": "off"
             }
         },
         {

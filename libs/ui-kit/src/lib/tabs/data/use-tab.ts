@@ -1,9 +1,9 @@
 import { Renderer2, SimpleChanges } from '@angular/core';
-import { Context, Use } from '@ngn-template/cdk';
+import { Context, Ref } from '@ngn-template/cdk';
 
 import { Tab } from './tab';
 
-export interface UseTab extends Use<Tab> {
+export interface UseTab extends Ref<Tab> {
     activeTab: Tab;
     changes: SimpleChanges;
     context: Context<Tab>;

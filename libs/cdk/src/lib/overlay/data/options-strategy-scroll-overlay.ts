@@ -5,13 +5,10 @@ import {
     ConfigCloseStrategyScroll,
     ConfigRepositionStrategyScroll,
     DispatcherScroll,
+    NoopStrategyScroll,
     RepositionStrategyScroll,
-    StrategyScroll,
     ViewportRulerScroll,
 } from '../../scroll';
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type NoopStrategyScroll<T> = StrategyScroll<T> & {};
 
 type ChangeOptionsStrategyScrollOverlay<T> = {
     /**

@@ -5,7 +5,8 @@
         "declaration": true,
         "declarationMap": true,
         "inlineSources": true,
-        "types": []
+        "types": [],
+        "composite": true
     },
     "exclude": [
         "src/test-setup.ts",
@@ -14,8 +15,6 @@
         "**/*.test.ts"
     ],
     "include": [
-        "**/*.ts",
-        "src/lib/overlay/interactions/attach/backdrop-detach-overlay-ref.ts",
-        "../../../core-template/src/utils/array/changes-property.ts"
+        "**/*.ts", "**/*.json"
     ]
 }

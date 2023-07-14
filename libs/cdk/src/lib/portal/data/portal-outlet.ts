@@ -21,8 +21,8 @@ type ChangePortalOutlet<T> = {
 type CreatePortalOutlet = {
     /** Whether this host has already been permanently disposed. */
     isDisposed: boolean;
-    mapStrategyFnsAttach: MapStrategyAttach;
-    strategyAttachKind: KindStrategyAttach;
+    // mapStrategyFnsAttach: MapStrategyAttach;
+    // strategyAttachKind: KindStrategyAttach;
 };
 
 export type PortalOutlet<T> = CreatePortalOutlet &

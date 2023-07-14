@@ -12,10 +12,6 @@ import {
 } from '../../../scroll';
 import { OptionsStrategyScrollOverlay } from '../../data';
 
-export const CHANGE_OPTIONS_STRATEGY_SCROLL_OVERLAY = new InjectionToken<
-    OptionsStrategyScrollOverlay<Model>
->('[CHANGE_OPTIONS_STRATEGY_SCROLL_OVERLAY]');
-
 export const createOptionsStrategyScrollOverlay = <T>(
     change?: Partial<OptionsStrategyScrollOverlay<T>>
 ): OptionsStrategyScrollOverlay<T> => {
@@ -25,7 +21,7 @@ export const createOptionsStrategyScrollOverlay = <T>(
         dispatcher: inject(DISPATCHER_SCROLL),
         document: inject(DOCUMENT),
         ngZone: inject(ZONE_TOKEN),
-        noop: {},
+        noop: {} as ,
         reposition: inject(REPOSITION_STRATEGY_SCROLL),
         viewportRulerScroll: inject(VIEWPORT_RULER_SCROLL),
     };
@@ -39,3 +35,7 @@ export const OPTIONS_STRATEGY_SCROLL_OVERLAY = new InjectionToken<
 >('[OPTIONS_STRATEGY_SCROLL_OVERLAY]', {
     factory: () => createOptionsStrategyScrollOverlay(),
 });
+
+export const CHANGE_OPTIONS_STRATEGY_SCROLL_OVERLAY = new InjectionToken<
+    OptionsStrategyScrollOverlay<Model>
+>('[CHANGE_OPTIONS_STRATEGY_SCROLL_OVERLAY]');

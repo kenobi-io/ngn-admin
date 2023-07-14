@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventEmitter, NgZone } from '@angular/core';
 
 /**
  * Provides a noop implementation of `NgZone` which does nothing. This zone requires explicit calls
  * to framework to perform rendering.
  */
-export class NoopNgZone implements NgZone {
+export class MockNgZone implements NgZone {
     readonly hasPendingMicrotasks: boolean = false;
     readonly hasPendingMacrotasks: boolean = false;
     readonly isStable: boolean = true;
@@ -45,8 +46,11 @@ export class NoopNgZone implements NgZone {
     }
 }
 
-export const mockNgZone = new NoopNgZone(); /*  {
-    onError: jest.fn(),
+export const mockNoopNgZone: NgZone = {} as NgZone;
+
+export const mockNgZone: NgZone = /*  {
+    onError: jest.fn<any>() as unknown as EventEmitter<any>,
     run: jest.fn(),
     runOutsideAngular: jest.fn(),
-}; */
+    runTask: jest.fn(),
+}; */ new MockNgZone();

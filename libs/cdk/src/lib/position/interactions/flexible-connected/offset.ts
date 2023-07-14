@@ -5,10 +5,9 @@ import {
 } from '../../data';
 
 /** @internal Retrieves the offset of a position along the x or y axis. */
-export const offset = <T>(
-    position: FlexibleConnectedPosition,
-    axis: 'x' | 'y'
-): Rfcsp<T> =>  (strategyPosition: Fcsp<T>): Fcsp<T> => {
+export const offset =
+    <T>(position: FlexibleConnectedPosition, axis: 'x' | 'y'): Rfcsp<T> =>
+    (strategyPosition: Fcsp<T>): Fcsp<T> => {
         const { offsetX, offsetY } = strategyPosition;
         strategyPosition.offsetXAndY = undefined;
         if (axis === 'x') {

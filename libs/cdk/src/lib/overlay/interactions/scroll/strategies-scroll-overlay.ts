@@ -1,18 +1,19 @@
-import {
-    attachStrategiesScroll,
-    detachStrategiesScroll,
-    disableStrategiesScroll,
-    enableStrategiesScroll,
-} from '../../../scroll';
-import { StrategiesScrollOverlay } from '../../data';
+// import { StrategiesScrollOverlay } from '../../data';
 
-export const strategiesScrollOverlay = (): StrategiesScrollOverlay => {
-    const strategies: StrategiesScrollOverlay = {
-        attachStrategiesScroll,
-        detachStrategiesScroll,
-        disableStrategiesScroll,
-        enableStrategiesScroll,
-    };
+// export const strategiesScrollOverlay = <T>(
+//     createAttachStrategiesScroll: AttachBlockStrategyScroll,
+//     createDetachStrategiesScroll:  <T>(
+//         strategy: CloseStrategyScroll<T>
+//     ) => CloseStrategyScroll<T>;
+//     createDisableStrategiesScroll: T;
+//     createEnableStrategiesScroll: T;
+// ): StrategiesScrollOverlay<T> => {
+//     const strategies: StrategiesScrollOverlay<T> = {
+//         attachStrategiesScroll: createAttachStrategiesScroll(),
+//         detachStrategiesScroll: createDetachStrategiesScroll(),
+//         disableStrategiesScroll: ,
+//         enableStrategiesScroll:
+//     };
 
-    return strategies;
-};
+//     return strategies;
+// };

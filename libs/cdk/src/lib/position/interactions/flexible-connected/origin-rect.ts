@@ -1,6 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { Condition, tube, unary } from '@core-template';
-import { UnaryFunction } from 'rxjs';
+import { Condition, tube, Unary, unary } from '@core-template';
 
 import {
     FlexibleConnectedStrategyPosition as Fcsp,
@@ -12,9 +11,6 @@ type Data<T> = {
     sp: Fcsp<T>;
     width: number;
 };
-
-type Unary<T> = UnaryFunction<Data<T>, Data<T>>;
-
 type CD<T> = Condition<Data<T>>;
 
 /** @internal Returns the ClientRect of the current origin. */

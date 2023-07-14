@@ -3,7 +3,7 @@ import { EMPTY, fromEvent, Observable, of, race, Subject, timer } from 'rxjs';
 // import { environment } from '../../environment';
 import { endWith, filter, takeUntil } from 'rxjs/operators';
 
-import { Context, Use } from '../directive';
+import { Context, Ref } from '../directive';
 import { outZone, transitionDurationInMs } from '../platform';
 import { runInZonable } from '../platform/interactions/zone/run-in-zonable';
 
@@ -26,7 +26,7 @@ export interface ContextTransition<T> extends Context<T> {
 }
 
 export interface UseRunTransition<T>
-    extends Bounden<Use<T, HTMLElement>, 'context' | 'elementRef' | 'ngZone'> {
+    extends Bounden<Ref<T, HTMLElement>, 'context' | 'elementRef' | 'ngZone'> {
     context: ContextTransition<T>;
     option: OptionsTransition<T>;
     runningTransitions: Map<HTMLElement, ContextTransition<T>>;
@@ -43,7 +43,7 @@ const noopFn: EndFnTransition = () => {
 
 export const runTransition = <T>(
     use: UseRunTransition<T>
-): Use<T> /* Observable<void>*/ => {
+): Ref<T> /* Observable<void>*/ => {
     const {
         elementRef: { nativeElement },
         ngZone,
@@ -133,7 +133,7 @@ export const runTransition = <T>(
     });
     use.transit = transition.asObservable();
 
-    return use as Use<T>;
+    return use as Ref<T>;
 };
 
 // export const completeTransition = (nativeElement: HTMLElement): void => {

@@ -8,14 +8,12 @@ export const disposeScrollStrategyOverlayRef = <T>(
     use: DisposeScrollStrategyAttach<T>
 ): OverlayRef<T> => {
     return casting(use, () => {
-        const { strategiesScroll: scrollStrategy } = use;
-
-        if (scrollStrategy) {
-            scrollStrategy.disable();
-
-            if (scrollStrategy.detach) {
-                scrollStrategy.detach();
-            }
-        }
+        // const { strategiesScroll } = use;
+        // if (strategiesScroll) {
+        //     strategiesScroll.disable();
+        //     if (strategiesScroll.detach) {
+        //         strategiesScroll.detach();
+        //     }
+        // }
     });
 };

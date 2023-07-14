@@ -1,12 +1,12 @@
 import { SimpleChanges } from '@angular/core';
-import { Use } from '@ngn-template/cdk';
+import { Ref } from '@ngn-template/cdk';
 
 import { RestApi } from '../interactions';
 import { ContextHttp } from './context-http';
 import { InputPropertyHttp } from './input-property-http';
 import { StrategyHttp } from './strategy-http';
 
-export interface UseHttp<T> extends Use<T> {
+export interface UseHttp<T> extends Ref<T> {
     changes?: SimpleChanges;
     context: ContextHttp<T>;
     input: InputPropertyHttp;
