@@ -1,5 +1,4 @@
-import { ConditionFn, tube, unary } from '@core-template';
-import { UnaryFunction } from 'rxjs';
+import { Condition, tube, Unary, unary } from '@core-template';
 
 import { isOverlayRefDirectionRtl } from '../../../overlay';
 import { Dimension } from '../../../platform';
@@ -19,9 +18,7 @@ type Data<T> = FlexibleConnectedStrategyPosition<T> & {
     y: number;
 };
 
-type Unary<T> = UnaryFunction<Data<T>, Data<T>>;
-
-type CD<T> = ConditionFn<Data<T>>;
+type CD<T> = Condition<Data<T>>;
 
 export const calculateBoundingBoxRect = <T>(
     originRect: Dimension,
@@ -68,13 +65,12 @@ export const calculateBoundingBoxRect = <T>(
     });
 };
 
-const assignOriginX = <T>(): Unary<T> =>
+const assignOriginX = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const overlayStartPoint = model.containerRect.left;
         const overlayEndPoint = model.containerRect.right;
         const originStartPoint = model.originRect.left;
         const originEndPoint = model.originRect.right;
-
         let x = overlayStartPoint;
 
         if (model.pos.overlayX === 'center') {
@@ -96,7 +92,7 @@ const assignOriginX = <T>(): Unary<T> =>
         model.x = x;
     });
 
-const assignOriginXToTheResultOfBisectionWidthLeft = <T>(): Unary<T> =>
+const assignOriginXToTheResultOfBisectionWidthLeft = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const overlayStartPoint = model.containerRect.left;
         const overlayEndPoint = model.containerRect.right;
@@ -162,7 +158,7 @@ const doesTheContainerRectOver =
     (model) =>
         model.containerRect[direction] < limit;
 
-const assignOriginXOfContainerRectLeft = <T>(): Unary<T> =>
+const assignOriginXOfContainerRectLeft = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const originStartPoint = model.originRect.left;
         const overlayStartPoint = model.containerRect.left;
@@ -175,13 +171,12 @@ const doesTheOriginYEqual =
     (model) =>
         model.pos.overlayY === y;
 
-const assignOriginY = <T>(): Unary<T> =>
+const assignOriginY = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const overlayStartPoint = model.containerRect.top;
         const overlayEndPoint = model.containerRect.bottom;
         const originStartPoint = model.originRect.top;
         const originEndPoint = model.originRect.bottom;
-
         let y = overlayStartPoint;
 
         if (model.pos.overlayY === 'center') {
@@ -208,7 +203,7 @@ const doesNotTheOriginYEqual =
     (model) =>
         model.pos.overlayY !== y;
 
-const assignOriginYTop = <T>(): Unary<T> =>
+const assignOriginYTop = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const originStartPoint = model.originRect.top;
         const overlayStartPoint = model.containerRect.top;
@@ -216,7 +211,7 @@ const assignOriginYTop = <T>(): Unary<T> =>
         model.y = overlayStartPoint - originStartPoint;
     });
 
-const assignOriginYOfContainerRectTop = <T>(): Unary<T> =>
+const assignOriginYOfContainerRectTop = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const originStartPoint = model.originRect.top;
         const overlayStartPoint = model.containerRect.top;
@@ -224,7 +219,7 @@ const assignOriginYOfContainerRectTop = <T>(): Unary<T> =>
         model.y = overlayStartPoint - originStartPoint;
     });
 
-const assignFallbackOriginPointXY = <T>(): Unary<T> =>
+const assignFallbackOriginPointXY = <T>(): Unary<Data<T>> =>
     unary((model) => {
         const overlayStartPoint = model.containerRect.left;
         const overlayEndPoint = model.containerRect.right;

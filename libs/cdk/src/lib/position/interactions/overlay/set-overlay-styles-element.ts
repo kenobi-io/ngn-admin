@@ -8,7 +8,8 @@ import {
     FlexibleConnectedStrategyPosition,
     ResultFlexibleConnectedStrategyPosition,
 } from '../../data';
-import { exactOverlayX, exactOverlayY, offset } from '../flexible-connected';
+import { offset } from '../flexible-connected';
+import { exactOverlayY } from './exact-overlay-y';
 
 type Data<T> = FlexibleConnectedStrategyPosition<T> & {
     styles: CSSStyleDeclaration;
@@ -39,7 +40,7 @@ export const setOverlayElementStyles = <T>(
                 originPoint
             ),
             condition(() => !data.hasExactPosition),
-            unary((model) => (model.styles.position = 'static')),
+            unary<Data<T>>((model) => (model.styles.position = 'static')),
             // Use a transform to apply the offsets. We do this because the `center` positions rely on
             // being in the normal flex flow and setting a `top` / `left` at all will completely throw
             // off the position. We also can't use margins, because they won't have an effect in some
@@ -47,16 +48,10 @@ export const setOverlayElementStyles = <T>(
             // better both with flexible and non-flexible positioning.
             offset(position, 'y'),
             condition(() => !!data.offsetXAndY),
-            unary<Data<T>>(
-                (model) =>
-                    (model.transformString += `translateX(${data.offsetXAndY}px)`)
-            ),
+            translateX(),
             offset(position, 'x'),
             condition(() => !!data.offsetXAndY),
-            unary(
-                (model) =>
-                    (model.transformString += `translateY(${data.offsetXAndY}px)`)
-            ),
+            translateY(),
             setMaxHeightMaxWidth(),
             extendStyle(data.pane.style, data.styles)
         )(data);
@@ -136,4 +131,16 @@ const setExactPosition = <T>(): Return<T> =>
         (data) =>
             (data.hasExactPosition =
                 !data.hasFlexibleDimensions || data.isPushed)
+    );
+
+const translateX = <T>(): Return<T> =>
+    unary(
+        (model) =>
+            (model.transformString += `translateX(${model.offsetXAndY}px)`)
+    );
+
+const translateY = <T>(): Return<T> =>
+    unary(
+        (model) =>
+            (model.transformString += `translateY(${model.offsetXAndY}px)`)
     );
