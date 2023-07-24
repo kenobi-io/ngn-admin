@@ -2,11 +2,11 @@ import { ComponentRef, EmbeddedViewRef } from '@angular/core';
 
 import { Portal } from './portal';
 
-type KindStrategyAttach = 'ComponentPortal' | 'TemplatePortal' | 'DomPortal';
+// type KindStrategyAttach = 'ComponentPortal' | 'TemplatePortal' | 'DomPortal';
 
-type FnStrategyAttach = <K>(outlet: K) => K;
+// type FnStrategyAttach = <K>(outlet: K) => K;
 
-export type MapStrategyAttach = Map<KindStrategyAttach, FnStrategyAttach>;
+// export type MapStrategyAttach = Map<KindStrategyAttach, FnStrategyAttach>;
 
 type ChangePortalOutlet<T> = {
     // TODO: polymorph

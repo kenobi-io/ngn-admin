@@ -1,11 +1,16 @@
-import { InjectionToken } from '@angular/core';
-import { Model, tube, Unary, unary } from '@core-template';
+import { inject, InjectionToken } from '@angular/core';
+import { tube, unary, UnParamsUnary } from '@core-template';
 
 import { CloseStrategyScroll } from '../../../data';
-import { disableCloseStrategyScroll } from './disable-close-strategy-scroll';
+import { DISABLE_CLOSE_STRATEGY_SCROLL } from './disable-close-strategy-scroll';
 
-export const detachCloseStrategyScroll = <T>(): Unary<CloseStrategyScroll<T>> =>
+export const detachCloseStrategyScroll: UnParamsUnary<
+    CloseStrategyScroll<unknown>
+> = () =>
     unary((strategy) => {
+        const disableCloseStrategyScroll = inject(
+            DISABLE_CLOSE_STRATEGY_SCROLL
+        );
         tube(
             disableCloseStrategyScroll(),
             (st) => (st.overlay = undefined)
@@ -13,7 +18,7 @@ export const detachCloseStrategyScroll = <T>(): Unary<CloseStrategyScroll<T>> =>
     });
 
 export const DETACH_CLOSE_STRATEGY_SCROLL = new InjectionToken<
-    Unary<CloseStrategyScroll<Model>>
+    UnParamsUnary<CloseStrategyScroll<unknown>>
 >('[DETACH_CLOSE_STRATEGY_SCROLL]', {
-    factory: () => detachCloseStrategyScroll(),
+    factory: () => detachCloseStrategyScroll,
 });

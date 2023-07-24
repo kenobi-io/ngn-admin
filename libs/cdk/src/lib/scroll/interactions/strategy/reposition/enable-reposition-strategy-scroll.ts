@@ -3,10 +3,10 @@ import {
     and,
     Condition,
     condition,
-    Model,
     tube,
     Unary,
     unary,
+    UnParamsUnary,
 } from '@core-template';
 
 import {
@@ -23,7 +23,9 @@ type CRSS<T> = Condition<RepositionStrategyScroll<T>>;
 type URSS<T> = Unary<RepositionStrategyScroll<T>>;
 
 /** Enables repositioning of the attached overlay on scroll. */
-export const enableRepositionStrategyScroll = <T>(): URSS<T> =>
+export const enableRepositionStrategyScroll: UnParamsUnary<
+    RepositionStrategyScroll<unknown>
+> = (finish) =>
     unary((strategy) => {
         tube(
             isSubscriptionExist(),
@@ -31,12 +33,12 @@ export const enableRepositionStrategyScroll = <T>(): URSS<T> =>
             isSubscriptionExist(),
             scrolledSubscribe()
         )(strategy);
-    });
+    }, finish);
 
 export const ENABLE_REPOSITION_STRATEGY_SCROLL = new InjectionToken<
-    Unary<RepositionStrategyScroll<Model>>
+    UnParamsUnary<RepositionStrategyScroll<unknown>>
 >('[ENABLE_REPOSITION_STRATEGY_SCROLL]', {
-    factory: () => enableRepositionStrategyScroll(),
+    factory: () => enableRepositionStrategyScroll,
 });
 
 const isSubscriptionExist = <T>(): CRSS<T> =>

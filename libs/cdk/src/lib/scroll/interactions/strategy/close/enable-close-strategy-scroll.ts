@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { InjectionToken } from '@angular/core';
+import { inject, InjectionToken } from '@angular/core';
 import {
     Condition,
     condition,
@@ -18,7 +18,7 @@ import { CloseStrategyScroll } from '../../../data';
 import { scrolledDispatcherScroll } from '../../dispatcher';
 import { positionViewportRulerScroll } from '../../scrollable';
 import { detachCloseStrategyScroll } from './detach-close-strategy-scroll';
-import { disableCloseStrategyScroll } from './disable-close-strategy-scroll';
+import { DISABLE_CLOSE_STRATEGY_SCROLL } from './disable-close-strategy-scroll';
 
 type CCS<T> = Condition<CloseStrategyScroll<T>>;
 type UCS<T> = Unary<CloseStrategyScroll<T>>;
@@ -28,7 +28,7 @@ export const enableCloseStrategyScroll = <T>(): UCS<T> =>
     unary((strategy) => {
         const { scrollSubscriptions } = strategy;
         /** Detaches the overlay ref and disables the scroll strategy. */
-        const scrollSubscription: Subscription | undefined = {} as Subscription;
+        const scrollSubscription: Subscription | undefined = new Subscription();
 
         tube(
             isLengthGreatThan(scrollSubscriptions?.length),
@@ -51,6 +51,10 @@ export const ENABLE_CLOSE_STRATEGY_SCROLL = new InjectionToken<
 const detach = <T>(): UCS<T> =>
     unary((strategy) => {
         const { ngZone, overlay } = strategy;
+        const disableCloseStrategyScroll = inject(
+            // TODO: fix inject because throw error outside construct
+            DISABLE_CLOSE_STRATEGY_SCROLL
+        );
         tube(
             disableCloseStrategyScroll(),
             () => hasAttached(overlay?.portal),
@@ -87,7 +91,7 @@ const auditTimeInMsDispatcher = <T>(): UCS<T> =>
     unary((strategy) => {
         const { dispatcher } = strategy;
         dispatcher.auditTimeInMs = 0;
-        scrolledDispatcherScroll(dispatcher);
+        scrolledDispatcherScroll()(dispatcher);
     });
 
 const scrollSubscriptionsPush = <T>(
@@ -100,17 +104,18 @@ const scrollSubscriptionsPush = <T>(
 
 const detachRegisteredEmitsEventSubscribe = <T>(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _scrollSubscription?: Subscription
+    scrollSubscription?: Subscription
 ): UCS<T> =>
     unary((strategy) => {
         const { dispatcher } = strategy;
-        _scrollSubscription =
-            dispatcher.registeredEmitsEvent?.subscribe(detach);
+        scrollSubscription = dispatcher.registeredEmitsEvent?.subscribe(() =>
+            detach()(strategy)
+        );
     });
 
 const registeredEmitsEventSubscribe = <T>(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _scrollSubscription?: Subscription
+    scrollSubscription?: Subscription
 ): UCS<T> =>
     unary((strategy) => {
         const { config, dispatcher, overlay, viewportRuler } = strategy;
@@ -120,7 +125,7 @@ const registeredEmitsEventSubscribe = <T>(
 
         if (startPosition) {
             strategy.initialScrollPosition = startPosition.top;
-            _scrollSubscription = dispatcher.registeredEmitsEvent?.subscribe(
+            scrollSubscription = dispatcher.registeredEmitsEvent?.subscribe(
                 () => {
                     positionViewportRulerScroll(viewportRuler);
                     const { top } = startPosition;
