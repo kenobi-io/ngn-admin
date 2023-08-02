@@ -1,5 +1,5 @@
 import { coerceElement } from '@angular/cdk/coercion';
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 import { Subscription } from 'rxjs';
 
 import { Scrollable } from '../../../directive';
@@ -9,7 +9,7 @@ type SetAncestorContainersDispatcherScroll<T> = DispatcherScroll<T> & {
     directive?: Scrollable<T>;
     directives?: Scrollable<T>[];
 };
-type SACDS<T> = Unary<SetAncestorContainersDispatcherScroll<T>>;
+type SACDS<T> = Mono<SetAncestorContainersDispatcherScroll<T>>;
 
 /**
  * Registered Scrollable that contain the provided element.
@@ -19,7 +19,7 @@ export const setAncestorContainersDispatcherScroll = <T>(
     directive: Scrollable<T>,
     elementOrElementRef?: HTMLElement
 ): SACDS<T> =>
-    unary((dispatcher) => {
+    mono((dispatcher) => {
         dispatcher.directives = [];
         dispatcher.directive = directive;
         dispatcher.scrollContainers.forEach(

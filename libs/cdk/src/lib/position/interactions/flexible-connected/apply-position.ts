@@ -1,5 +1,5 @@
 import { ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
-import { condition, Mono, tube, unary } from '@core-template';
+import { condition, Mono, mono, tube } from '@core-template';
 
 import { Point } from '../../../platform';
 import {
@@ -28,7 +28,7 @@ type UnaryApplyPositionFlexibleConnectedStrategyPosition = <
  */
 export const applyPosition: UnaryApplyPositionFlexibleConnectedStrategyPosition =
     (position: FlexibleConnectedPosition, originPoint: Point) =>
-        unary(({ strategyPosition }) => {
+        mono(({ strategyPosition }) => {
             tube(
                 setTransformOrigin(position),
                 setOverlayElementStyles(position, originPoint),
@@ -36,7 +36,7 @@ export const applyPosition: UnaryApplyPositionFlexibleConnectedStrategyPosition 
                 condition(() => !!position.panelClass),
                 addPanelClasses(position.panelClass),
                 // Save the last connected position in case the position needs to be re-calculated.
-                unary((_) => (_.lastPosition = position)),
+                mono((_) => (_.lastPosition = position)),
                 setChangeEvent(position)
             )(strategyPosition);
         });
@@ -44,7 +44,7 @@ export const applyPosition: UnaryApplyPositionFlexibleConnectedStrategyPosition 
 const setChangeEvent = <T>(
     position: FlexibleConnectedPosition
 ): ResultFlexibleConnectedStrategyPosition<T> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const { positionChanger } = strategyPosition;
         // Notify that the position has been changed along with its change properties.
         // We only emit if we've got any subscriptions, because the scroll visibility

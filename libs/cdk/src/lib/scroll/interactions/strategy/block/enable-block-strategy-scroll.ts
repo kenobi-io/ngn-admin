@@ -1,5 +1,5 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
-import { tube, Unary, unary } from '@core-template';
+import { Mono, mono, tube } from '@core-template';
 
 import { BlockStrategyScroll } from '../../../data';
 import {
@@ -8,8 +8,8 @@ import {
 } from '../../scrollable';
 
 /** Blocks page-level scroll while the attached overlay is open. */
-export const enableBlockStrategyScroll = <T>(): Unary<BlockStrategyScroll<T>> =>
-    unary((strategy) => {
+export const enableBlockStrategyScroll = <T>(): Mono<BlockStrategyScroll<T>> =>
+    mono((strategy) => {
         tube(canBeEnabledScroll, enabledScroll())(strategy);
     });
 
@@ -40,8 +40,8 @@ const canBeEnabledScroll = <T>(strategy: BlockStrategyScroll<T>): boolean => {
     return false;
 };
 
-const enabledScroll = <T>(): Unary<BlockStrategyScroll<T>> =>
-    unary((strategy) => {
+const enabledScroll = <T>(): Mono<BlockStrategyScroll<T>> =>
+    mono((strategy) => {
         const { document, previousHTMLStyles, viewportRuler } = strategy;
 
         const root = document.documentElement;

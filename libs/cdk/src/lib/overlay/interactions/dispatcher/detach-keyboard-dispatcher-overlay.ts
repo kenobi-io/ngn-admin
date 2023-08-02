@@ -1,4 +1,4 @@
-import { Finish, Mono, unary } from '@core-template';
+import { Finish, Mono, mono } from '@core-template';
 
 import { KeyboardDispatcherOverlay } from '../../data';
 
@@ -6,7 +6,7 @@ import { KeyboardDispatcherOverlay } from '../../data';
 export const detachKeyboardDispatcherOverlay = (
     finish?: Finish
 ): Mono<KeyboardDispatcherOverlay> =>
-    unary((dispatcher) => {
+    mono((dispatcher) => {
         const { document, isAttached, listener } = dispatcher;
         if (isAttached && document && listener) {
             document.body.removeEventListener('keydown', listener);

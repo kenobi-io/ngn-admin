@@ -1,6 +1,6 @@
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 import { outZone } from '@ngn-template/cdk';
-import { fromEvent, Observable, Observer } from 'rxjs';
+import { Observable, Observer, fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { Scrollable } from '../../../directive';
@@ -18,8 +18,8 @@ import { removeGlobalListenerDispatcherScroll } from './remove-global-listener-d
  * to run the callback using `NgZone.run`.
  * @dispatcher auditTimeInMs, globalSubscription, platform, scrolled
  */
-export const scrolledDispatcherScroll = <T>(): Unary<DispatcherScroll<T>> =>
-    unary((dispatcher) => {
+export const scrolledDispatcherScroll = <T>(): Mono<DispatcherScroll<T>> =>
+    mono((dispatcher) => {
         const { auditTimeInMs, globalSubscription, scrolled } = dispatcher;
 
         dispatcher.registeredEmitsEvent = new Observable(

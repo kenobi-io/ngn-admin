@@ -4,13 +4,13 @@ import {
     coerceNumberProperty,
 } from '@angular/cdk/coercion';
 import { CdkDropList, DropListRef } from '@angular/cdk/drag-drop';
-import { CapabilityMono, tube, unary } from '@core-template';
+import { CapabilityMono, mono, tube } from '@core-template';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 type DropListSetup = CapabilityMono<DropListRef<CdkDropList>>;
 
 export const setupInputSyncSubscription: DropListSetup = () =>
-    unary((ref) =>
+    mono((ref) =>
         tube(
             setupDirection(),
             setupSiblings(),
@@ -22,7 +22,7 @@ export const setupInputSyncSubscription: DropListSetup = () =>
     );
 
 const setupDirection: DropListSetup = () =>
-    unary(({ dropped }) => {
+    mono(({ dropped }) => {
         // const { _destroyed, _dir } = ref;
 
         if (dropped) {
@@ -33,7 +33,7 @@ const setupDirection: DropListSetup = () =>
     });
 
 const setupSiblings: DropListSetup = () =>
-    unary((ref) => {
+    mono((ref) => {
         const {
             _dropListRef,
             _group,

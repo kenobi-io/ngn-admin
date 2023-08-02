@@ -1,13 +1,13 @@
-import { Condition, tube, unary } from '@core-template';
+import { Condition, mono, tube } from '@core-template';
 import { UnaryFunction } from 'rxjs';
 
+import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { Dimension, Point } from '../../../platform';
 import {
     FlexibleConnectedPosition,
     FlexibleConnectedStrategyPosition,
     ResultFlexibleConnectedStrategyPosition,
 } from '../../data';
-import { coerceCssPixelValue } from '@angular/cdk/coercion';
 
 type Data<T> = FlexibleConnectedStrategyPosition<T> & {
     overlayPoint: Point;
@@ -28,7 +28,7 @@ export const exactOverlayY = <T>(
     originPoint: Point,
     scrollPosition: ViewportScrollPosition
 ): ResultFlexibleConnectedStrategyPosition<T> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const data: Data<T> = {
             ...strategyPosition,
             documentHeight,
@@ -45,7 +45,7 @@ export const exactOverlayY = <T>(
     });
 
 const setOverlayPointWhenPushed = <T>(): Unary<T> =>
-    unary((model) => {
+    mono((model) => {
         if (model.isPushed) {
             model.overlayPoint = this._pushOverlayOnScreen(
                 model.overlayPoint,
@@ -56,7 +56,7 @@ const setOverlayPointWhenPushed = <T>(): Unary<T> =>
     });
 
 const setTopOrBottomPosition = <T>(): Unary<T> =>
-    unary((model) => {
+    mono((model) => {
         if (model.position.overlayY === 'bottom') {
             model.styles.bottom = `${
                 model.documentHeight -
@@ -68,7 +68,7 @@ const setTopOrBottomPosition = <T>(): Unary<T> =>
     });
 
 const assignStyles = <T>(): Unary<T> =>
-    unary(
+    mono(
         (model) =>
             (model.styles = { bottom: '', top: '' } as CSSStyleDeclaration)
     );

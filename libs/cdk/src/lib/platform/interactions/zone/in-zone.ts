@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 
 import { Zonality } from '../../../directive';
 
@@ -13,7 +13,8 @@ import { Zonality } from '../../../directive';
 export const inZone = <T>(ngZone: NgZone, fn: Function): T =>
     ngZone.run<T>(() => fn());
 
-type Fn<T> = (arg: T) => T;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Fn<T> = (arg: T) => any;
 
 /**
  * Creates an observable where all callbacks are executed inside a given zone
@@ -21,5 +22,15 @@ type Fn<T> = (arg: T) => T;
  * @param fn is function for run inside NgZone
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const inNgZone = <T extends Zonality>(fn: Fn<T>): Unary<T> =>
-    unary((data) => data.ngZone.run<T>(() => fn(data)));
+export const inNgZone = <T extends Partial<Zonality>>(
+    fn: Fn<T>,
+    ngZone?: NgZone
+): Mono<T> =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mono((data) => {
+        if (data.ngZone) {
+            (data.ngZone as NgZone).run<T>(() => fn(data));
+        } else if (ngZone) {
+            ngZone.run<T>(() => fn(data));
+        }
+    });

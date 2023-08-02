@@ -4,7 +4,7 @@ import {
     supportsScrollBehavior,
 } from '@angular/cdk/platform';
 import { _Bottom, _Left, _Right, _Top, _Without } from '@angular/cdk/scrolling';
-import { CapabilityMono, Mono, tube, unary } from '@core-template';
+import { CapabilityMono, Mono, mono, tube } from '@core-template';
 
 import { ExtendedScrollToOptions, Scrollable } from '../../../directive';
 
@@ -21,7 +21,7 @@ type ScrollToScrollable = CapabilityMono<
  * @use options specified the offsets to scroll to.
  */
 export const scrollToScrollable = <T>(): Mono<Scrollable<T>> =>
-    unary((scrollable) =>
+    mono((scrollable) =>
         tube(
             setRtl(),
             startEndAsLeftOffsetRewrite(),
@@ -33,7 +33,7 @@ export const scrollToScrollable = <T>(): Mono<Scrollable<T>> =>
     );
 
 const setRtl: ScrollToScrollable = () =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         scrollable &&
             (scrollable.isRtl = !!(
                 scrollable?.dir && scrollable.dir.value === 'rtl'
@@ -41,7 +41,7 @@ const setRtl: ScrollToScrollable = () =>
     });
 
 const applyOptionsOfScroll: ScrollToScrollable = () =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { nativeElement } = scrollable.elementRef;
         if (supportsScrollBehavior()) {
             nativeElement.scrollTo(scrollable.options);
@@ -56,7 +56,7 @@ const applyOptionsOfScroll: ScrollToScrollable = () =>
     });
 
 const startEndAsLeftOffsetRewrite: ScrollToScrollable = () =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { isRtl, options } = scrollable;
         options &&
             options.left == undefined &&
@@ -64,7 +64,7 @@ const startEndAsLeftOffsetRewrite: ScrollToScrollable = () =>
     });
 
 const startEndAsRightOffsetRewrite: ScrollToScrollable = () =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { isRtl, options } = scrollable;
         options &&
             options.right == undefined &&
@@ -72,7 +72,7 @@ const startEndAsRightOffsetRewrite: ScrollToScrollable = () =>
     });
 
 const topOffsetRewrite: ScrollToScrollable = () =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { elementRef, options } = scrollable;
         const { nativeElement } = elementRef;
 
@@ -85,7 +85,7 @@ const topOffsetRewrite: ScrollToScrollable = () =>
     });
 
 const leftAndRightOffsetRewrite: ScrollToScrollable = () =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { elementRef, isRtl, options } = scrollable;
         const { nativeElement } = elementRef;
 

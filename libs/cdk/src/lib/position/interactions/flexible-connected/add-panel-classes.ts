@@ -1,5 +1,5 @@
 import { coerceArray } from '@angular/cdk/coercion';
-import { unary } from '@core-template';
+import { mono } from '@core-template';
 
 import {
     FlexibleConnectedStrategyPosition,
@@ -10,7 +10,7 @@ import {
 export const addPanelClasses = <T>(
     cssClasses?: string | string[]
 ): ResultFlexibleConnectedStrategyPosition<T> =>
-    unary((sp: FlexibleConnectedStrategyPosition<T>) => {
+    mono((sp: FlexibleConnectedStrategyPosition<T>) => {
         const { appliedPanelClasses, pane } = sp;
 
         if (pane && cssClasses) {

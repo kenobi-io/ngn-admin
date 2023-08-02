@@ -1,4 +1,4 @@
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 
 import { DispatcherScroll } from '../../data';
 
@@ -6,10 +6,10 @@ import { DispatcherScroll } from '../../data';
  * Cleans up the global scroll listener.
  * @dispatcher globalSubscription?
  */
-export const removeGlobalListenerDispatcherScroll = <T>(): Unary<
+export const removeGlobalListenerDispatcherScroll = <T>(): Mono<
     DispatcherScroll<T>
 > =>
-    unary((dispatcher) => {
+    mono((dispatcher) => {
         const { globalSubscription } = dispatcher;
 
         if (globalSubscription) {

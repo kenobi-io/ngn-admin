@@ -44,7 +44,7 @@ type SizeOverlayRef = {
     /** Size properties for an overlay. */
     hostElement: HTMLElement;
     backdropElement: HTMLElement | null;
-    outsidePointerEvents: Subject<MouseEvent>;
+    outsidePointerEvents: Subject<MouseEvent | Event>;
     keydownEvents: Subject<KeyboardEvent | Event>;
 };
 

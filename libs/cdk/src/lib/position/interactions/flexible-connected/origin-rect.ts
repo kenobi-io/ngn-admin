@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { Condition, condition, Mono, tube, unary } from '@core-template';
+import { Condition, condition, Mono, mono, tube } from '@core-template';
 
 import {
     FlexibleConnectedStrategyPositionCapability,
@@ -13,7 +13,7 @@ type Data<T> = Partial<FlexibleConnectedStrategyPositionCapability<T>> & {
 
 /** @internal Returns the ClientRect of the current origin. */
 export const originRect: UnaryFlexibleConnectedStrategyPosition = <T>() =>
-    unary(({ strategyPosition }) => {
+    mono(({ strategyPosition }) => {
         const value: Data<T> = {
             height: 0,
             ...strategyPosition,
@@ -46,7 +46,7 @@ const doesNotTheOriginInstanceof = <T>(): Condition<Data<T>> =>
 const assignOriginElementRefBoundingClientRect = <T>(): Mono<
     Partial<FlexibleConnectedStrategyPositionCapability<T>>
 > =>
-    unary(
+    mono(
         (model) =>
             model.strategyPosition &&
             (model.strategyPosition.originRect = (
@@ -57,7 +57,7 @@ const assignOriginElementRefBoundingClientRect = <T>(): Mono<
 const assignOriginElementBoundingClientRect = <T>(): Mono<
     Partial<FlexibleConnectedStrategyPositionCapability<T>>
 > =>
-    unary(
+    mono(
         (model) =>
             model.strategyPosition &&
             (model.strategyPosition.originRect = (
@@ -68,7 +68,7 @@ const assignOriginElementBoundingClientRect = <T>(): Mono<
 const assignOriginRect = <T>(): Mono<
     Partial<FlexibleConnectedStrategyPositionCapability<T>>
 > =>
-    unary((model) => {
+    mono((model) => {
         const { strategyPosition } = model;
         if (strategyPosition) {
             const { origin } = strategyPosition;

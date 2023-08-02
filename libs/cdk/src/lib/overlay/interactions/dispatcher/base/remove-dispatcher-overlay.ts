@@ -2,14 +2,14 @@
 import {
     CapabilityMono,
     Condition,
+    SplicerTube,
     condition,
     includes,
     indexOf,
+    mono,
     splice,
-    SplicerTube,
     then,
     tube,
-    unary,
 } from '@core-template';
 import { UnaryFunction } from 'rxjs';
 
@@ -49,7 +49,7 @@ export const removeDispatcherOverlay: RemoveDispatcherOverlay = <
 >(
     detach: Detach<T>
 ) =>
-    unary<P, R>(({ dispatcher }) => {
+    mono<P, R>(({ dispatcher }) => {
         if (dispatcher) {
             const { attachedOverlay, attachedOverlays } = dispatcher;
             tube(

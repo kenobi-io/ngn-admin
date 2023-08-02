@@ -1,5 +1,5 @@
 import { getRtlScrollAxisType, RtlScrollAxisType } from '@angular/cdk/platform';
-import { Condition, condition, Mono, tube, unary } from '@core-template';
+import { Condition, condition, Mono, mono, tube } from '@core-template';
 
 import { Scrollable } from '../../../directive';
 
@@ -26,7 +26,7 @@ type IsScrollable<T> = Condition<MeasureScrollOffsetScrollable<T>>;
  * @use dir, elementRef: { nativeElement }, from
  */
 export const measureScrollOffsetScrollable = <T>(): Mono<Scrollable<T>> =>
-    unary((scrollable) =>
+    mono((scrollable) =>
         tube(
             setScrollOffset(),
             isRtlAndInverted(),
@@ -39,7 +39,7 @@ export const measureScrollOffsetScrollable = <T>(): Mono<Scrollable<T>> =>
     );
 
 const setScrollOffset = <T>(): MeasureScrollable<T> =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { dir, elementRef, left, right } = scrollable;
         const { nativeElement } = elementRef;
 
@@ -73,7 +73,7 @@ const isRtlAndInverted = <T>(): IsScrollable<T> =>
     );
 
 const handleRtlAndInverted = <T>(): MeasureScrollable<T> =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { elementRef, left } = scrollable;
         const { nativeElement } = elementRef;
 
@@ -97,7 +97,7 @@ const isRtlAndNegated = <T>(): IsScrollable<T> =>
     );
 
 const handleRtlAndNegated = <T>(): MeasureScrollable<T> =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { elementRef, left } = scrollable;
         const { nativeElement } = elementRef;
 
@@ -119,7 +119,7 @@ const isNormalOrNonRtl = <T>(): IsScrollable<T> =>
     );
 
 const handleNormalOrNonRtl = <T>(): MeasureScrollable<T> =>
-    unary((scrollable) => {
+    mono((scrollable) => {
         const { elementRef, left } = scrollable;
         const { nativeElement } = elementRef;
 

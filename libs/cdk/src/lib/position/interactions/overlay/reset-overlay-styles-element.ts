@@ -1,4 +1,4 @@
-import { unary } from '@core-template';
+import { mono } from '@core-template';
 
 import { extendStyle } from '../../../platform';
 import {
@@ -10,7 +10,7 @@ import {
 export const resetOverlayStylesElement = <T>({
     pane,
 }: FlexibleConnectedStrategyPosition<T>): ResultFlexibleConnectedStrategyPosition<T> =>
-    unary(
+    mono(
         () =>
             pane &&
             extendStyle(

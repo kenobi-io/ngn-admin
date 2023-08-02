@@ -1,4 +1,4 @@
-import { Mono, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 import { auditTime } from 'rxjs/operators';
 
 import { UnaryViewportRulerScroll, ViewportRulerScroll } from '../../data';
@@ -15,7 +15,7 @@ type ChangeViewportRulerScroll = {
  */
 
 export const changeViewportRulerScroll: UnaryViewportRulerScroll = () =>
-    unary(({ viewportRulerScroll: ViewportRulerScroll }) => {
+    mono(({ viewportRulerScroll: ViewportRulerScroll }) => {
         if (ViewportRulerScroll) {
             const { change, throttleTime } = ViewportRulerScroll;
 

@@ -6,8 +6,8 @@ import {
     Condition,
     condition,
     Mono,
+    mono,
     tube,
-    unary,
 } from '@core-template';
 
 import { BlockStrategyScroll } from '../../../data';
@@ -15,7 +15,7 @@ import { BlockStrategyScroll } from '../../../data';
 export const whetherScrollBehaviorSupported = supportsScrollBehavior();
 
 export const disableBlockStrategyScroll = <T>(): Mono<BlockStrategyScroll<T>> =>
-    unary((strategy) =>
+    mono((strategy) =>
         tube(
             canDisableStrategy(),
             disableStrategy(),
@@ -28,7 +28,7 @@ const canDisableStrategy = <T>(): Condition<BlockStrategyScroll<T>> =>
     condition((strategy) => !!strategy?.isEnabled);
 
 const disableStrategy = <T>(): Mono<BlockStrategyScroll<T>> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { document, previousHTMLStyles } = strategy;
         const html = document.documentElement;
         const htmlStyle = html.style;
@@ -54,7 +54,7 @@ const canRestoreScrollBehavior = <T>(): Condition<BlockStrategyScroll<T>> =>
     condition(() => whetherScrollBehaviorSupported);
 
 const restoreScrollBehavior = <T>(): Mono<BlockStrategyScroll<T>> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { document } = strategy;
         const html = document.documentElement;
         const htmlStyle = html.style;

@@ -5,9 +5,9 @@ import {
     condition,
     finish,
     Model,
+    Mono,
+    mono,
     tube,
-    Unary,
-    unary,
 } from '@core-template';
 import { Subscription } from 'rxjs';
 
@@ -21,11 +21,11 @@ import { detachCloseStrategyScroll } from './detach-close-strategy-scroll';
 import { DISABLE_CLOSE_STRATEGY_SCROLL } from './disable-close-strategy-scroll';
 
 type CCS<T> = Condition<CloseStrategyScroll<T>>;
-type UCS<T> = Unary<CloseStrategyScroll<T>>;
+type UCS<T> = Mono<CloseStrategyScroll<T>>;
 
 /** Enables the closing of the attached overlay on scroll. */
 export const enableCloseStrategyScroll = <T>(): UCS<T> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { scrollSubscriptions } = strategy;
         /** Detaches the overlay ref and disables the scroll strategy. */
         const scrollSubscription: Subscription | undefined = new Subscription();
@@ -43,13 +43,13 @@ export const enableCloseStrategyScroll = <T>(): UCS<T> =>
     });
 
 export const ENABLE_CLOSE_STRATEGY_SCROLL = new InjectionToken<
-    Unary<CloseStrategyScroll<Model>>
+    Mono<CloseStrategyScroll<Model>>
 >('[ENABLE_CLOSE_STRATEGY_SCROLL]', {
     factory: () => enableCloseStrategyScroll(),
 });
 
 const detach = <T>(): UCS<T> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { ngZone, overlay } = strategy;
         const disableCloseStrategyScroll = inject(
             // TODO: fix inject because throw error outside construct
@@ -85,10 +85,10 @@ const isThrottleGreatThan: ThrottleGreatThen = (
 const isLengthGreatThan = <T>(length?: number): CCS<T> =>
     condition(() => !!(length && length > 0));
 
-const thenFinished = <T>(): UCS<T> => unary((strategy) => strategy, finish);
+const thenFinished = <T>(): UCS<T> => mono((strategy) => strategy, finish);
 
 const auditTimeInMsDispatcher = <T>(): UCS<T> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { dispatcher } = strategy;
         dispatcher.auditTimeInMs = 0;
         scrolledDispatcherScroll()(dispatcher);
@@ -97,7 +97,7 @@ const auditTimeInMsDispatcher = <T>(): UCS<T> =>
 const scrollSubscriptionsPush = <T>(
     scrollSubscription?: Subscription
 ): UCS<T> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { scrollSubscriptions } = strategy;
         scrollSubscription && scrollSubscriptions?.push(scrollSubscription);
     });
@@ -106,7 +106,7 @@ const detachRegisteredEmitsEventSubscribe = <T>(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     scrollSubscription?: Subscription
 ): UCS<T> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { dispatcher } = strategy;
         scrollSubscription = dispatcher.registeredEmitsEvent?.subscribe(() =>
             detach()(strategy)
@@ -117,7 +117,7 @@ const registeredEmitsEventSubscribe = <T>(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     scrollSubscription?: Subscription
 ): UCS<T> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { config, dispatcher, overlay, viewportRuler } = strategy;
         const { threshold } = { ...config };
         positionViewportRulerScroll(viewportRuler);

@@ -1,6 +1,6 @@
 import { OverlayPositionBuilder } from '@angular/cdk/overlay';
 import { ApplicationRef, inject, INJECTOR } from '@angular/core';
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 import { pipe } from 'rxjs';
 
 import {
@@ -37,7 +37,7 @@ import { setContainerBodyOverlay } from './set-container-body-overlay';
  */
 export const createOverlay = <T>(change?: Partial<Overlay<T>>): Overlay<T> => {
     const injector = inject(INJECTOR);
-    const attachStrategiesScroll = inject<Unary<StrategyScroll<T>>>(
+    const attachStrategiesScroll = inject<Mono<StrategyScroll<T>>>(
         ATTACH_STRATEGY_SCROLL_OVERLAY
     );
     const overlay: Overlay<T> = pipe(
@@ -66,8 +66,8 @@ export const createOverlay = <T>(change?: Partial<Overlay<T>>): Overlay<T> => {
 /** Next overlay unique ID. */
 let nextUniqueId = 0; // TODO: legacy approach fix it
 
-const paneOverlayRef = <T>(): Unary<Overlay<T>> =>
-    unary((overlay) => {
+const paneOverlayRef = <T>(): Mono<Overlay<T>> =>
+    mono((overlay) => {
         const { ref } = overlay;
         ref.pane = ref.document.createElement('div');
         ref.pane.id = `cdk-overlay-${nextUniqueId++}`;
@@ -75,8 +75,8 @@ const paneOverlayRef = <T>(): Unary<Overlay<T>> =>
         ref.host?.appendChild(ref.pane);
     });
 
-const hostOverlayRef = <T>(): Unary<Overlay<T>> =>
-    unary((overlay) => {
+const hostOverlayRef = <T>(): Mono<Overlay<T>> =>
+    mono((overlay) => {
         const { container, ref } = overlay;
         ref.host = document.createElement('div');
 
@@ -86,8 +86,8 @@ const hostOverlayRef = <T>(): Unary<Overlay<T>> =>
         }
     });
 
-const portalOutletOverlayRef = <T>(): Unary<Overlay<T>> =>
-    unary((overlay) => {
+const portalOutletOverlayRef = <T>(): Mono<Overlay<T>> =>
+    mono((overlay) => {
         const { appRef, componentFactoryResolver, injector, ref } = overlay;
 
         if (ref.pane) {
@@ -101,8 +101,8 @@ const portalOutletOverlayRef = <T>(): Unary<Overlay<T>> =>
         }
     });
 
-const directionConfigOverlayRef = <T>(): Unary<Overlay<T>> =>
-    unary((overlay) => {
+const directionConfigOverlayRef = <T>(): Mono<Overlay<T>> =>
+    mono((overlay) => {
         const { config, directionality, ref } = overlay;
 
         if (config && directionality) {
@@ -114,9 +114,9 @@ const directionConfigOverlayRef = <T>(): Unary<Overlay<T>> =>
     });
 
 const configOverlayRefAndAttach = <T>(
-    attachStrategiesScroll: Unary<StrategyScroll<T>>
-): Unary<Overlay<T>> =>
-    unary((overlay) => {
+    attachStrategiesScroll: Mono<StrategyScroll<T>>
+): Mono<Overlay<T>> =>
+    mono((overlay) => {
         const { ref } = overlay;
         ref.config = configOverlay<T>(overlay.config);
         const { config } = overlay.ref;

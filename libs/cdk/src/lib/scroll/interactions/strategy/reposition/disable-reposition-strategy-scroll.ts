@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { Finish, Mono, unary } from '@core-template';
+import { Finish, Mono, mono } from '@core-template';
 
 import { RepositionStrategyScroll } from '../../../data';
 
@@ -10,7 +10,7 @@ type DisableRepositionStrategyScroll = <T>(
 /** Disables repositioning of the attached overlay on scroll. */
 export const disableRepositionStrategyScroll: DisableRepositionStrategyScroll =
     (finish) =>
-        unary((strategy) => {
+        mono((strategy) => {
             if (strategy.subscription) {
                 strategy.subscription.unsubscribe();
                 strategy.subscription = undefined;

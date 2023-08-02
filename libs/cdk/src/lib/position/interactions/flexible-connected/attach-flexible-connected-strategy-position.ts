@@ -1,4 +1,4 @@
-import { Condition, condition, Mono, tube, unary } from '@core-template';
+import { Condition, Mono, condition, mono, tube } from '@core-template';
 
 import { OverlayRef, OverlayRefCapability } from '../../../overlay';
 import { boundingBoxClass } from '../../../platform';
@@ -14,7 +14,7 @@ export const attachFlexibleConnectedStrategyPosition: ParamsCapabilityUnaryFlexi
     unknown,
     OverlayRefCapability<unknown>
 > = ({ overlayRef }) =>
-    unary(({ strategyPosition }) => {
+    mono(({ strategyPosition }) => {
         if (strategyPosition) {
             tube(
                 validate(overlayRef),
@@ -48,20 +48,20 @@ const validate = <T>(
     });
 
 const addBoundingBoxClass = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         strategyPosition?.overlay?.ref?.hostElement?.classList.add(
             boundingBoxClass
         );
     });
 
 const setOverlayRef = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         strategyPosition?.overlay?.ref &&
             (strategyPosition.overlay.ref = overlayRef);
     });
 
 const setStrategyPosition = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         strategyPosition.boundingBox = overlayRef.hostElement;
         strategyPosition.pane = overlayRef.overlayElement;
         strategyPosition.isDisposed = false;
@@ -70,7 +70,7 @@ const setStrategyPosition = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
     });
 
 const resizeSubscribe = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const { resizeSubscription, viewportRulerScroll } = strategyPosition;
         if (resizeSubscription && viewportRulerScroll) {
             resizeSubscription.unsubscribe();

@@ -1,4 +1,4 @@
-import { unary } from '@core-template';
+import { mono } from '@core-template';
 import { outZone } from '@ngn-template/cdk';
 import { merge, takeUntil, UnaryFunction } from 'rxjs';
 
@@ -15,7 +15,7 @@ type ContentWhenStableDetachOverlayRef = <
 
 export const contentWhenStableDetachOverlayRef: ContentWhenStableDetachOverlayRef =
     <T, R, P extends OverlayRefCapability<T>>() =>
-        unary<P, R>(({ overlayRef }) => {
+        mono<P, R>(({ overlayRef }) => {
             const { attachments, config, detachments, host, ngZone, pane } =
                 overlayRef;
             // Normally we wouldn't have to explicitly run this outside the `NgZone`, however

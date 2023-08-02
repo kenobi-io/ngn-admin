@@ -1,13 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import { inject, InjectionToken } from '@angular/core';
-import { Model } from '@core-template';
 
 import { changes, inZone, ZONE_TOKEN } from '../../../platform';
 import { KeyboardDispatcherOverlay } from '../../data';
 
-const keydownListener = function <T>(
-    this: KeyboardDispatcherOverlay<T>,
-    event: KeyboardEvent
+const keydownListener = function (
+    this: KeyboardDispatcherOverlay,
+    event: KeyboardEvent | Event
 ): void {
     const { attachedOverlays, ngZone } = this;
     const overlays = attachedOverlays;
@@ -37,21 +36,22 @@ const keydownListener = function <T>(
     }
 };
 
-export const CHANGE_KEYBOARD_DISPATCHER_OVERLAY = new InjectionToken<
-    KeyboardDispatcherOverlay<Model>
->('[CHANGE_KEYBOARD_DISPATCHER_OVERLAY]');
+export const CHANGE_KEYBOARD_DISPATCHER_OVERLAY =
+    new InjectionToken<KeyboardDispatcherOverlay>(
+        '[CHANGE_KEYBOARD_DISPATCHER_OVERLAY]'
+    );
 
-export const createKeyboardDispatcherOverlay = <T>(
-    change?: Partial<KeyboardDispatcherOverlay<T>>
-): KeyboardDispatcherOverlay<T> => {
-    const kdo: KeyboardDispatcherOverlay<T> = {
+export const createKeyboardDispatcherOverlay = (
+    change?: Partial<KeyboardDispatcherOverlay>
+): KeyboardDispatcherOverlay => {
+    const kdo: KeyboardDispatcherOverlay = {
         attachedOverlays: [],
         document: inject(DOCUMENT),
         isAttached: false,
-        keydownListener: (event: KeyboardEvent): void => {
+        // kindof: 'KeyboardDispatcherOverlay',
+        listener: (event: Event): void => {
             keydownListener.call(kdo, event);
         },
-        kindof: 'KeyboardDispatcherOverlay',
         // TODO: polymorph
         // ngOnDestroy: (): void => {
         //    detachKeyboardDispatcherOverlay(kdo);
@@ -63,8 +63,10 @@ export const createKeyboardDispatcherOverlay = <T>(
     return kdo;
 };
 
-export const KEYBOARD_DISPATCHER_OVERLAY = new InjectionToken<
-    KeyboardDispatcherOverlay<Model>
->('[KEYBOARD_DISPATCHER_OVERLAY]', {
-    factory: () => createKeyboardDispatcherOverlay(),
-});
+export const KEYBOARD_DISPATCHER_OVERLAY =
+    new InjectionToken<KeyboardDispatcherOverlay>(
+        '[KEYBOARD_DISPATCHER_OVERLAY]',
+        {
+            factory: () => createKeyboardDispatcherOverlay(),
+        }
+    );

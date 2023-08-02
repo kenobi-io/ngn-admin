@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Condition, condition, Mono, then, tube, unary } from '@core-template';
+import { Condition, condition, Mono, mono, then, tube } from '@core-template';
 
 import { detachPortalOutlet, hasAttached } from '../../../../portal';
 import { Overlay, OverlayCapability } from '../../../data';
@@ -23,7 +23,7 @@ type DetachOverlayRef = <
  * @returns The portal detachment result.
  */
 export const detachOverlayRef: DetachOverlayRef = <T>() =>
-    unary(
+    mono(
         ({ overlay }) =>
             overlay &&
             tube(
@@ -64,23 +64,23 @@ const hasPortalOutlet = <T>(): Condition<Overlay<T>> =>
     condition((overlay) => !!overlay?.overlayRef.portalOutlet);
 
 const nonePointerEvent = <T>(): Mono<Overlay<T>> =>
-    unary((overlay) => {
+    mono((overlay) => {
         if (overlay?.overlayRef.pane) {
             overlay.overlayRef.pane.style.pointerEvents = 'none';
         }
     });
 
 const unsubscribe = <T>(): Mono<Overlay<T>> =>
-    unary((overlay) => {
+    mono((overlay) => {
         overlay?.overlayRef.locationChanges.unsubscribe();
     });
 
 const detachingPortalOutlet = <T>(): Mono<Overlay<T>> =>
-    unary(
+    mono(
         (overlay) =>
             overlay?.overlayRef.portalOutlet &&
             detachPortalOutlet(overlay.overlayRef.portalOutlet)
     );
 
 const detachmentsNext = <T>(): Mono<Overlay<T>> =>
-    unary((overlay) => overlay?.overlayRef.detachments.next());
+    mono((overlay) => overlay?.overlayRef.detachments.next());

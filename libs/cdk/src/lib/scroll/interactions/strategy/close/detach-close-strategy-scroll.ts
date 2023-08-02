@@ -1,5 +1,5 @@
 import { inject, InjectionToken } from '@angular/core';
-import { CapabilityMono, tube, unary } from '@core-template';
+import { CapabilityMono, mono, tube } from '@core-template';
 
 import { CloseStrategyScroll } from '../../../data';
 import { DISABLE_CLOSE_STRATEGY_SCROLL } from './disable-close-strategy-scroll';
@@ -7,7 +7,7 @@ import { DISABLE_CLOSE_STRATEGY_SCROLL } from './disable-close-strategy-scroll';
 export const detachCloseStrategyScroll: CapabilityMono<
     CloseStrategyScroll<unknown>
 > = () =>
-    unary((strategy) => {
+    mono((strategy) => {
         const disableCloseStrategyScroll = inject(
             DISABLE_CLOSE_STRATEGY_SCROLL
         );

@@ -1,4 +1,4 @@
-import { Condition, condition, Mono, tube, unary } from '@core-template';
+import { Condition, condition, Mono, mono, tube } from '@core-template';
 
 import { isOverlayRefDirectionRtl } from '../../../overlay';
 import { Dimension } from '../../../platform';
@@ -31,7 +31,7 @@ type Param = {
 export const originPoint: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
     Param
 > = ({ containerRect, originRect, pos }: Param) =>
-    unary(({ strategyPosition }) => {
+    mono(({ strategyPosition }) => {
         const data: OriginPointData<unknown> = {
             ...strategyPosition,
             containerRect,
@@ -64,7 +64,7 @@ export const originPoint: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
 // otherwise our positioning will be thrown off.
 // Additionally, when zooming in Safari this fixes the vertical position.
 const assignOriginYOfContainerRectTop = <T>(): Mono<OriginPointData<T>> =>
-    unary((model) => (model.y -= model.containerRect.top));
+    mono((model) => (model.y -= model.containerRect.top));
 
 const doesTheOriginXEqual = <T>(
     originX: XOverlayPosition
@@ -98,7 +98,7 @@ const doesNotTheOriginYEqual = <T>(
 const assignOriginXToTheResultOfBisectionWidthLeft = <T>(): Mono<
     OriginPointData<T>
 > =>
-    unary(
+    mono(
         (model) =>
             // Note: when centering we should always use the `left`
             // offset, otherwise the position will be wrong in RTL.
@@ -106,7 +106,7 @@ const assignOriginXToTheResultOfBisectionWidthLeft = <T>(): Mono<
     );
 
 const assignOriginX = <T>(): Mono<OriginPointData<T>> =>
-    unary((model) => {
+    mono((model) => {
         const { originRect, pos } = model;
         const startX = isOverlayRefDirectionRtl(model)
             ? originRect.right
@@ -120,16 +120,16 @@ const assignOriginX = <T>(): Mono<OriginPointData<T>> =>
 const assignOriginXOfContainerRectLeft = <T>(): Mono<OriginPointData<T>> =>
     // When zooming in Safari the container rectangle contains negative values for the position
     // and we need to re-add them to the calculated coordinates.
-    unary((model) => (model.x -= model.containerRect.left));
+    mono((model) => (model.x -= model.containerRect.left));
 
 const assignOriginY = <T>(): Mono<OriginPointData<T>> =>
-    unary(
+    mono(
         (model) =>
             (model.y = model.originRect.top + model.originRect.height / 2)
     );
 
 const assignOriginYTop = <T>(): Mono<OriginPointData<T>> =>
-    unary(
+    mono(
         (model) =>
             (model.y =
                 model.pos.originY == 'top'
@@ -138,7 +138,7 @@ const assignOriginYTop = <T>(): Mono<OriginPointData<T>> =>
     );
 
 const assignFallbackOriginPointXY = <T>(): Mono<OriginPointData<T>> =>
-    unary((model) => {
+    mono((model) => {
         const { fallback, x, y } = model;
         fallback && (fallback.originPoint = { x, y });
     });

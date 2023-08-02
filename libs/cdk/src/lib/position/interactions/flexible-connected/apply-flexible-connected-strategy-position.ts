@@ -1,7 +1,7 @@
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 // import { and, or } from '@core-template';
 
-import { condition, Mono, tube, unary } from '@core-template';
+import { Mono, condition, mono, tube } from '@core-template';
 
 import { positionViewportRulerScroll } from '../../../scroll';
 import {
@@ -35,7 +35,7 @@ import { resetBoundingBoxStyles } from './resetBoundingBoxStyles';
  */
 export const applyFlexibleConnectedStrategyPosition: UnaryFlexibleConnectedStrategyPosition =
     () =>
-        unary(({ strategyPosition }) => {
+        mono(({ strategyPosition }) => {
             const oFit = {} as FitOverlay;
             strategyPosition &&
                 tube(
@@ -65,43 +65,43 @@ const isDisposedAndNotInBrowser: ConditionApplyFlexibleConnectedStrategyPosition
 const getNarrowedViewportRect = <T>(): Mono<
     FlexibleConnectedStrategyPosition<T>
 > =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the getNarrowedViewportRect method (unchanged).
     });
 
 const getOriginRect = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the getOriginRect method (unchanged).
     });
 
 const getOverlayPoint = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the getOverlayPoint method (unchanged).
     });
 
 const calculateBoundingBoxRect = <T>(): Mono<
     FlexibleConnectedStrategyPosition<T>
 > =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the calculateBoundingBoxRect method (unchanged).
     });
 
 const clearClassesPanel = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the clearClassesPanel method (unchanged).
     });
 
 const resetOverlayStylesElement = <T>(): Mono<
     FlexibleConnectedStrategyPosition<T>
 > =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the resetOverlayStylesElement method (unchanged).
     });
 
 const resetBoundingBoxStyles = <T>(): Mono<
     FlexibleConnectedStrategyPosition<T>
 > =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         // The implementation of the resetBoundingBoxStyles method (unchanged).
     });
 
@@ -116,7 +116,7 @@ const resetBoundingBoxStyles = <T>(): Mono<
  * allows one to re-align the panel without changing the orientation of the panel.
  */
 const reapplyLastPosition = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const {
             fallback,
             isDisposed,
@@ -187,7 +187,7 @@ type UnaryGetNarrowedViewportRectFlexibleConnectedStrategyPosition = <
  */
 export const getNarrowedViewportRect: UnaryGetNarrowedViewportRectFlexibleConnectedStrategyPosition =
     () =>
-        unary(({ strategyPosition }) => {
+        mono(({ strategyPosition }) => {
             const { viewportMargin, viewportRulerScroll } = strategyPosition;
 
             // We recalculate the viewport rect here ourselves, rather than using the ViewportRuler,
@@ -212,7 +212,7 @@ export const getNarrowedViewportRect: UnaryGetNarrowedViewportRectFlexibleConnec
         });
 
 const getOriginRect = <T>(): Mono<FlexibleConnectedStrategyPosition<T>> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const {
             documentRect,
             origin,

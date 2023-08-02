@@ -1,5 +1,5 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
-import { and, condition, tube, unary } from '@core-template';
+import { and, condition, mono, tube } from '@core-template';
 
 import { extendStyle, Point } from '../../../platform';
 import { positionViewportRulerScroll } from '../../../scroll';
@@ -24,7 +24,7 @@ export const setOverlayElementStyles = <T>(
     position: FlexibleConnectedPosition,
     originPoint: Point
 ): ResultFlexibleConnectedStrategyPosition<T> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const data: Data<T> = {
             ...strategyPosition,
             hasExactPosition: false,
@@ -40,7 +40,7 @@ export const setOverlayElementStyles = <T>(
                 originPoint
             ),
             condition(() => !data.hasExactPosition),
-            unary<Data<T>>((model) => (model.styles.position = 'static')),
+            mono<Data<T>>((model) => (model.styles.position = 'static')),
             // Use a transform to apply the offsets. We do this because the `center` positions rely on
             // being in the normal flex flow and setting a `top` / `left` at all will completely throw
             // off the position. We also can't use margins, because they won't have an effect in some
@@ -63,7 +63,7 @@ export const setOverlayElementStyles = <T>(
 // Note that this doesn't apply when we have an exact position, in which case we do want to
 // apply them because they'll be cleared from the bounding box.
 const setMaxHeightMaxWidth = <T>(): Return<T> =>
-    unary((model) => {
+    mono((model) => {
         const {
             hasExactPosition,
             hasFlexibleDimensions,
@@ -77,7 +77,7 @@ const setMaxHeightMaxWidth = <T>(): Return<T> =>
                 () => !!config?.maxHeight,
                 () => hasExactPosition
             ),
-            unary<Data<T>>(
+            mono<Data<T>>(
                 (model) =>
                     (model.styles.maxHeight = coerceCssPixelValue(
                         config?.maxHeight
@@ -88,12 +88,12 @@ const setMaxHeightMaxWidth = <T>(): Return<T> =>
                 () => !hasExactPosition,
                 () => hasFlexibleDimensions
             ),
-            unary((model) => (model.styles.maxHeight = '')),
+            mono((model) => (model.styles.maxHeight = '')),
             and(
                 () => !!config?.maxWidth,
                 () => hasExactPosition
             ),
-            unary(
+            mono(
                 (model) =>
                     (model.styles.maxWidth = coerceCssPixelValue(
                         config?.maxWidth
@@ -104,7 +104,7 @@ const setMaxHeightMaxWidth = <T>(): Return<T> =>
                 () => !hasExactPosition,
                 () => hasFlexibleDimensions
             ),
-            unary((model) => (model.styles.maxWidth = ''))
+            mono((model) => (model.styles.maxWidth = ''))
         )(model);
     });
 
@@ -112,7 +112,7 @@ const setPositionViewportRulerScrollAndExactExtendStyle = <T>(
     position: FlexibleConnectedPosition,
     originPoint: Point
 ): Return<T> =>
-    unary((model) => {
+    mono((model) => {
         const { styleOverlayX, styleOverlayY, viewportRulerScroll } = model;
         positionViewportRulerScroll(viewportRulerScroll);
         tube(
@@ -127,20 +127,20 @@ const setPositionViewportRulerScrollAndExactExtendStyle = <T>(
     });
 
 const setExactPosition = <T>(): Return<T> =>
-    unary(
+    mono(
         (data) =>
             (data.hasExactPosition =
                 !data.hasFlexibleDimensions || data.isPushed)
     );
 
 const translateX = <T>(): Return<T> =>
-    unary(
+    mono(
         (model) =>
             (model.transformString += `translateX(${model.offsetXAndY}px)`)
     );
 
 const translateY = <T>(): Return<T> =>
-    unary(
+    mono(
         (model) =>
             (model.transformString += `translateY(${model.offsetXAndY}px)`)
     );

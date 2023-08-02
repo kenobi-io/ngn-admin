@@ -1,8 +1,8 @@
 import { inject, InjectionToken } from '@angular/core';
-import { setPropertiesValue, Unary, unary } from '@core-template';
+import { Mono, mono, setPropertiesValue } from '@core-template';
 
 type Changes = {
-    <T>(change?: Partial<T>, token?: InjectionToken<T>): Unary<T>;
+    <T>(change?: Partial<T>, token?: InjectionToken<T>): Mono<T>;
     <T>(target: T, change?: Partial<T>, token?: InjectionToken<T>): void;
 };
 
@@ -14,7 +14,7 @@ export const changes: Changes = <T>(
 ): any =>
     target
         ? set(target, change, token)
-        : unary((target) => set(target, change, token));
+        : mono((target) => set(target, change, token));
 
 const set = <T>(
     target: T,

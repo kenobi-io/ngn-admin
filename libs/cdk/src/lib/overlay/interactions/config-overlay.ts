@@ -1,4 +1,4 @@
-import { Unary } from '@core-template';
+import { Mono } from '@core-template';
 
 import { changes } from '../../platform';
 import { StrategyScroll } from '../../scroll';
@@ -10,7 +10,7 @@ export const configOverlay = <
 >(
     config?: Partial<ConfigOverlay<T, K>>,
     strategy?: StrategyScroll<T>,
-    strategiesScrollOverlay?: Unary<StrategyScroll<T>>
+    strategiesScrollOverlay?: Mono<StrategyScroll<T>>
 ): ConfigOverlay<T, K> => {
     const configOverlay: ConfigOverlay<T, K> = {
         backdropClass: 'cdk-overlay-dark-backdrop',

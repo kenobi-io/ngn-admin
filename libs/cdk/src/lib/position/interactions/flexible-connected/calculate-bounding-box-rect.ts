@@ -1,5 +1,5 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Condition, condition, Mono, tube, unary } from '@core-template';
+import { Condition, Mono, condition, mono, tube } from '@core-template';
 
 import { setRtl } from '../../../overlay';
 import { BoundingBoxRect, Point } from '../../../platform';
@@ -39,7 +39,7 @@ type CalculateBoundingBoxRectParam = {
 export const calculateBoundingBoxRect: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
     CalculateBoundingBoxRectParam
 > = ({ boundingBoxRect, origin, position }) =>
-    unary(({ strategyPosition }) => {
+    mono(({ strategyPosition }) => {
         if (strategyPosition) {
             const data: CalculateBoundingBoxRectData<unknown> = {
                 ...strategyPosition,
@@ -98,7 +98,7 @@ const overlayXIsCenter = <T>(): Condition<CalculateBoundingBoxRectData<T>> =>
     );
 
 const setTopAndHeightFromTop = <T>(): Mono<CalculateBoundingBoxRectData<T>> =>
-    unary((data) => {
+    mono((data) => {
         const { origin, viewportMargin, viewportRect } = data;
         if (viewportRect && viewportMargin) {
             data.top = origin.y;
@@ -110,7 +110,7 @@ const setTopAndHeightFromTop = <T>(): Mono<CalculateBoundingBoxRectData<T>> =>
 const setBottomAndHeightFromBottom = <T>(): Mono<
     CalculateBoundingBoxRectData<T>
 > =>
-    unary((data) => {
+    mono((data) => {
         const { origin, viewportMargin, viewportRect } = data;
         if (viewportRect && viewportMargin) {
             data.bottom = viewportRect.height - origin.y + viewportMargin * 2;
@@ -121,7 +121,7 @@ const setBottomAndHeightFromBottom = <T>(): Mono<
 const setTopAndHeightFromCenter = <T>(): Mono<
     CalculateBoundingBoxRectData<T>
 > =>
-    unary((data) => {
+    mono((data) => {
         const { lastBoundingBoxSize, origin, viewportRect } = data;
         if (viewportRect && lastBoundingBoxSize) {
             const smallestDistanceToViewportEdge = Math.min(
@@ -145,7 +145,7 @@ const setTopAndHeightFromCenter = <T>(): Mono<
 const setRightAndWidthFromStart = <T>(): Mono<
     CalculateBoundingBoxRectData<T>
 > =>
-    unary((data) => {
+    mono((data) => {
         const { origin, viewportMargin, viewportRect } = data;
         if (viewportRect && viewportMargin) {
             data.right = viewportRect.width - origin.x + viewportMargin;
@@ -154,7 +154,7 @@ const setRightAndWidthFromStart = <T>(): Mono<
     });
 
 const setRightAndWidthFromEnd = <T>(): Mono<CalculateBoundingBoxRectData<T>> =>
-    unary((data) => {
+    mono((data) => {
         const { origin, viewportRect } = data;
         if (viewportRect) {
             data.left = origin.x;
@@ -165,7 +165,7 @@ const setRightAndWidthFromEnd = <T>(): Mono<CalculateBoundingBoxRectData<T>> =>
 const setLeftAndWidthFromCenter = <T>(): Mono<
     CalculateBoundingBoxRectData<T>
 > =>
-    unary((data) => {
+    mono((data) => {
         const { lastBoundingBoxSize, origin, viewportRect } = data;
         if (viewportRect && lastBoundingBoxSize) {
             const smallestDistanceToViewportEdge = Math.min(
@@ -188,7 +188,7 @@ const setLeftAndWidthFromCenter = <T>(): Mono<
 const setBoundingBoxRect = <T>(
     boundingBoxRect: BoundingBoxRect
 ): Mono<CalculateBoundingBoxRectData<T>> =>
-    unary((data) => {
+    mono((data) => {
         // Update boundingBoxRect with the calculated values
         boundingBoxRect.top = data.top ?? 0;
         boundingBoxRect.left = data.left ?? 0;

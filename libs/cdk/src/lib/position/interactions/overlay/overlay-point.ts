@@ -1,11 +1,11 @@
-import { tube, unary } from '@core-template';
+import { mono, tube } from '@core-template';
 import { UnaryFunction } from 'rxjs';
 
 import { isOverlayRefDirectionRtl } from '../../../overlay';
 import { Dimension, Point } from '../../../platform';
 import {
-    FlexibleConnectedPosition,
     FlexibleConnectedStrategyPosition as Fcsp,
+    FlexibleConnectedPosition,
     ResultFlexibleConnectedStrategyPosition as Rfcsp,
     XOverlayPosition,
     YOverlayPosition,
@@ -32,7 +32,7 @@ export const overlayPoint = <T>(
     overlayRect: Dimension,
     position: FlexibleConnectedPosition
 ): Rfcsp<T> =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const value: Value<T> = {
             originPoint,
             overlayRect,
@@ -77,13 +77,13 @@ const doesTheYPositionEqual =
         model.position.overlayY == overlayY;
 
 const assignOverlayStartXToTheResultOfBisectionWidth = <T>(): Unary<T> =>
-    unary((model) => (model.overlayStartX = -model.overlayRect.width / 2));
+    mono((model) => (model.overlayStartX = -model.overlayRect.width / 2));
 
 const assignOverlayStartYToTheResultOfBisectionHeight = <T>(): Unary<T> =>
-    unary((model) => (model.overlayStartY = -model.overlayRect.height / 2));
+    mono((model) => (model.overlayStartY = -model.overlayRect.height / 2));
 
 const assignOverlayStartXToTheResultOfRectWidth = <T>(): Unary<T> =>
-    unary(
+    mono(
         (model) =>
             (model.overlayStartX = isOverlayRefDirectionRtl(model.sp)
                 ? -model.overlayRect.width
@@ -91,7 +91,7 @@ const assignOverlayStartXToTheResultOfRectWidth = <T>(): Unary<T> =>
     );
 
 const assignOverlayStartXToTheResultOfZero = <T>(): Unary<T> =>
-    unary(
+    mono(
         (model) =>
             (model.overlayStartX = isOverlayRefDirectionRtl(model.sp)
                 ? 0
@@ -99,7 +99,7 @@ const assignOverlayStartXToTheResultOfZero = <T>(): Unary<T> =>
     );
 
 const assignOverlayStartYToTheResultOfRectHeight = <T>(): Unary<T> =>
-    unary(
+    mono(
         (model) =>
             (model.overlayStartY =
                 model.position.overlayY == 'top'
@@ -108,7 +108,7 @@ const assignOverlayStartYToTheResultOfRectHeight = <T>(): Unary<T> =>
     );
 
 const assignOriginPointXY = <T>(): Unary<T> =>
-    unary((model) => {
+    mono((model) => {
         const { overlayStartX, overlayStartY, sp } = model;
         sp.fallback &&
             (sp.fallback.overlayPoint = {

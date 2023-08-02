@@ -1,4 +1,4 @@
-import { tube, Unary, unary } from '@core-template';
+import { Mono, mono, tube } from '@core-template';
 import { filter } from 'rxjs/operators';
 
 import { Scrollable } from '../../../directive';
@@ -19,8 +19,8 @@ type AncestorDispatcherScroll<T> = DispatcherScroll<T> & {
  */
 export const ancestorDispatcherScroll = <T>(
     directive: Scrollable<T>
-): Unary<AncestorDispatcherScroll<T>> =>
-    unary((dispatcher) =>
+): Mono<AncestorDispatcherScroll<T>> =>
+    mono((dispatcher) =>
         tube(
             setAncestorContainersDispatcherScroll(directive),
             scrolledDispatcherScroll(),
@@ -28,8 +28,8 @@ export const ancestorDispatcherScroll = <T>(
         )(dispatcher)
     );
 
-const setAncestorEmitsEvent = <T>(): Unary<AncestorDispatcherScroll<T>> =>
-    unary((dispatcher) => {
+const setAncestorEmitsEvent = <T>(): Mono<AncestorDispatcherScroll<T>> =>
+    mono((dispatcher) => {
         const { directives, scrolled } = dispatcher;
         dispatcher.ancestorEmitsEvent = scrolled.pipe(
             filter((target) => {

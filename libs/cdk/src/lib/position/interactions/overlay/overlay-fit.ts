@@ -1,5 +1,5 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Mono, tube, unary } from '@core-template';
+import { Mono, mono, tube } from '@core-template';
 
 import { Dimension, Point } from '../../../platform';
 import {
@@ -34,7 +34,7 @@ type ParamsFitOverlay = {
 export const overlayFit: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
     ParamsFitOverlay
 > = (paramsFitOverlay) =>
-    unary((strategyPosition) => {
+    mono((strategyPosition) => {
         const data = {
             ...strategyPosition,
             offsetX: 0,
@@ -53,7 +53,7 @@ export const overlayFit: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
     });
 
 const calculateOverlayFit = <T>(overlayFit?: FitOverlay): Mono<OverlayFit<T>> =>
-    unary((data) => {
+    mono((data) => {
         const { rawOverlayRect, visibleHeight, visibleWidth } = data;
         // Visible parts of the element on each axis.
         const visibleArea = (visibleWidth ?? 0) * (visibleHeight ?? 0);
@@ -79,7 +79,7 @@ const calculateOverlayFit = <T>(overlayFit?: FitOverlay): Mono<OverlayFit<T>> =>
  * @returns The rounded overlay rectangle.
  */
 const getRoundedBoundingClientRect = <T>(): Mono<OverlayFit<T>> =>
-    unary((data) => {
+    mono((data) => {
         const { overlayRect } = data;
         if (overlayRect) {
             data.rawOverlayRect = {
@@ -104,7 +104,7 @@ const getOffset = <T>(
     direction: 'x' | 'y',
     position: ConnectedPosition
 ): Mono<OverlayFit<T>> =>
-    unary((data) => {
+    mono((data) => {
         const { offsetX, offsetY } = data;
         if (direction === 'x') {
             // We don't do something like `position['offset' + axis]` in
@@ -129,7 +129,7 @@ const subtractOverflows = <T>(
     side: 'width' | 'height',
     point: Point
 ): Mono<OverlayFit<T>> =>
-    unary((data) => {
+    mono((data) => {
         const { offsetX, offsetY, rawOverlayRect, viewport } = data;
         let { x, y } = point;
 

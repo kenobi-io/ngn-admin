@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { CapabilityMono, unary } from '@core-template';
+import { CapabilityMono, mono } from '@core-template';
 
 import { CloseStrategyScroll } from '../../../data';
 
@@ -7,7 +7,7 @@ import { CloseStrategyScroll } from '../../../data';
 export const attachCloseStrategyScroll: CapabilityMono<
     CloseStrategyScroll<unknown>
 > = () =>
-    unary((strategy) => {
+    mono((strategy) => {
         strategy.overlay = strategy.config?.overlay;
     });
 

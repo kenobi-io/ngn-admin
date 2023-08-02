@@ -1,5 +1,5 @@
 import { inject, InjectionToken } from '@angular/core';
-import { CapabilityMono, tube, unary } from '@core-template';
+import { CapabilityMono, mono, tube } from '@core-template';
 
 import { RepositionStrategyScroll } from '../../../data';
 import { DISABLE_REPOSITION_STRATEGY_SCROLL } from './disable-reposition-strategy-scroll';
@@ -7,7 +7,7 @@ import { DISABLE_REPOSITION_STRATEGY_SCROLL } from './disable-reposition-strateg
 export const detachRepositionStrategyScroll: CapabilityMono<
     RepositionStrategyScroll<unknown>
 > = (finish) =>
-    unary((strategy) => {
+    mono((strategy) => {
         const disableRepositionStrategyScroll = inject(
             DISABLE_REPOSITION_STRATEGY_SCROLL
         );

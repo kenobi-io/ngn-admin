@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 
 import { Zonality } from '../../../directive';
 
@@ -9,5 +9,5 @@ type Fn<T> = (arg: T) => T;
 export const outZone = <T>(ngZone: NgZone, fn: Function): T =>
     ngZone.runOutsideAngular<T>(() => fn());
 
-export const outNgZone = <T extends Zonality>(fn: Fn<T>): Unary<T> =>
-    unary((data) => data.ngZone.runOutsideAngular<T>(() => fn(data)));
+export const outNgZone = <T extends Zonality>(fn: Fn<T>): Mono<T> =>
+    mono((data) => data.ngZone.runOutsideAngular<T>(() => fn(data)));

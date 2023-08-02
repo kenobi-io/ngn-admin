@@ -5,9 +5,9 @@ import {
     Condition,
     condition,
     Mono,
+    mono,
     then,
     tube,
-    unary,
 } from '@core-template';
 
 import {
@@ -29,7 +29,7 @@ type ScrolledSubscribe<T> = RepositionStrategyScroll<T> & {
 export const enableRepositionStrategyScroll: CapabilityMono<
     RepositionStrategyScroll<unknown>
 > = (finish) =>
-    unary((strategy) => {
+    mono((strategy) => {
         tube(
             isSubscriptionExist(),
             then(auditTimeInMs(), scrolledSubscribe())
@@ -46,13 +46,13 @@ const isSubscriptionExist = <T>(): Condition<RepositionStrategyScroll<T>> =>
     condition((strategy) => !strategy?.subscription);
 
 const auditTimeInMs = <T>(): Mono<ScrolledSubscribe<T>> =>
-    unary((strategy) => {
+    mono((strategy) => {
         const { config, dispatcher } = strategy;
         dispatcher.auditTimeInMs = config?.scrollThrottle || 0;
     });
 
 const scrolledSubscribe = <T>(): Mono<ScrolledSubscribe<T>> =>
-    unary((strategy) =>
+    mono((strategy) =>
         tube(
             updateOverlayPosition(),
             canConfigAutoClose(),
@@ -65,13 +65,13 @@ const scrolledSubscribe = <T>(): Mono<ScrolledSubscribe<T>> =>
     );
 
 const updateOverlayPosition = <T>(): Mono<RepositionStrategyScroll<T>> =>
-    unary(
+    mono(
         (strategy) =>
             strategy.overlayRef && updatePositionOverlayRef(strategy.overlayRef)
     );
 
 const checkAutoClose = <T>(): Mono<ScrolledSubscribe<T>> =>
-    unary((strategy) => {
+    mono((strategy) => {
         strategy.overlayRect =
             strategy.overlayRef?.overlayElement?.getBoundingClientRect();
         sizeViewportRulerScroll(strategy.viewportRuler);

@@ -1,4 +1,4 @@
-import { Unary, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 
 import { Scrollable } from '../../../directive';
 import { DispatcherScroll } from '../../data';
@@ -9,8 +9,8 @@ import { DispatcherScroll } from '../../data';
  */
 export const destroyDispatcherScroll = <T>(
     directive: Scrollable<T>
-): Unary<DispatcherScroll<T>> =>
-    unary((dispatcher) => {
+): Mono<DispatcherScroll<T>> =>
+    mono((dispatcher) => {
         const { scrollContainers } = dispatcher;
         const scrollableReference = scrollContainers.get(directive);
         if (scrollableReference) {

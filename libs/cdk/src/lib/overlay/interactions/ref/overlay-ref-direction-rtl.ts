@@ -1,4 +1,4 @@
-import { Mono, unary } from '@core-template';
+import { Mono, mono } from '@core-template';
 
 import { OverlayCapability } from '../../data';
 
@@ -13,7 +13,7 @@ export const setRtl = <T>(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     isRtl: boolean
 ): Mono<Partial<OverlayCapability<T>>> =>
-    unary(({ overlay }) => {
+    mono(({ overlay }) => {
         if (overlay) {
             isRtl = isOverlayRefDirectionRtl({ overlay });
         }

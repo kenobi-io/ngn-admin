@@ -1,4 +1,4 @@
-import { CapabilityMono, unary } from '@core-template';
+import { CapabilityMono, mono } from '@core-template';
 
 import { OutsideClickDispatcherOverlayCapability } from '../../data';
 
@@ -6,7 +6,7 @@ import { OutsideClickDispatcherOverlayCapability } from '../../data';
 export const detachOutsideClickDispatcherOverlay: CapabilityMono<
     OutsideClickDispatcherOverlayCapability
 > = (finish) =>
-    unary(({ dispatcher }) => {
+    mono(({ dispatcher }) => {
         const {
             cursorOriginalValue,
             cursorStyleIsSet,

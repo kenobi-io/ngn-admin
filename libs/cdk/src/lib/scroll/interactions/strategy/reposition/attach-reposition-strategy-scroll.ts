@@ -1,6 +1,6 @@
 /** Attaches this scroll strategy to an overlay. */
 import { InjectionToken } from '@angular/core';
-import { CapabilityMono, unary } from '@core-template';
+import { CapabilityMono, mono } from '@core-template';
 
 import { RepositionStrategyScroll } from '../../../data';
 
@@ -14,7 +14,7 @@ export const attachRepositionStrategyScroll: CapabilityMono<
 > = (
     finish // TODO: add for all export func finish param and pass to unary
 ) =>
-    unary((strategy) => {
+    mono((strategy) => {
         // TODO: fix is approach - destructor + spread
         const { overlayRef } = { ...strategy.config };
         strategy.overlayRef = overlayRef;

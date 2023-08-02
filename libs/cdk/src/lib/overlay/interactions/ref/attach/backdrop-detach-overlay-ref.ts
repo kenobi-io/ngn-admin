@@ -1,4 +1,4 @@
-import { unary } from '@core-template';
+import { mono } from '@core-template';
 import { outZone } from '@ngn-template/cdk';
 import { UnaryFunction } from 'rxjs';
 
@@ -13,7 +13,7 @@ type BackdropDetachOverlayRef = <
 
 /** Detaches the backdrop (if any) associated with the overlay. */
 export const backdropDetachOverlayRef: BackdropDetachOverlayRef = () =>
-    unary(({ overlayRef }) => {
+    mono(({ overlayRef }) => {
         const {
             animationsDisabled,
             backdropElement,
