@@ -10,9 +10,9 @@ import { Zonality } from '../../../directive';
 import { DispatcherOverlay } from './dispatcher-overlay';
 
 type KeydownListener = {
-    (event: KeyboardEvent): void;
+    (event: Event): void;
     // eslint-disable-next-line no-use-before-define
-    <T>(this: KeyboardDispatcherOverlay<T>, event: KeyboardEvent): void;
+    (this: KeyboardDispatcherOverlay, event: KeyboardEvent): void;
 };
 
 /**
@@ -20,9 +20,14 @@ type KeydownListener = {
  * if any. It maintains a list of attached overlays to determine best suited overlay based
  * on event target and order of overlay opens.
  */
-export type KeyboardDispatcherOverlay<T> = Zonality &
-    Partial<DispatcherOverlay<T>> & {
-        kindof: 'KeyboardDispatcherOverlay';
+export type KeyboardDispatcherOverlay = Zonality &
+    DispatcherOverlay &
+    Partial<{
+        // kindof: 'KeyboardDispatcherOverlay';
         /** @breaking-change 14.0.0 _ngZone will be required. */
-        keydownListener: KeydownListener;
-    };
+        listener: KeydownListener;
+    }>;
+
+export type KeyboardDispatcherOverlayCapability = {
+    dispatcher: KeyboardDispatcherOverlay;
+};

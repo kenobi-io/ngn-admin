@@ -1,25 +1,22 @@
 import { ElementRef } from '@angular/core';
-import { Condition, tube, Unary, unary } from '@core-template';
+import { Condition, condition, Mono, tube, unary } from '@core-template';
 
 import {
-    FlexibleConnectedStrategyPosition as Fcsp,
-    ResultFlexibleConnectedStrategyPosition as Rfcsp,
+    FlexibleConnectedStrategyPositionCapability,
+    UnaryFlexibleConnectedStrategyPosition,
 } from '../../data';
 
-type Data<T> = {
+type Data<T> = Partial<FlexibleConnectedStrategyPositionCapability<T>> & {
     height: number;
-    sp: Fcsp<T>;
     width: number;
 };
-type CD<T> = Condition<Data<T>>;
 
 /** @internal Returns the ClientRect of the current origin. */
-export const originRect =
-    <T>(): Rfcsp<T> =>
-    (strategyPosition) => {
+export const originRect: UnaryFlexibleConnectedStrategyPosition = <T>() =>
+    unary(({ strategyPosition }) => {
         const value: Data<T> = {
             height: 0,
-            sp: strategyPosition,
+            ...strategyPosition,
             width: 0,
         };
 
@@ -31,55 +28,64 @@ export const originRect =
             doesNotTheOriginInstanceof(),
             assignOriginRect()
         )(value);
-        return strategyPosition;
-    };
+    });
 
-const doesTheOriginInstanceofElementRef =
-    <T>(): CD<T> =>
-    (model): boolean =>
-        model.sp.origin instanceof ElementRef;
+const doesTheOriginInstanceofElementRef = <T>(): Condition<Data<T>> =>
+    condition((model) => model?.strategyPosition?.origin instanceof ElementRef);
 
-const doesTheOriginInstanceofElement =
-    <T>(): CD<T> =>
-    (model): boolean =>
-        model.sp.origin instanceof Element;
+const doesTheOriginInstanceofElement = <T>(): Condition<Data<T>> =>
+    condition((model) => model?.strategyPosition?.origin instanceof Element);
 
-const doesNotTheOriginInstanceof =
-    <T>(): CD<T> =>
-    (model): boolean =>
-        !(model.sp.origin instanceof Element) &&
-        !(model.sp.origin instanceof ElementRef);
+const doesNotTheOriginInstanceof = <T>(): Condition<Data<T>> =>
+    condition(
+        (model) =>
+            !(model?.strategyPosition?.origin instanceof Element) &&
+            !(model?.strategyPosition?.origin instanceof ElementRef)
+    );
 
-const assignOriginElementRefBoundingClientRect = <T>(): Unary<T> =>
+const assignOriginElementRefBoundingClientRect = <T>(): Mono<
+    Partial<FlexibleConnectedStrategyPositionCapability<T>>
+> =>
     unary(
         (model) =>
-            (model.sp.originRect = (
-                model.sp.origin as ElementRef
+            model.strategyPosition &&
+            (model.strategyPosition.originRect = (
+                model.strategyPosition?.origin as ElementRef
             ).nativeElement.getBoundingClientRect())
     );
 
-const assignOriginElementBoundingClientRect = <T>(): Unary<T> =>
+const assignOriginElementBoundingClientRect = <T>(): Mono<
+    Partial<FlexibleConnectedStrategyPositionCapability<T>>
+> =>
     unary(
         (model) =>
-            (model.sp.originRect = (
-                model.sp.origin as Element
+            model.strategyPosition &&
+            (model.strategyPosition.originRect = (
+                model.strategyPosition?.origin as Element
             ).getBoundingClientRect())
     );
 
-const assignOriginRect = <T>(): Unary<T> =>
+const assignOriginRect = <T>(): Mono<
+    Partial<FlexibleConnectedStrategyPositionCapability<T>>
+> =>
     unary((model) => {
-        const { sp } = model;
-        const { origin } = sp;
-        if (!(origin instanceof Element) && !(origin instanceof ElementRef)) {
-            const width = origin.width || 0;
-            const height = origin.height || 0;
-            sp.originRect = {
-                bottom: origin.y + height,
-                height,
-                left: origin.x,
-                right: origin.x + width,
-                top: origin.y,
-                width,
-            };
+        const { strategyPosition } = model;
+        if (strategyPosition) {
+            const { origin } = strategyPosition;
+            if (
+                !(origin instanceof Element) &&
+                !(origin instanceof ElementRef)
+            ) {
+                const width = origin.width || 0;
+                const height = origin.height || 0;
+                strategyPosition.originRect = {
+                    bottom: origin.y + height,
+                    height,
+                    left: origin.x,
+                    right: origin.x + width,
+                    top: origin.y,
+                    width,
+                };
+            }
         }
     });

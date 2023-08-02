@@ -1,46 +1,86 @@
-import { OverlayRef } from '../../../data';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Condition, condition, Mono, then, tube, unary } from '@core-template';
+
+import { detachPortalOutlet, hasAttached } from '../../../../portal';
+import { Overlay, OverlayCapability } from '../../../data';
+import {
+    detachKeyboardDispatcherOverlay,
+    detachOutsideClickDispatcherOverlay,
+    Key,
+    Out,
+    removeDispatcherOverlay,
+} from '../../dispatcher';
+import { backdropDetachOverlayRef } from './backdrop-detach-overlay-ref';
+import { contentWhenStableDetachOverlayRef } from './content-when-stable-detach-overlay-ref';
+
+type DetachOverlayRef = <
+    T,
+    K extends Partial<OverlayCapability<T>> = Partial<OverlayCapability<T>>
+>() => Mono<K>;
 
 /**
  * Detaches an overlay from a portal.
  * @returns The portal detachment result.
  */
-export const detachOverlayRef = <T>(
-    overlayRef: OverlayRef<T>
-): OverlayRef<T> => {
-    // const {
-    //     detachments,
-    //     keyboardDispatcher,
-    //     locationChanges,
-    //     outsideClickDispatcher,
-    //     pane,
-    //     portalOutlet,
-    //     // positionStrategy,
-    //     // strategiesScroll: scrollStrategy,
-    // } = overlayRef;
+export const detachOverlayRef: DetachOverlayRef = <T>() =>
+    unary(
+        ({ overlay }) =>
+            overlay &&
+            tube(
+                isNotAttached(),
+                then(
+                    backdropDetachOverlayRef<T, Overlay<T>>(),
+                    // When the overlay is detached, the pane element should disable pointer events.
+                    // This is necessary because otherwise the pane element will cover the page and disable
+                    // pointer events therefore. Depends on the position strategy and the applied pane boundaries.
+                    nonePointerEvent<T>(),
+                    hasPortalOutlet(),
+                    // positionStrategy?.detach && positionStrategy.detach(); // TODO: position
+                    // scrollStrategy?.disable(); // TODO: scroll
+                    detachingPortalOutlet<T>(),
+                    // Only emit after everything is detached.
+                    detachmentsNext<T>(),
+                    // Remove this overlay from keyboard dispatcher tracking.
+                    removeDispatcherOverlay<T, Overlay<T>, Key<T>>(
+                        detachKeyboardDispatcherOverlay
+                    ),
+                    // Keeping the host element in the DOM can cause scroll jank, because it still gets
+                    // rendered, even though it's transparent and unclickable which is why we remove it.
+                    contentWhenStableDetachOverlayRef<T, Overlay<T>>(),
+                    unsubscribe(),
+                    removeDispatcherOverlay<T, Overlay<T>, Out<T>>(
+                        detachOutsideClickDispatcherOverlay
+                    )
+                )
+            )(overlay)
+    );
 
-    // if (!hasAttached(portalOutlet?.portal)) {
-    //     return overlayRef;
-    // }
-    // backdropDetachOverlayRef(overlayRef);
-    // // When the overlay is detached, the pane element should disable pointer events.
-    // // This is necessary because otherwise the pane element will cover the page and disable
-    // // pointer events therefore. Depends on the position strategy and the applied pane boundaries.
-    // pane && (pane.style.pointerEvents = 'none');
-    // // positionStrategy?.detach && positionStrategy.detach();
-    // // scrollStrategy?.disable();
+const isNotAttached = <T>(): Condition<Overlay<T>> =>
+    condition((overlay) =>
+        hasAttached(overlay?.overlayRef.portalOutlet?.portal)
+    );
 
-    // if (portalOutlet) {
-    //     detachPortalOutlet(portalOutlet);
-    //     portalOutlet.detachmentResult = portalOutlet.attachedPortal;
-    // }
-    // // Only emit after everything is detached.
-    // detachments.next();
-    // // Remove this overlay from keyboard dispatcher tracking.
-    // keyboardDispatcher.remove(overlayRef);
-    // // Keeping the host element in the DOM can cause scroll jank, because it still gets
-    // // rendered, even though it's transparent and unclickable which is why we remove it.
-    // contentWhenStableDetachOverlayRef(overlayRef);
-    // locationChanges.unsubscribe();
-    // outsideClickDispatcher.remove(overlayRef);
-    return overlayRef;
-};
+const hasPortalOutlet = <T>(): Condition<Overlay<T>> =>
+    condition((overlay) => !!overlay?.overlayRef.portalOutlet);
+
+const nonePointerEvent = <T>(): Mono<Overlay<T>> =>
+    unary((overlay) => {
+        if (overlay?.overlayRef.pane) {
+            overlay.overlayRef.pane.style.pointerEvents = 'none';
+        }
+    });
+
+const unsubscribe = <T>(): Mono<Overlay<T>> =>
+    unary((overlay) => {
+        overlay?.overlayRef.locationChanges.unsubscribe();
+    });
+
+const detachingPortalOutlet = <T>(): Mono<Overlay<T>> =>
+    unary(
+        (overlay) =>
+            overlay?.overlayRef.portalOutlet &&
+            detachPortalOutlet(overlay.overlayRef.portalOutlet)
+    );
+
+const detachmentsNext = <T>(): Mono<Overlay<T>> =>
+    unary((overlay) => overlay?.overlayRef.detachments.next());

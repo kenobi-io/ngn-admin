@@ -4,10 +4,10 @@ import {
     coerceNumberProperty,
 } from '@angular/cdk/coercion';
 import { CdkDropList, DropListRef } from '@angular/cdk/drag-drop';
-import { UnParamsUnary, tube, unary } from '@core-template';
+import { CapabilityMono, tube, unary } from '@core-template';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-type DropListSetup = UnParamsUnary<DropListRef<CdkDropList>>;
+type DropListSetup = CapabilityMono<DropListRef<CdkDropList>>;
 
 export const setupInputSyncSubscription: DropListSetup = () =>
     unary((ref) =>

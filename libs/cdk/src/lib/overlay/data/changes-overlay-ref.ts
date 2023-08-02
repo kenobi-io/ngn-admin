@@ -45,7 +45,7 @@ type SizeOverlayRef = {
     hostElement: HTMLElement;
     backdropElement: HTMLElement | null;
     outsidePointerEvents: Subject<MouseEvent>;
-    keydownEvents: Subject<KeyboardEvent>;
+    keydownEvents: Subject<KeyboardEvent | Event>;
 };
 
 export type ChangesOverlayRef<T> =

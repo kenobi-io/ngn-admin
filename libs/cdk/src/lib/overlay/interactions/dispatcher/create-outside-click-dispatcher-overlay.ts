@@ -1,6 +1,5 @@
 import { DOCUMENT } from '@angular/common';
 import { inject, InjectionToken } from '@angular/core';
-import { Model } from '@core-template';
 
 import {
     changes,
@@ -13,17 +12,17 @@ import { hasAttached } from '../../../portal';
 import { OutsideClickDispatcherOverlay } from '../../data';
 
 /** Store pointerdown event target to track origin of click. */
-const pointerDownListenerHandler = function <T>(
-    this: OutsideClickDispatcherOverlay<T>,
+const pointerDownListenerHandler = function (
+    this: OutsideClickDispatcherOverlay,
     event: PointerEvent
 ): void {
     this.pointerDownEventTarget = eventTargetShadowDom(event);
 };
 
 /** Click event listener that will be attached to the body propagate phase. */
-const clickListenerHandler = function <T>(
-    this: OutsideClickDispatcherOverlay<T>,
-    event: MouseEvent
+const clickListenerHandler = function (
+    this: OutsideClickDispatcherOverlay,
+    event: MouseEvent | Event
 ): void {
     const { attachedOverlays, ngZone, pointerDownEventTarget } = this;
     const target = eventTargetShadowDom(event);
@@ -79,18 +78,16 @@ const clickListenerHandler = function <T>(
     }
 };
 
-export const CHANGE_OUTSIDE_CLICK_DISPATCHER_OVERLAY = new InjectionToken<
-    OutsideClickDispatcherOverlay<Model>
->('[CHANGE_OUTSIDE_CLICK_DISPATCHER_OVERLAY]');
+export const CHANGE_OUTSIDE_CLICK_DISPATCHER_OVERLAY =
+    new InjectionToken<OutsideClickDispatcherOverlay>(
+        '[CHANGE_OUTSIDE_CLICK_DISPATCHER_OVERLAY]'
+    );
 
-export const createOutsideClickDispatcherOverlay = <T>(
-    change?: Partial<OutsideClickDispatcherOverlay<T>>
-): OutsideClickDispatcherOverlay<T> => {
-    const outside: OutsideClickDispatcherOverlay<T> = {
+export const createOutsideClickDispatcherOverlay = (
+    change?: Partial<OutsideClickDispatcherOverlay>
+): OutsideClickDispatcherOverlay => {
+    const outside: OutsideClickDispatcherOverlay = {
         attachedOverlays: [],
-        clickListener: (event: MouseEvent): void => {
-            clickListenerHandler.call(outside, event);
-        },
         cursorOriginalValue: 'inherit',
         cursorStyleIsSet: false,
         document: inject(DOCUMENT),
@@ -99,7 +96,10 @@ export const createOutsideClickDispatcherOverlay = <T>(
         // ngOnDestroy: () => {
         //    destroy.call(outside);
         // },
-        kindof: 'OutsideClickDispatcherOverlay',
+        // kindof: 'OutsideClickDispatcherOverlay',
+        listener: (event: Event): void => {
+            clickListenerHandler.call(outside, event);
+        },
         ngZone: inject(ZONE_TOKEN),
         platform: inject(PLATFORM_TOKEN),
         pointerDownListener: (event: PointerEvent): void => {
@@ -111,8 +111,10 @@ export const createOutsideClickDispatcherOverlay = <T>(
     return outside;
 };
 
-export const OUTSIDE_CLICK_DISPATCHER_OVERLAY = new InjectionToken<
-    OutsideClickDispatcherOverlay<Model>
->('[OUTSIDE_CLICK_DISPATCHER_OVERLAY]', {
-    factory: () => createOutsideClickDispatcherOverlay(),
-});
+export const OUTSIDE_CLICK_DISPATCHER_OVERLAY =
+    new InjectionToken<OutsideClickDispatcherOverlay>(
+        '[OUTSIDE_CLICK_DISPATCHER_OVERLAY]',
+        {
+            factory: () => createOutsideClickDispatcherOverlay(),
+        }
+    );

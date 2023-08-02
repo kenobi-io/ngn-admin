@@ -7,6 +7,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { Condition, Mono } from '@core-template';
 import { Observable, Subject } from 'rxjs';
 
 import { Zonality } from '../../directive';
@@ -43,6 +44,12 @@ type ChangesViewportRulerScroll = {
     viewportSize: SizeViewportRulerScroll;
 };
 
+type ChangeListener = {
+    (event: Event): void;
+    // eslint-disable-next-line no-use-before-define
+    (this: ViewportRulerScroll, event: Event): void;
+};
+
 /**
  * Simple utility for getting the bounds of the browser viewport.
  * @docs-private
@@ -51,9 +58,26 @@ export type ViewportRulerScroll = Zonality &
     Partial<ChangesViewportRulerScroll> & {
         /** Stream of viewport change events. */
         readonly change: Subject<Event>;
-        changeListenerViewportRulerScroll: (event: Event) => void;
+        listener: ChangeListener;
         /** Used to reference correct document/window */
         document: Document;
         platform: Platform;
         throttleTime: number;
     };
+export type ViewportRulerScrollCapability = {
+    viewportRulerScroll?: ViewportRulerScroll;
+};
+
+export type UnaryViewportRulerScroll = <
+    R extends Partial<ViewportRulerScrollCapability>
+>() => Mono<R>;
+
+export type ParamsUnaryViewportRulerScroll<K> = <
+    R extends Partial<ViewportRulerScrollCapability>
+>(
+    param: K
+) => Mono<R>;
+
+export type ConditionUnaryViewportRulerScroll = <
+    R extends Partial<ViewportRulerScrollCapability>
+>() => Condition<R>;

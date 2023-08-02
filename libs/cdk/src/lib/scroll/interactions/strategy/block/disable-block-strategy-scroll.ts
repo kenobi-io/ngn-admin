@@ -2,21 +2,19 @@ import { supportsScrollBehavior } from '@angular/cdk/platform';
 import { InjectionToken } from '@angular/core';
 import {
     and,
+    CapabilityMono,
     Condition,
     condition,
+    Mono,
     tube,
-    Unary,
     unary,
-    UnParamsUnary,
 } from '@core-template';
 
 import { BlockStrategyScroll } from '../../../data';
 
 export const whetherScrollBehaviorSupported = supportsScrollBehavior();
 
-export const disableBlockStrategyScroll = <T>(): Unary<
-    BlockStrategyScroll<T>
-> =>
+export const disableBlockStrategyScroll = <T>(): Mono<BlockStrategyScroll<T>> =>
     unary((strategy) =>
         tube(
             canDisableStrategy(),
@@ -29,7 +27,7 @@ export const disableBlockStrategyScroll = <T>(): Unary<
 const canDisableStrategy = <T>(): Condition<BlockStrategyScroll<T>> =>
     condition((strategy) => !!strategy?.isEnabled);
 
-const disableStrategy = <T>(): Unary<BlockStrategyScroll<T>> =>
+const disableStrategy = <T>(): Mono<BlockStrategyScroll<T>> =>
     unary((strategy) => {
         const { document, previousHTMLStyles } = strategy;
         const html = document.documentElement;
@@ -55,7 +53,7 @@ const disableStrategy = <T>(): Unary<BlockStrategyScroll<T>> =>
 const canRestoreScrollBehavior = <T>(): Condition<BlockStrategyScroll<T>> =>
     condition(() => whetherScrollBehaviorSupported);
 
-const restoreScrollBehavior = <T>(): Unary<BlockStrategyScroll<T>> =>
+const restoreScrollBehavior = <T>(): Mono<BlockStrategyScroll<T>> =>
     unary((strategy) => {
         const { document } = strategy;
         const html = document.documentElement;
@@ -72,7 +70,7 @@ const restoreScrollBehavior = <T>(): Unary<BlockStrategyScroll<T>> =>
     });
 
 export const DISABLE_BLOCK_STRATEGY_SCROLL = new InjectionToken<
-    UnParamsUnary<BlockStrategyScroll<unknown>>
+    CapabilityMono<BlockStrategyScroll<unknown>>
 >('[DISABLE_BLOCK_STRATEGY_SCROLL]', {
     factory: () => disableBlockStrategyScroll,
 });

@@ -1,257 +1,199 @@
-import { Condition, tube, Unary, unary } from '@core-template';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { Condition, condition, Mono, tube, unary } from '@core-template';
 
-import { isOverlayRefDirectionRtl } from '../../../overlay';
-import { Dimension } from '../../../platform';
+import { setRtl } from '../../../overlay';
+import { BoundingBoxRect, Point } from '../../../platform';
 import {
-    FlexibleConnectedPosition,
     FlexibleConnectedStrategyPosition,
-    ResultFlexibleConnectedStrategyPosition,
-    XOverlayPosition,
-    YOverlayPosition,
+    ParamsUnaryApplyFlexibleConnectedStrategyPosition,
 } from '../../data';
 
-type Data<T> = FlexibleConnectedStrategyPosition<T> & {
-    x: number;
-    originRect: Dimension;
-    containerRect: Dimension;
-    pos: FlexibleConnectedPosition;
-    y: number;
+type CalculateBoundingBoxRectData<T> = Partial<
+    FlexibleConnectedStrategyPosition<T>
+> & {
+    origin: Point;
+    position: ConnectedPosition;
+    boundingBoxRect: BoundingBoxRect;
+    isRtl: boolean;
+    top?: number;
+    left?: number;
+    bottom?: number;
+    right?: number;
+    width?: number;
+    height?: number;
 };
 
-type CD<T> = Condition<Data<T>>;
-
-export const calculateBoundingBoxRect = <T>(
-    originRect: Dimension,
-    overlayRect: Dimension,
-    pos: FlexibleConnectedPosition
-): ResultFlexibleConnectedStrategyPosition<T> => {
-    const containerRect = {
-        bottom: Math.max(originRect.bottom, overlayRect.bottom),
-        height: 0,
-        left: Math.min(originRect.left, overlayRect.left),
-        right: Math.max(originRect.right, overlayRect.right),
-        top: Math.min(originRect.top, overlayRect.top),
-        width: 0,
-    };
-
-    containerRect.width = containerRect.right - containerRect.left;
-    containerRect.height = containerRect.bottom - containerRect.top;
-
-    return unary((strategyPosition) => {
-        const data: Data<T> = {
-            ...strategyPosition,
-            containerRect,
-            originRect,
-            pos,
-            x: 0,
-            y: 0,
-        };
-
-        tube(
-            doesTheOriginXEqual('center'),
-            assignOriginXToTheResultOfBisectionWidthLeft(),
-            doesNotTheOriginXEqual('center'),
-            assignOriginX(),
-            doesTheContainerRectOver('left', 0),
-            assignOriginXOfContainerRectLeft(),
-            doesTheOriginYEqual('center'),
-            assignOriginY(),
-            doesNotTheOriginYEqual('center'),
-            assignOriginYTop(),
-            doesTheContainerRectOver('top', 0),
-            assignOriginYOfContainerRectTop(),
-            assignFallbackOriginPointXY()
-        )(data);
-    });
+type CalculateBoundingBoxRectParam = {
+    origin: Point;
+    position: ConnectedPosition;
+    boundingBoxRect: BoundingBoxRect; // Updated: Added boundingBoxRect as a parameter
 };
 
-const assignOriginX = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const overlayStartPoint = model.containerRect.left;
-        const overlayEndPoint = model.containerRect.right;
-        const originStartPoint = model.originRect.left;
-        const originEndPoint = model.originRect.right;
-        let x = overlayStartPoint;
+/**
+ * @internal
+ * Gets the position and size of the overlay's sizing container.
+ *
+ * This method does no measuring and applies no styles so that we can cheaply compute the
+ * bounds for all positions and choose the best fit based on these results.
+ */
+export const calculateBoundingBoxRect: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
+    CalculateBoundingBoxRectParam
+> = ({ boundingBoxRect, origin, position }) =>
+    unary(({ strategyPosition }) => {
+        if (strategyPosition) {
+            const data: CalculateBoundingBoxRectData<unknown> = {
+                ...strategyPosition,
+                boundingBoxRect,
+                isRtl: false,
+                origin,
+                position,
+            };
 
-        if (model.pos.overlayX === 'center') {
-            x += model.originRect.width / 2 - model.containerRect.width / 2;
-        } else if (
-            (model.pos.overlayX === 'start' &&
-                !isOverlayRefDirectionRtl(model)) ||
-            (model.pos.overlayX === 'end' && isOverlayRefDirectionRtl(model))
-        ) {
-            x += originStartPoint - overlayStartPoint;
-        } else if (
-            (model.pos.overlayX === 'end' &&
-                !isOverlayRefDirectionRtl(model)) ||
-            (model.pos.overlayX === 'start' && isOverlayRefDirectionRtl(model))
-        ) {
-            x += originEndPoint - overlayEndPoint;
+            tube(
+                setRtl(data.isRtl),
+                overlayYIsTop(),
+                setTopAndHeightFromTop(),
+                overlayYIsBottom(),
+                setBottomAndHeightFromBottom(),
+                overlayYIsCenter(),
+                setTopAndHeightFromCenter(),
+                overlayXIsStartAndNotRtl(),
+                setRightAndWidthFromStart(),
+                overlayXIsEndAndRtl(),
+                setRightAndWidthFromEnd(),
+                overlayXIsCenter(),
+                setLeftAndWidthFromCenter(),
+                setBoundingBoxRect(boundingBoxRect)
+            )(data);
         }
-
-        model.x = x;
     });
 
-const assignOriginXToTheResultOfBisectionWidthLeft = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const overlayStartPoint = model.containerRect.left;
-        const overlayEndPoint = model.containerRect.right;
-        const originStartPoint = model.originRect.left;
-        const originEndPoint = model.originRect.right;
+const overlayYIsTop = <T>(): Condition<CalculateBoundingBoxRectData<T>> =>
+    condition((data) => data?.position.overlayY === 'top');
 
-        let x = overlayStartPoint;
+const overlayYIsBottom = <T>(): Condition<CalculateBoundingBoxRectData<T>> =>
+    condition((data) => data?.position.overlayY === 'bottom');
 
-        if (model.pos.overlayX === 'center') {
-            x += model.originRect.width / 2 - model.containerRect.width / 2;
-        } else if (
-            (model.pos.overlayX === 'start' &&
-                !isOverlayRefDirectionRtl(model)) ||
-            (model.pos.overlayX === 'end' && isOverlayRefDirectionRtl(model))
-        ) {
-            x += originStartPoint - overlayStartPoint;
-        } else if (
-            (model.pos.overlayX === 'end' &&
-                !isOverlayRefDirectionRtl(model)) ||
-            (model.pos.overlayX === 'start' && isOverlayRefDirectionRtl(model))
-        ) {
-            x += originEndPoint - overlayEndPoint;
+const overlayYIsCenter = <T>(): Condition<CalculateBoundingBoxRectData<T>> =>
+    condition(
+        (data) =>
+            !!(data && !overlayYIsTop()(data) && !overlayYIsBottom()(data))
+    );
+7777;
+const overlayXIsStartAndNotRtl = <T>(): Condition<
+    CalculateBoundingBoxRectData<T>
+> => condition((data) => data?.position.overlayX === 'start' && !data.isRtl);
+
+const overlayXIsEndAndRtl = <T>(): Condition<CalculateBoundingBoxRectData<T>> =>
+    condition((data) => data?.position.overlayX === 'end' && data.isRtl);
+
+const overlayXIsCenter = <T>(): Condition<CalculateBoundingBoxRectData<T>> =>
+    condition(
+        (data) =>
+            !!(
+                data &&
+                !overlayXIsStartAndNotRtl()(data) &&
+                !overlayXIsEndAndRtl()(data)
+            )
+    );
+
+const setTopAndHeightFromTop = <T>(): Mono<CalculateBoundingBoxRectData<T>> =>
+    unary((data) => {
+        const { origin, viewportMargin, viewportRect } = data;
+        if (viewportRect && viewportMargin) {
+            data.top = origin.y;
+            data.height = viewportRect.height - data.top + viewportMargin;
         }
+    });
 
-        const containerWidth = model.containerRect.width;
-        const originWidth = model.originRect.width;
-        const halfContainerWidth = containerWidth / 2;
-        const halfOriginWidth = originWidth / 2;
-        const leftOffset = originStartPoint - overlayStartPoint;
-        const rightOffset = originEndPoint - overlayEndPoint;
+// Updated method signatures with generic type parameter <T>
+const setBottomAndHeightFromBottom = <T>(): Mono<
+    CalculateBoundingBoxRectData<T>
+> =>
+    unary((data) => {
+        const { origin, viewportMargin, viewportRect } = data;
+        if (viewportRect && viewportMargin) {
+            data.bottom = viewportRect.height - origin.y + viewportMargin * 2;
+            data.height = viewportRect.height - data.bottom + viewportMargin;
+        }
+    });
 
-        // Bisection
-        if (model.pos.overlayX === 'center' && containerWidth < originWidth) {
-            const midPoint = (overlayStartPoint + overlayEndPoint) / 2;
-            const offset = originStartPoint - midPoint;
-            const minOffset = -halfContainerWidth + halfOriginWidth;
-            const maxOffset = halfContainerWidth - halfOriginWidth;
+const setTopAndHeightFromCenter = <T>(): Mono<
+    CalculateBoundingBoxRectData<T>
+> =>
+    unary((data) => {
+        const { lastBoundingBoxSize, origin, viewportRect } = data;
+        if (viewportRect && lastBoundingBoxSize) {
+            const smallestDistanceToViewportEdge = Math.min(
+                viewportRect.bottom - origin.y + viewportRect.top,
+                origin.y
+            );
 
-            if (offset < minOffset) {
-                x += leftOffset - minOffset;
-            } else if (offset > maxOffset) {
-                x += rightOffset - maxOffset;
-            } else {
-                x += offset;
+            data.height = smallestDistanceToViewportEdge * 2;
+            data.top = origin.y - smallestDistanceToViewportEdge;
+
+            if (
+                data.height > lastBoundingBoxSize.height &&
+                !data.isInitialRender &&
+                !data.growAfterOpen
+            ) {
+                data.top = origin.y - lastBoundingBoxSize.height / 2;
             }
         }
-
-        model.x = x;
     });
 
-const doesTheOriginXEqual =
-    <X extends XOverlayPosition>(x: X): CD<X> =>
-    (model) =>
-        model.pos.overlayX === x;
-
-const doesNotTheOriginXEqual =
-    <X extends XOverlayPosition>(x: X): CD<X> =>
-    (model) =>
-        model.pos.overlayX !== x;
-
-const doesTheContainerRectOver =
-    <X extends 'left' | 'top'>(direction: X, limit: number): CD<X> =>
-    (model) =>
-        model.containerRect[direction] < limit;
-
-const assignOriginXOfContainerRectLeft = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const originStartPoint = model.originRect.left;
-        const overlayStartPoint = model.containerRect.left;
-
-        model.x = overlayStartPoint - originStartPoint;
-    });
-
-const doesTheOriginYEqual =
-    <Y extends YOverlayPosition>(y: Y): CD<Y> =>
-    (model) =>
-        model.pos.overlayY === y;
-
-const assignOriginY = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const overlayStartPoint = model.containerRect.top;
-        const overlayEndPoint = model.containerRect.bottom;
-        const originStartPoint = model.originRect.top;
-        const originEndPoint = model.originRect.bottom;
-        let y = overlayStartPoint;
-
-        if (model.pos.overlayY === 'center') {
-            y += model.originRect.height / 2 - model.containerRect.height / 2;
-        } else if (
-            (model.pos.overlayY === 'top' &&
-                !isOverlayRefDirectionRtl(model)) ||
-            (model.pos.overlayY === 'bottom' && isOverlayRefDirectionRtl(model))
-        ) {
-            y += originStartPoint - overlayStartPoint;
-        } else if (
-            (model.pos.overlayY === 'bottom' &&
-                !isOverlayRefDirectionRtl(model)) ||
-            (model.pos.overlayY === 'top' && isOverlayRefDirectionRtl(model))
-        ) {
-            y += originEndPoint - overlayEndPoint;
+const setRightAndWidthFromStart = <T>(): Mono<
+    CalculateBoundingBoxRectData<T>
+> =>
+    unary((data) => {
+        const { origin, viewportMargin, viewportRect } = data;
+        if (viewportRect && viewportMargin) {
+            data.right = viewportRect.width - origin.x + viewportMargin;
+            data.width = origin.x - viewportMargin;
         }
-
-        model.y = y;
     });
 
-const doesNotTheOriginYEqual =
-    <Y extends YOverlayPosition>(y: Y): CD<Y> =>
-    (model) =>
-        model.pos.overlayY !== y;
-
-const assignOriginYTop = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const originStartPoint = model.originRect.top;
-        const overlayStartPoint = model.containerRect.top;
-
-        model.y = overlayStartPoint - originStartPoint;
-    });
-
-const assignOriginYOfContainerRectTop = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const originStartPoint = model.originRect.top;
-        const overlayStartPoint = model.containerRect.top;
-
-        model.y = overlayStartPoint - originStartPoint;
-    });
-
-const assignFallbackOriginPointXY = <T>(): Unary<Data<T>> =>
-    unary((model) => {
-        const overlayStartPoint = model.containerRect.left;
-        const overlayEndPoint = model.containerRect.right;
-        const overlayMidPoint =
-            overlayStartPoint + (overlayEndPoint - overlayStartPoint) / 2;
-        const originStartPoint = model.originRect.left;
-        const originEndPoint = model.originRect.right;
-        const originMidPoint =
-            originStartPoint + (originEndPoint - originStartPoint) / 2;
-
-        if (originEndPoint <= overlayStartPoint) {
-            model.x = overlayStartPoint;
-        } else if (originStartPoint >= overlayEndPoint) {
-            model.x = overlayEndPoint - model.originRect.width;
-        } else {
-            model.x = overlayMidPoint - originMidPoint;
+const setRightAndWidthFromEnd = <T>(): Mono<CalculateBoundingBoxRectData<T>> =>
+    unary((data) => {
+        const { origin, viewportRect } = data;
+        if (viewportRect) {
+            data.left = origin.x;
+            data.width = viewportRect.right - origin.x;
         }
+    });
 
-        const overlayTopPoint = model.containerRect.top;
-        const overlayBottomPoint = model.containerRect.bottom;
-        const overlayCenter =
-            overlayTopPoint + (overlayBottomPoint - overlayTopPoint) / 2;
-        const originTopPoint = model.originRect.top;
-        const originBottomPoint = model.originRect.bottom;
-        const originCenter =
-            originTopPoint + (originBottomPoint - originTopPoint) / 2;
+const setLeftAndWidthFromCenter = <T>(): Mono<
+    CalculateBoundingBoxRectData<T>
+> =>
+    unary((data) => {
+        const { lastBoundingBoxSize, origin, viewportRect } = data;
+        if (viewportRect && lastBoundingBoxSize) {
+            const smallestDistanceToViewportEdge = Math.min(
+                viewportRect.right - origin.x + viewportRect.left,
+                origin.x
+            );
+            data.width = smallestDistanceToViewportEdge * 2;
+            data.left = origin.x - smallestDistanceToViewportEdge;
 
-        if (originBottomPoint <= overlayTopPoint) {
-            model.y = overlayTopPoint;
-        } else if (originTopPoint >= overlayBottomPoint) {
-            model.y = overlayBottomPoint - model.originRect.height;
-        } else {
-            model.y = overlayCenter - originCenter;
+            if (
+                data.width > lastBoundingBoxSize.width &&
+                !data.isInitialRender &&
+                !data.growAfterOpen
+            ) {
+                data.left = origin.x - lastBoundingBoxSize.width / 2;
+            }
         }
+    });
+
+const setBoundingBoxRect = <T>(
+    boundingBoxRect: BoundingBoxRect
+): Mono<CalculateBoundingBoxRectData<T>> =>
+    unary((data) => {
+        // Update boundingBoxRect with the calculated values
+        boundingBoxRect.top = data.top ?? 0;
+        boundingBoxRect.left = data.left ?? 0;
+        boundingBoxRect.bottom = data.bottom ?? 0;
+        boundingBoxRect.right = data.right ?? 0;
+        boundingBoxRect.width = data.width ?? 0;
+        boundingBoxRect.height = data.height ?? 0;
     });

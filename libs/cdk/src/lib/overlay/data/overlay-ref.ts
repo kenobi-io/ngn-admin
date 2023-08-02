@@ -17,7 +17,7 @@ import {
 } from './dispatcher';
 
 /** Size properties for an overlay. */
-type CreateOverlayRef<T> = Zonality & {
+type CreateOverlayRef = Zonality & {
     attachments: Subject<void>;
     backdropClick: Subject<MouseEvent>;
     backdropClickHandler: (event: MouseEvent) => void;
@@ -25,15 +25,19 @@ type CreateOverlayRef<T> = Zonality & {
     detachments: Subject<void>;
     document: Document;
     /** Stream of keydown events dispatched to this overlay. */
-    keyboardDispatcher: KeyboardDispatcherOverlay<T>;
+    keyboardDispatcher: KeyboardDispatcherOverlay;
     location: Location;
     locationChanges: SubscriptionLike | Subscription;
     /** Stream of mouse outside events dispatched to this overlay. */
-    outsideClickDispatcher: OutsideClickDispatcherOverlay<T>;
+    outsideClickDispatcher: OutsideClickDispatcherOverlay;
 };
 
 /**
  * Reference to an overlay that has been created with the Overlay service.
  * Used to manipulate or dispose of said overlay.
  */
-export type OverlayRef<T> = CreateOverlayRef<T> & Partial<ChangesOverlayRef<T>>;
+export type OverlayRef<T> = CreateOverlayRef & Partial<ChangesOverlayRef<T>>;
+
+export type OverlayRefCapability<T> = {
+    overlayRef: OverlayRef<T>;
+};

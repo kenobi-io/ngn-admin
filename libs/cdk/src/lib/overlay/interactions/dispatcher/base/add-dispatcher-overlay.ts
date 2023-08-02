@@ -2,9 +2,9 @@ import { EventDispatcherOverlay } from '../../../data';
 import { removeDispatcherOverlay } from './remove-dispatcher-overlay';
 
 /** Add a new overlay to the list of attached overlay refs. */
-export const addDispatcherOverlay = <T>(
-    dispatcher: EventDispatcherOverlay<T>
-): EventDispatcherOverlay<T> => {
+export const addDispatcherOverlay = (
+    dispatcher: EventDispatcherOverlay
+): EventDispatcherOverlay => {
     const { attachedOverlay, attachedOverlays } = dispatcher;
 
     if (attachedOverlay && attachedOverlays) {

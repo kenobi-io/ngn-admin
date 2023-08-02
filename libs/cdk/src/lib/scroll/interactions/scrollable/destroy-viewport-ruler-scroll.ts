@@ -3,19 +3,12 @@ import { ViewportRulerScroll } from '../../data';
 export const destroyViewportRulerScroll = (
     vrs: ViewportRulerScroll
 ): ViewportRulerScroll => {
-    const { change, changeListenerViewportRulerScroll, document, platform } =
-        vrs;
+    const { change, document, listener, platform } = vrs;
 
-    if (platform.isBrowser && changeListenerViewportRulerScroll) {
+    if (platform.isBrowser && listener) {
         const windowRef: Window = document.defaultView || window;
-        windowRef.removeEventListener(
-            'resize',
-            changeListenerViewportRulerScroll
-        );
-        windowRef.removeEventListener(
-            'orientationchange',
-            changeListenerViewportRulerScroll
-        );
+        windowRef.removeEventListener('resize', listener);
+        windowRef.removeEventListener('orientationchange', listener);
     }
     change.complete();
 

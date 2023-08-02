@@ -7,25 +7,24 @@
  */
 import { Subscription } from 'rxjs';
 
-import { OverlayRef } from '../../overlay';
+import { OverlayRefCapability } from '../../overlay';
 import { DispatcherScroll } from './dispatcher-scroll';
 import { StrategyScroll } from './strategy-scroll';
 
 /**
  * Config options for the RepositionScrollStrategy.
  */
-export interface ConfigRepositionStrategyScroll<T> {
+export interface ConfigRepositionStrategyScroll<T>
+    extends OverlayRefCapability<T> {
     /** Whether to close the overlay once the user has scrolled away completely. */
     autoClose: boolean;
     /** Time in milliseconds to throttle the scroll events. */
     scrollThrottle: number;
-    overlayRef: OverlayRef<T>;
 }
 
-type ChangeRepositionStrategyScroll<T> = {
+type ChangeRepositionStrategyScroll<T> = OverlayRefCapability<T> & {
     config: Partial<ConfigRepositionStrategyScroll<T>>;
     subscription: Subscription;
-    overlayRef: OverlayRef<T>;
 };
 
 /**

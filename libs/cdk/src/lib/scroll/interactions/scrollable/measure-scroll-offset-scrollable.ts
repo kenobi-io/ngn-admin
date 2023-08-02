@@ -1,5 +1,5 @@
 import { getRtlScrollAxisType, RtlScrollAxisType } from '@angular/cdk/platform';
-import { Condition, condition, tube, Unary, unary } from '@core-template';
+import { Condition, condition, Mono, tube, unary } from '@core-template';
 
 import { Scrollable } from '../../../directive';
 
@@ -12,9 +12,9 @@ type MeasureScrollOffsetScrollable<T> = Scrollable<T> &
         scrollTop: number;
     }>;
 
-type UnaryScrollable<T> = Unary<MeasureScrollOffsetScrollable<T>>;
+type MeasureScrollable<T> = Mono<MeasureScrollOffsetScrollable<T>>;
 
-type ConditionScrollable<T> = Condition<MeasureScrollOffsetScrollable<T>>;
+type IsScrollable<T> = Condition<MeasureScrollOffsetScrollable<T>>;
 
 /**
  * Measures the scroll offset relative to the specified edge of the viewport. This method can be
@@ -25,7 +25,7 @@ type ConditionScrollable<T> = Condition<MeasureScrollOffsetScrollable<T>>;
  * in an RTL context.
  * @use dir, elementRef: { nativeElement }, from
  */
-export const measureScrollOffsetScrollable = <T>(): Unary<Scrollable<T>> =>
+export const measureScrollOffsetScrollable = <T>(): Mono<Scrollable<T>> =>
     unary((scrollable) =>
         tube(
             setScrollOffset(),
@@ -38,7 +38,7 @@ export const measureScrollOffsetScrollable = <T>(): Unary<Scrollable<T>> =>
         )(scrollable)
     );
 
-const setScrollOffset = <T>(): UnaryScrollable<T> =>
+const setScrollOffset = <T>(): MeasureScrollable<T> =>
     unary((scrollable) => {
         const { dir, elementRef, left, right } = scrollable;
         const { nativeElement } = elementRef;
@@ -63,7 +63,7 @@ const setScrollOffset = <T>(): UnaryScrollable<T> =>
         }
     });
 
-const isRtlAndInverted = <T>(): ConditionScrollable<T> =>
+const isRtlAndInverted = <T>(): IsScrollable<T> =>
     condition(
         (scrollable) =>
             !!(
@@ -72,7 +72,7 @@ const isRtlAndInverted = <T>(): ConditionScrollable<T> =>
             )
     );
 
-const handleRtlAndInverted = <T>(): UnaryScrollable<T> =>
+const handleRtlAndInverted = <T>(): MeasureScrollable<T> =>
     unary((scrollable) => {
         const { elementRef, left } = scrollable;
         const { nativeElement } = elementRef;
@@ -87,7 +87,7 @@ const handleRtlAndInverted = <T>(): UnaryScrollable<T> =>
         }
     });
 
-const isRtlAndNegated = <T>(): ConditionScrollable<T> =>
+const isRtlAndNegated = <T>(): IsScrollable<T> =>
     condition(
         (scrollable) =>
             !!(
@@ -96,7 +96,7 @@ const isRtlAndNegated = <T>(): ConditionScrollable<T> =>
             )
     );
 
-const handleRtlAndNegated = <T>(): UnaryScrollable<T> =>
+const handleRtlAndNegated = <T>(): MeasureScrollable<T> =>
     unary((scrollable) => {
         const { elementRef, left } = scrollable;
         const { nativeElement } = elementRef;
@@ -111,14 +111,14 @@ const handleRtlAndNegated = <T>(): UnaryScrollable<T> =>
         }
     });
 
-const isNormalOrNonRtl = <T>(): ConditionScrollable<T> =>
+const isNormalOrNonRtl = <T>(): IsScrollable<T> =>
     condition(
         (scrollable) =>
             !scrollable?.isRtl ||
             getRtlScrollAxisType() === RtlScrollAxisType.NORMAL
     );
 
-const handleNormalOrNonRtl = <T>(): UnaryScrollable<T> =>
+const handleNormalOrNonRtl = <T>(): MeasureScrollable<T> =>
     unary((scrollable) => {
         const { elementRef, left } = scrollable;
         const { nativeElement } = elementRef;

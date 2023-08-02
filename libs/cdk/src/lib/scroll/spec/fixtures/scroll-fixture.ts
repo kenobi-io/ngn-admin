@@ -47,9 +47,9 @@ export const mockRectViewportRulerScroll: RectViewportRulerScroll = {
 
 export const mockViewportRulerScroll: ViewportRulerScroll = {
     change: new Subject<Event>(),
-    // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars, no-unused-vars
-    changeListenerViewportRulerScroll: (event: Event) => {},
     document: document,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars, no-unused-vars
+    listener: (event: Event) => {},
     ngZone: new MockNgZone(),
     platform: mockPlatform,
     rect: mockRectViewportRulerScroll,

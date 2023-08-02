@@ -3,21 +3,21 @@ import { outZone } from '../../../platform';
 import { OutsideClickDispatcherOverlay } from '../../data';
 import { addDispatcherOverlay } from './base/add-dispatcher-overlay';
 
-type AddOutsideClickDispatcherOverlay<T> = Omit<
-    OutsideClickDispatcherOverlay<T>,
+type AddOutsideClickDispatcherOverlay = Omit<
+    OutsideClickDispatcherOverlay,
     'ngOnDestroy' | 'pointerDownEventTarget'
 >;
 /** Add a new overlay to the list of attached overlay refs. */
 
-export const addOutsideClickDispatcherOverlay = <T>(
-    use: AddOutsideClickDispatcherOverlay<T>
-): OutsideClickDispatcherOverlay<T> => {
-    return casting(use, () => {
+export const addOutsideClickDispatcherOverlay = (
+    use: AddOutsideClickDispatcherOverlay
+): OutsideClickDispatcherOverlay =>
+    casting(use, () => {
         const {
-            clickListener,
             cursorStyleIsSet,
             document,
             isAttached,
+            listener,
             ngZone,
             platform,
             pointerDownListener,
@@ -25,9 +25,9 @@ export const addOutsideClickDispatcherOverlay = <T>(
 
         const addEventListeners = (body: HTMLElement): void => {
             body.addEventListener('pointerdown', pointerDownListener, true);
-            body.addEventListener('click', clickListener, true);
-            body.addEventListener('auxclick', clickListener, true);
-            body.addEventListener('contextmenu', clickListener, true);
+            body.addEventListener('click', listener, true);
+            body.addEventListener('auxclick', listener, true);
+            body.addEventListener('contextmenu', listener, true);
         };
         addDispatcherOverlay(use);
         // Safari on iOS does not generate click events for non-interactive
@@ -50,4 +50,3 @@ export const addOutsideClickDispatcherOverlay = <T>(
             use.isAttached = true;
         }
     });
-};

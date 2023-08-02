@@ -6,27 +6,31 @@ import { DispatcherOverlay } from './dispatcher-overlay';
 type PointerDownListener = {
     (event: PointerEvent): void;
     // eslint-disable-next-line no-use-before-define
-    <T>(this: OutsideClickDispatcherOverlay<T>, event: PointerEvent): void;
+    (this: OutsideClickDispatcherOverlay, event: PointerEvent): void;
 };
 
 type ClickListener = {
-    (event: MouseEvent): void;
+    (event: Event): void;
     // eslint-disable-next-line no-use-before-define
-    <T>(this: OutsideClickDispatcherOverlay<T>, event: MouseEvent): void;
+    (this: OutsideClickDispatcherOverlay, event: MouseEvent): void;
 };
 
 type ChangesOutsideClickDispatcherOverlay = {
     pointerDownEventTarget: EventTarget;
 };
 
-export type OutsideClickDispatcherOverlay<T> = Zonality &
-    DispatcherOverlay<T> &
+export type OutsideClickDispatcherOverlay = Zonality &
+    DispatcherOverlay &
     Partial<ChangesOutsideClickDispatcherOverlay> & {
-        kindof: 'OutsideClickDispatcherOverlay';
+        // kindof: 'OutsideClickDispatcherOverlay';
         cursorOriginalValue: string;
         cursorStyleIsSet: boolean;
         platform: Platform;
         /** @breaking-change 14.0.0 _ngZone will be required. */
         pointerDownListener: PointerDownListener;
-        clickListener: ClickListener;
+        listener: ClickListener;
     };
+
+export type OutsideClickDispatcherOverlayCapability = {
+    dispatcher: OutsideClickDispatcherOverlay;
+};

@@ -36,7 +36,7 @@ import {
 
 type DataOverlayMock = { content: string };
 
-const mockDispatcherOverlay: DispatcherOverlay<DataOverlayMock> = {
+const mockDispatcherOverlay: DispatcherOverlay = {
     attachedOverlay: undefined,
     attachedOverlays: [],
     document: document,
@@ -86,14 +86,14 @@ const createMockOverlay = <T>(
     positionBuilder: TestBed.inject(OverlayPositionBuilder),
 });
 
-export const mockKeyboardDispatcherOverlay: KeyboardDispatcherOverlay<any> =
+export const mockKeyboardDispatcherOverlay: KeyboardDispatcherOverlay =
     createMockDispatcherOverlay('keydown', {
         ...mockDispatcherOverlay,
         kindof: 'KeyboardDispatcherOverlay',
         ngZone: mockNgZone,
     });
 
-export const mockOutsideClickDispatcherOverlay: OutsideClickDispatcherOverlay<any> =
+export const mockOutsideClickDispatcherOverlay: OutsideClickDispatcherOverlay =
     createMockDispatcherOverlay('click', {
         ...mockDispatcherOverlay,
         cursorOriginalValue: '',

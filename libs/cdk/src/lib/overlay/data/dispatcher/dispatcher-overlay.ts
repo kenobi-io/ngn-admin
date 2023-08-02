@@ -1,12 +1,12 @@
 import { OverlayRef } from '../overlay-ref';
 
-type ChangesDispatcherOverlay<T> = {
+type ChangesDispatcherOverlay = {
     /** Currently attached overlays in the order they were attached. */
-    attachedOverlay: OverlayRef<T>;
-    attachedOverlays: OverlayRef<T>[];
+    attachedOverlay: OverlayRef<unknown>; // TODO: cyclic dependency
+    attachedOverlays: OverlayRef<unknown>[];
 };
 
-export type DispatcherOverlay<T> = Partial<ChangesDispatcherOverlay<T>> & {
+export type DispatcherOverlay = Partial<ChangesDispatcherOverlay> & {
     document: Document;
     isAttached: boolean;
 };

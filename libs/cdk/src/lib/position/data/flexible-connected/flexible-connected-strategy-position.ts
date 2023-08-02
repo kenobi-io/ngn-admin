@@ -12,8 +12,11 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import { BoundingBoxSize, Dimension, Point } from '../../../platform';
-import { ViewportRulerScroll } from '../../../scroll';
-import { StrategyPosition } from '../strategy-position';
+import { ViewportRulerScrollCapability } from '../../../scroll';
+import {
+    StrategyPosition,
+    StrategyPositionCapability,
+} from '../strategy-position';
 import {
     ConnectedOverlayPositionChange,
     ConnectionPositionPair,
@@ -52,7 +55,8 @@ type ChangesFlexibleConnectedStrategyPosition = {
  * of the overlay.
  */
 export type FlexibleConnectedStrategyPosition<T> = StrategyPosition<T> &
-    Partial<ChangesFlexibleConnectedStrategyPosition> & {
+    Partial<ChangesFlexibleConnectedStrategyPosition> &
+    ViewportRulerScrollCapability & {
         document: Document;
         /** Whether we're performing the very first positioning of the overlay. */
         isInitialRender: boolean;
@@ -111,7 +115,6 @@ export type FlexibleConnectedStrategyPosition<T> = StrategyPosition<T> &
         /** Keeps track of the CSS classes that the position strategy has applied on the overlay panel. */
         appliedPanelClasses: string[];
         platform: Platform;
-        viewportRulerScroll: ViewportRulerScroll;
 
         // constructor(
         //     connectedTo: FlexibleConnectedPositionStrategyOrigin,
@@ -134,4 +137,9 @@ export type FlexibleConnectedStrategyPosition<T> = StrategyPosition<T> &
         //     resizeSubscription = Subscription.EMPTY;
         //     appliedPanelClasses = [];
         // }
+    };
+
+export type FlexibleConnectedStrategyPositionCapability<T> =
+    StrategyPositionCapability<T> & {
+        strategyPosition: FlexibleConnectedStrategyPosition<T>;
     };

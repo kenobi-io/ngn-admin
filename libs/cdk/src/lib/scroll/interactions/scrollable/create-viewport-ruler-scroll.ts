@@ -19,14 +19,11 @@ export const createViewportRulerScroll = (
 ): ViewportRulerScroll => {
     const vrs: ViewportRulerScroll = {
         change: new Subject<Event>(),
+        document: inject(DOCUMENT),
         /** Event listener that will be used to handle the viewport change events. */
-        changeListenerViewportRulerScroll: function (
-            this: ViewportRulerScroll,
-            event: Event
-        ): void {
+        listener: function (this: ViewportRulerScroll, event: Event): void {
             this.change.next(event);
         },
-        document: inject(DOCUMENT),
         ngZone: inject(ZONE_TOKEN),
         platform: inject(PLATFORM_TOKEN),
         throttleTime: DEFAULT_RESIZE_TIME,
@@ -37,14 +34,8 @@ export const createViewportRulerScroll = (
 
             // Note that bind the events ourselves, rather than going through something like RxJS's
             // `fromEvent` so that we can ensure that they're bound outside of the NgZone.
-            windowRef.addEventListener(
-                'resize',
-                vrs.changeListenerViewportRulerScroll
-            );
-            windowRef.addEventListener(
-                'orientationchange',
-                vrs.changeListenerViewportRulerScroll
-            );
+            windowRef.addEventListener('resize', vrs.listener);
+            windowRef.addEventListener('orientationchange', vrs.listener);
         }
 
         // Clear the cached position so that the viewport is re-measured next time it is required.

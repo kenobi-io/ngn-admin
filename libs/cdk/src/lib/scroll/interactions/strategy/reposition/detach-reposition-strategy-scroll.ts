@@ -1,10 +1,10 @@
 import { inject, InjectionToken } from '@angular/core';
-import { tube, unary, UnParamsUnary } from '@core-template';
+import { CapabilityMono, tube, unary } from '@core-template';
 
 import { RepositionStrategyScroll } from '../../../data';
 import { DISABLE_REPOSITION_STRATEGY_SCROLL } from './disable-reposition-strategy-scroll';
 
-export const detachRepositionStrategyScroll: UnParamsUnary<
+export const detachRepositionStrategyScroll: CapabilityMono<
     RepositionStrategyScroll<unknown>
 > = (finish) =>
     unary((strategy) => {
@@ -18,7 +18,7 @@ export const detachRepositionStrategyScroll: UnParamsUnary<
     }, finish);
 
 export const DETACH_REPOSITION_STRATEGY_SCROLL = new InjectionToken<
-    UnParamsUnary<RepositionStrategyScroll<unknown>>
+    CapabilityMono<RepositionStrategyScroll<unknown>>
 >('[DETACH_REPOSITION_STRATEGY_SCROLL]', {
     factory: () => detachRepositionStrategyScroll,
 });

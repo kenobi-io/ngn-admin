@@ -1,6 +1,6 @@
 /** Attaches this scroll strategy to an overlay. */
 import { InjectionToken } from '@angular/core';
-import { unary, UnParamsUnary } from '@core-template';
+import { CapabilityMono, unary } from '@core-template';
 
 import { RepositionStrategyScroll } from '../../../data';
 
@@ -9,7 +9,7 @@ import { RepositionStrategyScroll } from '../../../data';
  * @param strategy - config
  * @returns
  */
-export const attachRepositionStrategyScroll: UnParamsUnary<
+export const attachRepositionStrategyScroll: CapabilityMono<
     RepositionStrategyScroll<T>
 > = (
     finish // TODO: add for all export func finish param and pass to unary
@@ -21,7 +21,7 @@ export const attachRepositionStrategyScroll: UnParamsUnary<
     }, finish);
 
 export const ATTACH_REPOSITION_STRATEGY_SCROLL = new InjectionToken<
-    UnParamsUnary<RepositionStrategyScroll<unknown>>
+    CapabilityMono<RepositionStrategyScroll<unknown>>
 >('[ATTACH_REPOSITION_STRATEGY_SCROLL]', {
     factory: () => attachRepositionStrategyScroll,
 });

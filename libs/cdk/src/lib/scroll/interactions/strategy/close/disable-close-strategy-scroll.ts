@@ -1,15 +1,15 @@
 import { InjectionToken } from '@angular/core';
-import { unary, UnParamsUnary, unsubscribing } from '@core-template';
+import { CapabilityMono, unary, unsubscribing } from '@core-template';
 
 import { CloseStrategyScroll } from '../../../data';
 
 /** Disables the closing of the attached overlay on scroll. */
-export const disableCloseStrategyScroll: UnParamsUnary<
+export const disableCloseStrategyScroll: CapabilityMono<
     CloseStrategyScroll<unknown>
 > = () => unary((strategy) => unsubscribing(strategy.scrollSubscriptions));
 
 export const DISABLE_CLOSE_STRATEGY_SCROLL = new InjectionToken<
-    UnParamsUnary<CloseStrategyScroll<unknown>>
+    CapabilityMono<CloseStrategyScroll<unknown>>
 >('[DISABLE_CLOSE_STRATEGY_SCROLL]', {
     factory: () => disableCloseStrategyScroll,
 });

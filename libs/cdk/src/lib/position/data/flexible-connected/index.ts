@@ -7,3 +7,4 @@ export * from './flexible-connected-strategy-position';
 export * from './flexible-fit';
 export * from './overlay-fit';
 export * from './result-flexible-connected-strategy-position';
+export * from './unary-apply-flexible-connected-strategy-position';

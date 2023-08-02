@@ -1,10 +1,10 @@
-import { Unary, unary } from '@core-template';
+import { Mono, unary } from '@core-template';
 import { auditTime } from 'rxjs/operators';
 
-import { ViewportRulerScroll } from '../../data';
+import { UnaryViewportRulerScroll, ViewportRulerScroll } from '../../data';
 
 type ChangeViewportRulerScroll = {
-    (): Unary<ViewportRulerScroll>;
+    (): Mono<ViewportRulerScroll>;
     (viewportRuler: ViewportRulerScroll): ViewportRulerScroll;
 };
 
@@ -13,20 +13,15 @@ type ChangeViewportRulerScroll = {
  * This stream emits outside of the Angular zone.
  * @param throttleTime Time in milliseconds to throttle the stream.
  */
-export const changeViewportRulerScroll: ChangeViewportRulerScroll = <
-    T extends ViewportRulerScroll
->(
-    viewportRuler?: T
-): T | Unary<T> =>
-    viewportRuler ? set(viewportRuler) : unary((target) => set(target));
 
-const set = <T extends ViewportRulerScroll>(viewportRuler: T): T => {
-    const { change, throttleTime } = viewportRuler;
+export const changeViewportRulerScroll: UnaryViewportRulerScroll = () =>
+    unary(({ viewportRulerScroll: ViewportRulerScroll }) => {
+        if (ViewportRulerScroll) {
+            const { change, throttleTime } = ViewportRulerScroll;
 
-    viewportRuler.timeChange =
-        throttleTime > 0
-            ? change.pipe(auditTime(throttleTime))
-            : change.asObservable();
-
-    return viewportRuler;
-};
+            ViewportRulerScroll.timeChange =
+                throttleTime > 0
+                    ? change.pipe(auditTime(throttleTime))
+                    : change.asObservable();
+        }
+    });

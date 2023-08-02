@@ -4,11 +4,11 @@ import {
     supportsScrollBehavior,
 } from '@angular/cdk/platform';
 import { _Bottom, _Left, _Right, _Top, _Without } from '@angular/cdk/scrolling';
-import { tube, Unary, unary, UnParamsUnary } from '@core-template';
+import { CapabilityMono, Mono, tube, unary } from '@core-template';
 
 import { ExtendedScrollToOptions, Scrollable } from '../../../directive';
 
-type ScrollToScrollable = UnParamsUnary<
+type ScrollToScrollable = CapabilityMono<
     Scrollable<unknown> & { isRtl?: boolean; options?: ExtendedScrollToOptions }
 >;
 
@@ -20,7 +20,7 @@ type ScrollToScrollable = UnParamsUnary<
  * in an RTL context.
  * @use options specified the offsets to scroll to.
  */
-export const scrollToScrollable = <T>(): Unary<Scrollable<T>> =>
+export const scrollToScrollable = <T>(): Mono<Scrollable<T>> =>
     unary((scrollable) =>
         tube(
             setRtl(),
