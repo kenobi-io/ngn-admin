@@ -1,32 +1,28 @@
 import { InjectionToken } from '@angular/core';
 import {
     and,
-    CapabilityMono,
-    Condition,
     condition,
-    Mono,
+    FunctionCondition,
+    FunctionMono,
     mono,
     then,
     tube,
 } from '@core-template';
 
-import {
-    detachOverlayRef,
-    updatePositionOverlayRef,
-} from '../../../../overlay';
+import { detachOverlay, updatePositionOverlayRef } from '../../../../overlay';
 import { Dimension, inNgZone } from '../../../../platform';
 import { RepositionStrategyScroll } from '../../../data';
 import { isElementScrolledOutsideView } from '../../clip-scroll';
 import { sizeViewportRulerScroll } from '../../scrollable';
 import { disableRepositionStrategyScroll } from './disable-reposition-strategy-scroll';
 
-type ScrolledSubscribe<T> = RepositionStrategyScroll<T> & {
+type ScrolledSubscribe<T = unknown> = RepositionStrategyScroll<T> & {
     parentRects: Dimension[];
     overlayRect?: DOMRect;
 };
 
 /** Enables repositioning of the attached overlay on scroll. */
-export const enableRepositionStrategyScroll: CapabilityMono<
+export const enableRepositionStrategyScroll: FunctionMono<
     RepositionStrategyScroll<unknown>
 > = (finish) =>
     mono((strategy) => {
@@ -37,45 +33,46 @@ export const enableRepositionStrategyScroll: CapabilityMono<
     }, finish);
 
 export const ENABLE_REPOSITION_STRATEGY_SCROLL = new InjectionToken<
-    CapabilityMono<RepositionStrategyScroll<unknown>>
+    FunctionMono<RepositionStrategyScroll<unknown>>
 >('[ENABLE_REPOSITION_STRATEGY_SCROLL]', {
     factory: () => enableRepositionStrategyScroll,
 });
 
-const isSubscriptionExist = <T>(): Condition<RepositionStrategyScroll<T>> =>
+const isSubscriptionExist: FunctionCondition<RepositionStrategyScroll> = () =>
     condition((strategy) => !strategy?.subscription);
 
-const auditTimeInMs = <T>(): Mono<ScrolledSubscribe<T>> =>
-    mono((strategy) => {
-        const { config, dispatcher } = strategy;
-        dispatcher.auditTimeInMs = config?.scrollThrottle || 0;
-    });
+const auditTimeInMs: FunctionMono<ScrolledSubscribe> = () =>
+    mono(
+        ({ config, dispatcher }) =>
+            dispatcher &&
+            (dispatcher.auditTimeInMs = config?.scrollThrottle || 0)
+    );
 
-const scrolledSubscribe = <T>(): Mono<ScrolledSubscribe<T>> =>
+const scrolledSubscribe: FunctionMono<ScrolledSubscribe> = () =>
     mono((strategy) =>
         tube(
             updateOverlayPosition(),
             canConfigAutoClose(),
             checkAutoClose(),
             and(canConfigAutoClose(), canDisableDetach()),
-            disableRepositionStrategyScroll<T>(),
-            and(canConfigAutoClose(), canDisableDetach()),
-            inNgZone(detachOverlayRef<T, ScrolledSubscribe<T>>())
+            then(disableRepositionStrategyScroll(), inNgZone(detachOverlay()))
         )(strategy)
     );
 
-const updateOverlayPosition = <T>(): Mono<RepositionStrategyScroll<T>> =>
+const updateOverlayPosition: FunctionMono<RepositionStrategyScroll> = () =>
     mono(
         (strategy) =>
-            strategy.overlayRef && updatePositionOverlayRef(strategy.overlayRef)
+            strategy.overlay && updatePositionOverlayRef(strategy.overlay)
     );
 
-const checkAutoClose = <T>(): Mono<ScrolledSubscribe<T>> =>
+const checkAutoClose: FunctionMono<ScrolledSubscribe> = () =>
     mono((strategy) => {
         strategy.overlayRect =
-            strategy.overlayRef?.overlayElement?.getBoundingClientRect();
-        sizeViewportRulerScroll(strategy.viewportRuler);
-        const { height, width } = { ...strategy.viewportRuler.viewportSize };
+            strategy.overlay?.overlayElement?.getBoundingClientRect();
+        sizeViewportRulerScroll(strategy.viewportRulerScroll);
+        const { height, width } = {
+            ...strategy.viewportRulerScroll.viewportSize,
+        };
         strategy.parentRects = [
             {
                 bottom: height ?? 0,
@@ -88,10 +85,10 @@ const checkAutoClose = <T>(): Mono<ScrolledSubscribe<T>> =>
         ];
     });
 
-const canConfigAutoClose = <T>(): Condition<RepositionStrategyScroll<T>> =>
+const canConfigAutoClose: FunctionCondition<ScrolledSubscribe> = () =>
     condition((strategy) => !!strategy?.config?.autoClose);
 
-const canDisableDetach = <T>(): Condition<ScrolledSubscribe<T>> =>
+const canDisableDetach: FunctionCondition<ScrolledSubscribe> = () =>
     condition(
         (strategy) =>
             !!(

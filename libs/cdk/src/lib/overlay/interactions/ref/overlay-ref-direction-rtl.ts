@@ -6,7 +6,7 @@ import { OverlayCapability } from '../../data';
 export const isOverlayRefDirectionRtl = <T>({
     overlay,
 }: Partial<OverlayCapability<T>>): boolean =>
-    overlay ? overlay.overlayRef.direction === 'rtl' : false; // TODO: refactoring by analogy all const { ... } = ...
+    overlay ? overlay.direction === 'rtl' : false; // TODO: refactoring by analogy all const { ... } = ...
 
 /** Whether the we're dealing with an RTL context */
 export const setRtl = <T>(

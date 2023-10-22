@@ -3,129 +3,103 @@ import {
     coerceBooleanProperty,
     coerceNumberProperty,
 } from '@angular/cdk/coercion';
-import { CdkDropList, DropListRef } from '@angular/cdk/drag-drop';
-import { CapabilityMono, mono, tube } from '@core-template';
+import { CdkDropList } from '@angular/cdk/drag-drop';
+import { FunctionMono, mono, tube, unary } from '@core-template';
+import { UnaryFunction } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-type DropListSetup = CapabilityMono<DropListRef<CdkDropList>>;
+import { DropList, DropListCapability } from '../data';
 
-export const setupInputSyncSubscription: DropListSetup = () =>
-    mono((ref) =>
-        tube(
-            setupDirection(),
-            setupSiblings(),
-            resolveScrollableParents(),
-            setProperties(),
-            setupConnectedTo(),
-            finalizeSetup()
-        )(ref)
+type DropListSetup = <
+    T,
+    R,
+    P extends DropListCapability<CdkDropList<T>> = DropListCapability<
+        CdkDropList<T>
+    >
+>() => UnaryFunction<P, R>;
+
+type MonoDropListSetup = FunctionMono<DropList>;
+
+export const setupInputSyncSubscriptionDropList: DropListSetup = () =>
+    unary(({ dropList }) =>
+        tube(dirChangeSubscribe(), beforeStarted())(dropList)
     );
 
-const setupDirection: DropListSetup = () =>
-    mono(({ dropped }) => {
-        // const { _destroyed, _dir } = ref;
-
-        if (dropped) {
-            _dir.change
-                .pipe(startWith(_dir.value), takeUntil(_destroyed))
-                .subscribe((value) => ref.withDirection(value));
+const dirChangeSubscribe: MonoDropListSetup = () =>
+    mono(({ destroyed, dir }) => {
+        if (dir) {
+            dir.change
+                .pipe(startWith(dir.value), takeUntil(destroyed))
+                .subscribe((value) => withDirection(value)());
         }
     });
 
-const setupSiblings: DropListSetup = () =>
-    mono((ref) => {
-        const {
-            _dropListRef,
-            _group,
-            _scrollDispatcher,
-            connectedTo,
-            element,
-        } = this;
+const beforeStarted: MonoDropListSetup = () =>
+    mono((dropList) => {
+        tube(getSiblings(), resolveScrollableParents())(dropList);
+    });
 
-        ref.beforeStarted.subscribe(() => {
-            const siblings = coerceArray(connectedTo).map((drop) => {
-                if (typeof drop === 'string') {
-                    const correspondingDropList = CdkDropList._dropLists.find(
-                        (list) => list.id === drop
+const getSiblings: MonoDropListSetup = () =>
+    mono((dropList) => {
+        const siblings = coerceArray(dropList.connectedTo).map((drop) => {
+            if (typeof drop === 'string') {
+                const correspondingDropList = dropList.lists.find(
+                    (list) => list.id === drop
+                );
+
+                if (
+                    !correspondingDropList /*  &&
+                (typeof ngDevMode === 'undefined' || ngDevMode) */
+                ) {
+                    console.warn(
+                        `CdkDropList could not find connected drop list with id "${drop}"`
                     );
-
-                    if (
-                        !correspondingDropList &&
-                        (typeof ngDevMode === 'undefined' || ngDevMode)
-                    ) {
-                        console.warn(
-                            `CdkDropList could not find connected drop list with id "${drop}"`
-                        );
-                    }
-
-                    return correspondingDropList!;
                 }
 
-                return drop;
-            });
-
-            if (_group) {
-                _group._items.forEach((drop) => {
-                    if (siblings.indexOf(drop) === -1) {
-                        siblings.push(drop);
-                    }
-                });
+                return correspondingDropList!;
             }
 
-            ref.connectedTo(
-                siblings
-                    .filter((drop) => drop && drop !== this)
-                    .map((list) => list._dropListRef)
-            );
+            return drop;
         });
-    });
 
-const resolveScrollableParents: DropListSetup = (ref) => {
-    const { _dropListRef, _scrollDispatcher, element } = this;
-    let _scrollableParentsResolved = false;
-
-    ref.beforeStarted.subscribe(() => {
-        if (!_scrollableParentsResolved) {
-            const scrollableParents = _scrollDispatcher
-                .getAncestorScrollContainers(element)
-                .map((scrollable) => scrollable.getElementRef().nativeElement);
-            _dropListRef.withScrollableParents(scrollableParents);
-
-            _scrollableParentsResolved = true;
+        if (dropList.group) {
+            dropList.group._items.forEach((drop) => {
+                if (siblings.indexOf(drop) === -1) {
+                    siblings.push(drop);
+                }
+            });
         }
+
+        dropList.siblings = siblings.filter(
+            (drop) => drop && drop !== dropList
+        );
     });
-};
 
-const setProperties: DropListSetup = (ref) => {
-    const {
-        autoScrollDisabled,
-        autoScrollStep,
-        disabled,
-        lockAxis,
-        orientation,
-        sortingDisabled,
-    } = this;
+const resolveScrollableParents: MonoDropListSetup = () =>
+    mono((dropList) => {
+        if (!dropList.scrollableParentsResolved) {
+            const scrollableParents = dropList.scrollDispatcher
+                .getAncestorScrollContainers(dropList.element)
+                .map((scrollable) => scrollable.getElementRef().nativeElement);
+            withScrollableParents(scrollableParents);
 
-    ref.disabled = disabled;
-    ref.lockAxis = lockAxis;
-    ref.sortingDisabled = coerceBooleanProperty(sortingDisabled);
-    ref.autoScrollDisabled = coerceBooleanProperty(autoScrollDisabled);
-    ref.autoScrollStep = coerceNumberProperty(autoScrollStep, 2);
-    ref.withOrientation(orientation);
-};
+            // Only do this once since it involves traversing the DOM and the parents
+            // shouldn't be able to change without the drop list being destroyed.
+            dropList.scrollableParentsResolved = true;
+        }
 
-const setupConnectedTo: DropListSetup = (ref) => {
-    const { _dropListRef } = this;
-
-    ref.beforeStarted.subscribe(() => {
-        const siblings = _dropListRef._siblings
-            .filter((drop) => drop && drop !== this)
-            .map((list) => list._dropListRef);
-
-        ref.connectedTo(siblings);
+        dropList.sortingDisabled = coerceBooleanProperty(
+            dropList.sortingDisabled
+        );
+        dropList.autoScrollDisabled = coerceBooleanProperty(
+            dropList.autoScrollDisabled
+        );
+        dropList.autoScrollStep = coerceNumberProperty(
+            dropList.autoScrollStep,
+            2
+        );
+        /*         dropList
+            . */ connectedTo(
+            getSiblings().map((list) => list._dropListRef)
+        ).withOrientation(dropList.orientation);
     });
-};
-
-const finalizeSetup: DropListSetup = () => {
-    // This is an empty function as there is no further logic to be performed in the final step.
-};

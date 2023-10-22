@@ -9,7 +9,6 @@ type SetAncestorContainersDispatcherScroll<T> = DispatcherScroll<T> & {
     directive?: Scrollable<T>;
     directives?: Scrollable<T>[];
 };
-type SACDS<T> = Mono<SetAncestorContainersDispatcherScroll<T>>;
 
 /**
  * Registered Scrollable that contain the provided element.
@@ -18,7 +17,7 @@ type SACDS<T> = Mono<SetAncestorContainersDispatcherScroll<T>>;
 export const setAncestorContainersDispatcherScroll = <T>(
     directive: Scrollable<T>,
     elementOrElementRef?: HTMLElement
-): SACDS<T> =>
+): Mono<SetAncestorContainersDispatcherScroll<T>> =>
     mono((dispatcher) => {
         dispatcher.directives = [];
         dispatcher.directive = directive;

@@ -7,6 +7,7 @@ import {
     BLOCK_STRATEGY_SCROLL,
     CLOSE_STRATEGY_SCROLL,
     DISPATCHER_SCROLL,
+    NoopStrategyScroll,
     REPOSITION_STRATEGY_SCROLL,
     VIEWPORT_RULER_SCROLL,
 } from '../../../scroll';
@@ -21,7 +22,7 @@ export const createOptionsStrategyScrollOverlay = <T>(
         dispatcher: inject(DISPATCHER_SCROLL),
         document: inject(DOCUMENT),
         ngZone: inject(ZONE_TOKEN),
-        noop: {} as ,
+        noop: {} as NoopStrategyScroll<T>,
         reposition: inject(REPOSITION_STRATEGY_SCROLL),
         viewportRulerScroll: inject(VIEWPORT_RULER_SCROLL),
     };

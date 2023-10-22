@@ -2,17 +2,17 @@ import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { Bounden } from '@core-template';
 
 import { casting } from '../../../directive';
-import { OverlayRef } from '../../data';
+import { Overlay } from '../../data';
 
 export type UpdateSizeOverlayRef<T> = Bounden<
-    OverlayRef<T>,
+    Overlay<T>,
     'pane' | 'sizeConfig'
 >;
 
 /** Update the size properties of the overlay. */
 export const updateSizeOverlayRef = <T>(
     use: UpdateSizeOverlayRef<T>
-): OverlayRef<T> => {
+): Overlay<T> => {
     return casting(use, () => {
         const { pane, sizeConfig } = use;
         // don't calls updateElementSizeAttach because use.config rewrite

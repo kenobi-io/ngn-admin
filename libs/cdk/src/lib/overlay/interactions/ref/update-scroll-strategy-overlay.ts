@@ -1,15 +1,15 @@
-import { OverlayRef } from '../../data';
+import { Overlay } from '../../data';
 
 /** Switches to a new scroll strategy. */
 export const updateScrollStrategyOverlayRef = <T>(
-    overlayRef: OverlayRef<T>
-): OverlayRef<T> => {
-    // const { kindStrategiesScroll, portalOutlet, strategiesScroll } = overlayRef;
+    overlay: Overlay<T>
+): Overlay<T> => {
+    // const { kindStrategiesScroll, portalOutlet, strategiesScroll } = overlay;
 
-    // if (strategiesScroll === overlayRef.strategiesScroll) {
-    //     return overlayRef;
+    // if (strategiesScroll === overlay.strategiesScroll) {
+    //     return overlay;
     // }
-    // disposeScrollStrategyOverlayRef(overlayRef);
+    // disposeScrollStrategyOverlayRef(overlay);
 
     // if (hasAttached(portalOutlet?.portal)) {
     //     const { attachStrategiesScroll, enableStrategiesScroll } = {
@@ -17,18 +17,18 @@ export const updateScrollStrategyOverlayRef = <T>(
     //     };
 
     //     strategy<OverlayRef<T>>(
-    //         overlayRef,
+    //         overlay,
     //         attachStrategiesScroll,
     //         kindStrategiesScroll
     //     );
     //     strategy<OverlayRef<T>>(
-    //         overlayRef,
+    //         overlay,
     //         enableStrategiesScroll,
     //         kindStrategiesScroll
     //     );
 
-    //     // strategiesScroll?.attach(overlayRef);
+    //     // strategiesScroll?.attach(overlay);
     //     // strategiesScroll?.enable();
     // }
-    return overlayRef;
+    return overlay;
 };

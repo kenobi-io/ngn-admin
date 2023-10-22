@@ -1,76 +1,94 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    CapabilityMono,
-    Condition,
-    SplicerTube,
+    and,
+    capability,
     condition,
+    has,
     includes,
     indexOf,
-    mono,
     splice,
+    SplicerTube,
     then,
     tube,
+    unary,
 } from '@core-template';
 import { UnaryFunction } from 'rxjs';
 
 import {
-    KeyboardDispatcherOverlay,
-    KeyboardDispatcherOverlayCapability,
-    OutsideClickDispatcherOverlay,
-    OutsideClickDispatcherOverlayCapability,
+    DetachDispatcherOverlay,
+    Overlay,
+    OverlayCapability,
+    ReqOC,
 } from '../../../data';
 
-export type ExEventDispatcherOverlay<T> =
-    | Partial<OutsideClickDispatcherOverlay & SplicerTube<T>>
-    | Partial<KeyboardDispatcherOverlay & SplicerTube<T>>;
-
-export type Out<T> = OutsideClickDispatcherOverlayCapability & SplicerTube<T>;
-export type Key<T> = KeyboardDispatcherOverlayCapability & SplicerTube<T>;
-type OutKey<T> = Out<T> | Key<T>;
-type DetachCapabilityUnary<T, DispatcherOverlay> = CapabilityMono<
-    DispatcherOverlay & Partial<SplicerTube<T>>
->;
-
-type Detach<T> = DetachCapabilityUnary<
-    T,
-    OutsideClickDispatcherOverlay | KeyboardDispatcherOverlay
->;
-type Return<T, R> = UnaryFunction<Partial<Out<T> | Key<T>>, R>;
-
-type RemoveDispatcherOverlay = <T, R, P extends OutKey<T> = OutKey<T>>(
-    detach: Detach<T>
-) => Return<P, R>;
+type Input<T = unknown> = OverlayCapability<T> &
+    Partial<
+        Overlay<T> &
+            SplicerTube<T> & {
+                attachedOverlaysProp: string;
+                attachedOverlayProp: keyof Overlay | ;
+                dispatcherOverlayProp: string;
+            }
+    >;
 
 /** Remove an overlay from the list of attached overlay refs. */
-export const removeDispatcherOverlay: RemoveDispatcherOverlay = <
-    T,
-    R,
-    P extends OutKey<T>
+export const removeDispatcherOverlay /* : ParamsMonoOverlayCapability<
+    OverlayCapability & { prop?: string },
+    DetachDispatcherOverlay
+> =  */ = <
+    P extends Input,
+    R extends OverlayCapability = OverlayCapability,
+    Param extends DetachDispatcherOverlay = DetachDispatcherOverlay,
 >(
-    detach: Detach<T>
-) =>
-    mono<P, R>(({ dispatcher }) => {
-        if (dispatcher) {
-            const { attachedOverlay, attachedOverlays } = dispatcher;
+    detach: Param
+): UnaryFunction<P, R> =>
+    unary<P, R>(
+        ({
+            attachedOverlayProp = 'dispatcherOverlay.attachedOverlay',
+            attachedOverlaysProp = 'dispatcherOverlay.attachedOverlays',
+            dispatcherOverlayProp = 'dispatcherOverlay',
+            index,
+            overlay,
+        }: P) =>
+            overlay?.dispatcherOverlay &&
             tube(
-                hasAttached(),
+                and(
+                    has<Input>([dispatcherOverlayProp]),
+                    has<Input>([attachedOverlaysProp, attachedOverlayProp])
+                ),
                 then(
-                    indexOf(attachedOverlays, attachedOverlay),
-                    includes(attachedOverlays, attachedOverlay),
-                    splice(attachedOverlays, undefined, 1),
+                    indexOf(
+                        attachedOverlaysProp,
+                        overlay.dispatcherOverlay.attachedOverlay
+                    ),
+                    includes(
+                        attachedOverlaysProp,
+                        overlay.dispatcherOverlay.attachedOverlay
+                    ),
+                    splice(attachedOverlaysProp, index, 1),
                     // Remove the global listener once there are no more overlays.
-                    isEqual0LengthAttached(),
+                    condition<ReqOC>(
+                        ({ overlay: { dispatcherOverlay } }) =>
+                            !!(
+                                dispatcherOverlay?.attachedOverlays?.length ===
+                                0
+                            )
+                    ),
                     detach()
                 )
-            )(dispatcher);
-        }
-    });
-
-const hasAttached = <T>(): Condition<ExEventDispatcherOverlay<T>> =>
-    condition(
-        (dispatcher) =>
-            !!(dispatcher?.attachedOverlays && dispatcher?.attachedOverlay)
+            )(capability<Input>(overlay))
     );
 
-const isEqual0LengthAttached = <T>(): Condition<ExEventDispatcherOverlay<T>> =>
-    condition((dispatcher) => !!(dispatcher?.attachedOverlays?.length === 0));
+// const hasAttached: ConReqOverCap = () =>
+//     condition(
+//         ({ overlay: { dispatcherOverlay } }) =>
+//             !!(
+//                 dispatcherOverlay?.attachedOverlays &&
+//                 dispatcherOverlay.attachedOverlay
+//             )
+//     );
+
+// const isEqual0LengthAttached: ConReqOverCap = () =>
+//     condition(
+//         ({ overlay: { dispatcherOverlay } }) =>
+//             !!(dispatcherOverlay?.attachedOverlays?.length === 0)
+//     );

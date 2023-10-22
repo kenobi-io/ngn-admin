@@ -8,7 +8,7 @@ import {
 } from '../../data';
 import { mockViewportRulerScroll } from './scroll-fixture';
 
-type DataStrategy = { rect: { height: 200; wight: 100 } };
+type DataStrategy = { content: string; rect: { height: 200; wight: 100 } };
 
 export const mockBlockStrategyScroll: BlockStrategyScroll<DataStrategy> = {
     document: document,
@@ -22,7 +22,7 @@ export const mockBlockStrategyScroll: BlockStrategyScroll<DataStrategy> = {
         top: 0,
         width: 0,
     },
-    viewportRuler: mockViewportRulerScroll,
+    viewportRulerScroll: mockViewportRulerScroll,
     window: window,
 };
 
@@ -42,7 +42,7 @@ export const mockCloseStrategyScroll: CloseStrategyScroll<DataStrategy> = {
     ngZone: mockNgZone,
     overlay: undefined,
     scrollSubscriptions: [],
-    viewportRuler: mockViewportRulerScroll,
+    viewportRulerScroll: mockViewportRulerScroll,
 };
 
 export const mockRepositionStrategyScroll: RepositionStrategyScroll<DataStrategy> =
@@ -51,9 +51,11 @@ export const mockRepositionStrategyScroll: RepositionStrategyScroll<DataStrategy
             auditTimeInMs: 50,
             count: 0,
             // platform: mockPlatform,
-            scrollContainers: new Map<unknown, unknown>(),
-            scrolled: new Subject<unknown>(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            scrollContainers: new Map<any, any>(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            scrolled: new Subject<any>(),
         },
         ngZone: mockNgZone,
-        viewportRuler: mockViewportRulerScroll,
+        viewportRulerScroll: mockViewportRulerScroll,
     };

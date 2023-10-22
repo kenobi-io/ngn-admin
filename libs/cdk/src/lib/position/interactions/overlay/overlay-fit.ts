@@ -4,8 +4,16 @@ import { Mono, mono, tube } from '@core-template';
 import { Dimension, Point } from '../../../platform';
 import {
     FlexibleConnectedStrategyPosition,
-    ParamsUnaryApplyFlexibleConnectedStrategyPosition,
+    FlexibleConnectedStrategyPositionCapability,
+    ParamsMonoStrategyPositionCapability,
 } from '../../data';
+
+export type FitOverlay = {
+    visibleArea?: number;
+    isCompletelyWithinViewport?: boolean;
+    fitsInViewportVertically?: boolean;
+    fitsInViewportHorizontally?: boolean;
+};
 
 type OverlayFit<T> = Partial<
     FlexibleConnectedStrategyPosition<T> & {
@@ -18,58 +26,32 @@ type OverlayFit<T> = Partial<
     }
 >;
 
-export type FitOverlay = {
-    visibleArea?: number;
-    isCompletelyWithinViewport?: boolean;
-    fitsInViewportVertically?: boolean;
-    fitsInViewportHorizontally?: boolean;
-};
-
-type ParamsFitOverlay = {
+type ParamsOverlayFit = {
     point: Point;
     position: ConnectedPosition;
     fitOverlay: FitOverlay;
 };
 
-export const overlayFit: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
-    ParamsFitOverlay
-> = (paramsFitOverlay) =>
-    mono((strategyPosition) => {
+export const overlayFit: ParamsMonoStrategyPositionCapability<
+    FlexibleConnectedStrategyPositionCapability,
+    ParamsOverlayFit
+> = ({ fitOverlay, point, position }, finish) =>
+    mono(({ strategyPosition }) => {
         const data = {
             ...strategyPosition,
             offsetX: 0,
             offsetY: 0,
             viewport: undefined,
         };
-        const { fitOverlay, point, position } = paramsFitOverlay;
         tube(
-            getRoundedBoundingClientRect(),
-            getOffset('x', position),
-            getOffset('y', position),
-            subtractOverflows('width', point),
-            subtractOverflows('height', point),
-            calculateOverlayFit(fitOverlay)
+            setRawOverlayRect(),
+            setOffset('x', position),
+            setOffset('y', position),
+            subtractVisibleHeightOrWidth('width', point),
+            subtractVisibleHeightOrWidth('height', point),
+            setOverlayFit(fitOverlay)
         )(data);
-    });
-
-const calculateOverlayFit = <T>(overlayFit?: FitOverlay): Mono<OverlayFit<T>> =>
-    mono((data) => {
-        const { rawOverlayRect, visibleHeight, visibleWidth } = data;
-        // Visible parts of the element on each axis.
-        const visibleArea = (visibleWidth ?? 0) * (visibleHeight ?? 0);
-
-        if (rawOverlayRect) {
-            const { height, width } = rawOverlayRect;
-            overlayFit = {
-                fitsInViewportHorizontally: visibleWidth === width,
-                fitsInViewportVertically: visibleHeight === height,
-                isCompletelyWithinViewport: width * height === visibleArea,
-                visibleArea,
-            };
-        }
-
-        return overlayFit;
-    });
+    }, finish);
 
 /**
  * Round the overlay rectangle's position and size when comparing against the viewport,
@@ -78,7 +60,7 @@ const calculateOverlayFit = <T>(overlayFit?: FitOverlay): Mono<OverlayFit<T>> =>
  * @param rect The overlay rectangle to be rounded.
  * @returns The rounded overlay rectangle.
  */
-const getRoundedBoundingClientRect = <T>(): Mono<OverlayFit<T>> =>
+const setRawOverlayRect = <T>(): Mono<OverlayFit<T>> =>
     mono((data) => {
         const { overlayRect } = data;
         if (overlayRect) {
@@ -100,7 +82,7 @@ const getRoundedBoundingClientRect = <T>(): Mono<OverlayFit<T>> =>
  * @param direction The direction ('x' or 'y').
  * @returns The offset value.
  */
-const getOffset = <T>(
+const setOffset = <T>(
     direction: 'x' | 'y',
     position: ConnectedPosition
 ): Mono<OverlayFit<T>> =>
@@ -125,7 +107,7 @@ const getOffset = <T>(
  * @param positiveOverflow The positive overflow on the axis.
  * @returns The visible length of the element on the axis.
  */
-const subtractOverflows = <T>(
+const subtractVisibleHeightOrWidth = <T>(
     side: 'width' | 'height',
     point: Point
 ): Mono<OverlayFit<T>> =>
@@ -168,4 +150,23 @@ const subtractOverflows = <T>(
                 Math.max(0, positiveOverflow);
             data.visibleHeight = visibleLength > 0 ? visibleLength : 0;
         }
+    });
+
+const setOverlayFit = <T>(overlayFit?: FitOverlay): Mono<OverlayFit<T>> =>
+    mono((data) => {
+        const { rawOverlayRect, visibleHeight, visibleWidth } = data;
+        // Visible parts of the element on each axis.
+        const visibleArea = (visibleWidth ?? 0) * (visibleHeight ?? 0);
+
+        if (rawOverlayRect) {
+            const { height, width } = rawOverlayRect;
+            overlayFit = {
+                fitsInViewportHorizontally: visibleWidth === width,
+                fitsInViewportVertically: visibleHeight === height,
+                isCompletelyWithinViewport: width * height === visibleArea,
+                visibleArea,
+            };
+        }
+
+        return overlayFit;
     });

@@ -1,7 +1,13 @@
 import { OverlayPositionBuilder } from '@angular/cdk/overlay';
-import { ApplicationRef, inject, INJECTOR } from '@angular/core';
+import { DOCUMENT, Location } from '@angular/common';
+import {
+    ANIMATION_MODULE_TYPE,
+    ApplicationRef,
+    inject,
+    INJECTOR,
+} from '@angular/core';
 import { Mono, mono } from '@core-template';
-import { pipe } from 'rxjs';
+import { pipe, Subject, Subscription } from 'rxjs';
 
 import {
     changes,
@@ -17,7 +23,10 @@ import {
 } from '../data';
 import { configOverlay } from './config-overlay';
 import { CONTAINER_OVERLAY } from './container';
-import { OVERLAY_REF } from './ref';
+import {
+    backdropClickHandlerOverlayRef,
+    backdropTransitionendHandlerOverlayRef,
+} from './ref/attach/backdrop-handler-overlay';
 import { OPTIONS_STRATEGY_SCROLL_OVERLAY } from './scroll';
 import { setContainerBodyOverlay } from './set-container-body-overlay';
 
@@ -47,16 +56,36 @@ export const createOverlay = <T>(change?: Partial<Overlay<T>>): Overlay<T> => {
         portalOutletOverlayRef<T>(),
         configOverlayRefAndAttach<T>(attachStrategiesScroll)
     )({
+        // TODO: dcing OverlayPositionBuilder
+        animationsDisabled: inject(ANIMATION_MODULE_TYPE) === 'NoopAnimations',
         // We have to resolve the ApplicationRef later in order to allow people
         // to use overlay-based providers during app initialization.
         appRef: injector.get<ApplicationRef>(ApplicationRef),
+        attachments: new Subject<void>(),
+        backdropClick: new Subject<MouseEvent | Event>(),
+        backdropClickHandler: (event: MouseEvent | Event): void => {
+            backdropClickHandlerOverlayRef.call(overlay, event);
+        },
+        backdropElement: null,
+        backdropTransitionendHandler: (
+            event: TransitionEvent | Event
+        ): void => {
+            backdropTransitionendHandlerOverlayRef.call(overlay, event);
+        },
         componentFactoryResolver: inject(COMPONENT_FACTORY_RESOLVER_TOKEN),
         container: inject(CONTAINER_OVERLAY),
+        detachments: new Subject<void>(),
+        // dispatcherOverlay: inject(KEYBOARD_DISPATCHER_OVERLAY),
+        document: inject(DOCUMENT),
         injector,
+        keydownEvents: new Subject<KeyboardEvent | Event>(),
+        location: inject(Location),
+        locationChanges: Subscription.EMPTY,
         ngZone: inject(ZONE_TOKEN),
         optionsStrategyScroll: inject(OPTIONS_STRATEGY_SCROLL_OVERLAY),
-        positionBuilder: inject(OverlayPositionBuilder), // TODO: dcing OverlayPositionBuilder
-        ref: inject(OVERLAY_REF),
+        // outsideClickDispatcher: inject(OUTSIDE_CLICK_DISPATCHER_OVERLAY),
+        outsidePointerEvents: new Subject<MouseEvent | Event>(),
+        positionBuilder: inject(OverlayPositionBuilder),
     });
     changes(overlay, change, CHANGE_OVERLAY);
 
@@ -68,46 +97,47 @@ let nextUniqueId = 0; // TODO: legacy approach fix it
 
 const paneOverlayRef = <T>(): Mono<Overlay<T>> =>
     mono((overlay) => {
-        const { ref } = overlay;
-        ref.pane = ref.document.createElement('div');
-        ref.pane.id = `cdk-overlay-${nextUniqueId++}`;
-        ref.pane.classList.add('cdk-overlay-pane');
-        ref.host?.appendChild(ref.pane);
+        overlay.pane = overlay.document.createElement('div');
+        overlay.pane.id = `cdk-overlay-${nextUniqueId++}`;
+        overlay.pane.classList.add('cdk-overlay-pane');
+        overlay.host?.appendChild(overlay.pane);
     });
 
 const hostOverlayRef = <T>(): Mono<Overlay<T>> =>
     mono((overlay) => {
-        const { container, ref } = overlay;
-        ref.host = document.createElement('div');
+        const { container } = overlay;
+        overlay.host = document.createElement('div');
 
         if (container) {
             setContainerBodyOverlay(container);
-            container.body?.appendChild(ref.host);
+            container.body?.appendChild(overlay.host);
         }
     });
 
 const portalOutletOverlayRef = <T>(): Mono<Overlay<T>> =>
     mono((overlay) => {
-        const { appRef, componentFactoryResolver, injector, ref } = overlay;
+        const { appRef, componentFactoryResolver, injector, ngZone } = overlay;
 
-        if (ref.pane) {
-            ref.portalOutlet = domPortalOutlet({
+        if (overlay.pane) {
+            overlay.portalOutlet = domPortalOutlet({
                 appRef,
                 componentFactoryResolver,
-                document: ref.document,
+                document: overlay.document,
                 injector,
-                outletElement: ref.pane,
+                isDisposed: false,
+                ngZone,
+                outletElement: overlay.pane,
             });
         }
     });
 
 const directionConfigOverlayRef = <T>(): Mono<Overlay<T>> =>
     mono((overlay) => {
-        const { config, directionality, ref } = overlay;
+        const { config, directionality } = overlay;
 
         if (config && directionality) {
-            ref.config = config;
-            ref.config.direction = config.direction || directionality.value;
+            overlay.config = config;
+            overlay.config.direction = config.direction || directionality.value;
         }
 
         return overlay;
@@ -117,9 +147,8 @@ const configOverlayRefAndAttach = <T>(
     attachStrategiesScroll: Mono<StrategyScroll<T>>
 ): Mono<Overlay<T>> =>
     mono((overlay) => {
-        const { ref } = overlay;
-        ref.config = configOverlay<T>(overlay.config);
-        const { config } = overlay.ref;
+        overlay.config = configOverlay<T>(overlay.config);
+        const { config } = overlay;
         const {
             // kindStrategiesScroll,
             // positionStrategy,
@@ -129,15 +158,15 @@ const configOverlayRefAndAttach = <T>(
         };
 
         if (strategyScroll) {
-            // ref.strategiesScroll = scrollStrategy;
-            // ref.kindStrategiesScroll = kindStrategiesScroll;
+            // overlay.strategiesScroll = scrollStrategy;
+            // overlay.kindStrategiesScroll = kindStrategiesScroll;
             // const { attachStrategiesScroll } = strategiesScroll;
             // const attach = attachStrategiesScroll.get(kindStrategiesScroll);
-            // attachStrategiesScroll(ref); // stage 1
+            // attachStrategiesScroll(overlay); // stage 1
             attachStrategiesScroll(strategyScroll); // stage 2
         }
 
         // if (positionStrategy) {
-        //     ref.positionStrategy = positionStrategy;
+        //     overlay.positionStrategy = positionStrategy;
         // }
     });

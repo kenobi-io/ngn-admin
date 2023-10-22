@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { OverlayPositionBuilder } from '@angular/cdk/overlay';
 import {
     ApplicationRef,
     ComponentFactoryResolver,
-    ElementRef,
+    // ElementRef,
     Injector,
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
@@ -11,10 +13,7 @@ import { jest } from '@jest/globals';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import { mockNgZone } from '../../directive/spec/directive.fixture';
-import {
-    mockLocation,
-    mockPlatform,
-} from '../../platform/spec/platform.fixture';
+import { mockLocation, mockPlatform } from '../../platform/spec';
 import {
     BlockStrategyScroll,
     CloseStrategyScroll,
@@ -23,15 +22,20 @@ import {
     RepositionStrategyScroll,
 } from '../../scroll';
 import {
-    ChangesOverlayRef,
+    mockBlockStrategyScroll,
+    mockCloseStrategyScroll,
+    mockRepositionStrategyScroll,
+    mockViewportRulerScroll,
+} from '../../scroll/spec';
+import {
     ConfigOverlay,
     ContainerOverlay,
     DispatcherOverlay,
     KeyboardDispatcherOverlay,
     OptionsStrategyScrollOverlay,
+    // OptionsStrategyScrollOverlay,
     OutsideClickDispatcherOverlay,
     Overlay,
-    OverlayRef,
 } from '../data';
 
 type DataOverlayMock = { content: string };
@@ -60,20 +64,7 @@ const createMockDispatcherOverlay = <T>(
           };
 };
 
-const createMockOverlayRef = <T>(
-    obj: Optional<
-        OverlayRef<T>,
-        'backdropClickHandler' | 'backdropTransitionendHandler'
-    >
-): OverlayRef<T> => {
-    return {
-        ...obj,
-        backdropClickHandler: jest.fn(),
-        backdropTransitionendHandler: jest.fn(),
-    };
-};
-
-const createMockOverlay = <T>(
+export const createMockOverlay = <T>(
     obj: Optional<
         Overlay<T>,
         'appRef' | 'componentFactoryResolver' | 'injector' | 'positionBuilder'
@@ -81,6 +72,8 @@ const createMockOverlay = <T>(
 ): Overlay<T> => ({
     ...obj,
     appRef: TestBed.inject(ApplicationRef),
+    backdropClickHandler: jest.fn(),
+    backdropTransitionendHandler: jest.fn(),
     componentFactoryResolver: TestBed.inject(ComponentFactoryResolver),
     injector: TestBed.inject(Injector),
     positionBuilder: TestBed.inject(OverlayPositionBuilder),
@@ -108,16 +101,16 @@ export const dispatcherScroll: DispatcherScroll<string> = {
     ancestorEmitsEvent: new Observable(),
     auditTimeInMs: 50,
     count: 0,
-    directive: undefined,
-    directives: [],
+    // directive: undefined,
+    // directives: [],
     document: document,
-    elementOrElementRef: new ElementRef(document.body),
+    // elementOrElementRef: new ElementRef(document.body),
     globalSubscription: new Subscription(),
     // platform: mockPlatform,
     registeredEmitsEvent: new Observable(),
     scrollContainers: new Map(),
     scrolled: new Subject(),
-    withinElementContained: false,
+    // withinElementContained: false,
 };
 
 type StrategiesScrollOverlayConfigOverlayMock<T> =
@@ -138,16 +131,16 @@ const mockOptionsStrategyScrollOverlay: OptionsStrategyScrollOverlay<DataOverlay
     {
         block: mockBlockStrategyScroll,
         close: mockCloseStrategyScroll,
-        configClose: mockConfigCloseStrategyScroll,
+        // configClose: mockConfigCloseStrategyScroll,
         configReposition: {
             autoClose: true,
-            overlayRef: undefined as unknown as OverlayRef<unknown>,
+            overlay: undefined,
             scrollThrottle: 300,
         },
         dispatcher: mockDispatcherScroll,
         document: document,
         ngZone: mockNgZone,
-        noop: {} as NoopStrategyScroll<unknown>,
+        // noop: {} as NoopStrategyScroll<unknown>,
         reposition: mockRepositionStrategyScroll,
         viewportRulerScroll: mockViewportRulerScroll,
     };
@@ -166,24 +159,40 @@ const mockConfigOverlay: ConfigOverlay<
     minHeight: '200px',
     minWidth: '200px',
     panelClass: 'custom-overlay-class',
-    strategyScroll: mockBlockStrategyScroll,
+    // strategyScroll: mockBlockStrategyScroll,
     width: '300px',
 };
 
-const mockChangesOverlayRef: ChangesOverlayRef<unknown> = {
+const mockContainerOverlay: ContainerOverlay = {
+    body: document.createElement('div'),
+    document: document,
+    platform: mockPlatform,
+};
+
+export const paramsCreateMockOverlay = {
     animationsDisabled: false,
+    attachments: new Subject<void>(),
     backdrop: document.createElement('div') as any,
+    backdropClick: new Subject<Event>(),
     backdropElement: document.createElement('div') as any,
     backdropTimeout: 0,
     componentEmbeddedRef: document.createElement('div') as any,
     config: mockConfigOverlay,
+    container: mockContainerOverlay,
     detachmentResult: document.createElement('div') as any,
-    direction: 'ltr',
+    detachments: new Subject<void>(),
+    direction: 'ltr' as Direction | Directionality,
     directionality: document.createElement('div') as any,
+    dispatcherOverlay: mockKeyboardDispatcherOverlay,
+    document: document,
     host: document.createElement('div') as any,
     hostElement: document.createElement('div') as any,
-    keydownEvents: new Subject<KeyboardEvent>(),
-    outsidePointerEvents: new Subject<MouseEvent>(),
+    keydownEvents: new Subject<KeyboardEvent | Event>(),
+    location: mockLocation as any,
+    locationChanges: new Subscription(),
+    ngZone: mockNgZone,
+    optionsStrategyScroll: mockOptionsStrategyScrollOverlay,
+    outsidePointerEvents: new Subject<MouseEvent | Event>(),
     overlayElement: document.createElement('div') as any,
     pane: document.createElement('div') as any,
     panelClass: '',
@@ -199,33 +208,5 @@ const mockChangesOverlayRef: ChangesOverlayRef<unknown> = {
     sizeConfig: { height: '100px', width: '100px' },
     toggleClasses: [],
 };
-
-const mockContainerOverlay: ContainerOverlay = {
-    body: document.createElement('div'),
-    document: document,
-    platform: mockPlatform,
-};
-
-export const mockOverlayRef: OverlayRef<DataOverlayMock> = createMockOverlayRef(
-    {
-        attachments: new Subject<void>(),
-        backdropClick: new Subject<MouseEvent>(),
-        detachments: new Subject<void>(),
-        document: document,
-        keyboardDispatcher: mockKeyboardDispatcherOverlay,
-        location: mockLocation,
-        locationChanges: new Subscription(),
-        ngZone: mockNgZone,
-        outsideClickDispatcher: mockOutsideClickDispatcherOverlay,
-        ...mockChangesOverlayRef,
-    }
-);
-
 export const mockOverlay: Overlay<DataOverlayMock> =
-    createMockOverlay<DataOverlayMock>({
-        config: mockConfigOverlay,
-        container: mockContainerOverlay,
-        ngZone: mockNgZone,
-        optionsStrategyScroll: mockOptionsStrategyScrollOverlay,
-        ref: mockOverlayRef,
-    });
+    createMockOverlay<DataOverlayMock>(paramsCreateMockOverlay as any);

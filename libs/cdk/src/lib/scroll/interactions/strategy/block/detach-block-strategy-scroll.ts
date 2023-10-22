@@ -1,10 +1,10 @@
 import { inject, InjectionToken } from '@angular/core';
-import { CapabilityMono, mono, tube } from '@core-template';
+import { FunctionMono, mono, tube } from '@core-template';
 
 import { BlockStrategyScroll } from '../../../data';
 import { DISABLE_BLOCK_STRATEGY_SCROLL } from './disable-block-strategy-scroll';
 
-export const detachBlockStrategyScroll: CapabilityMono<
+export const detachBlockStrategyScroll: FunctionMono<
     BlockStrategyScroll<unknown>
 > = () =>
     mono((strategy) => {
@@ -18,7 +18,7 @@ export const detachBlockStrategyScroll: CapabilityMono<
     });
 
 export const DETACH_BLOCK_STRATEGY_SCROLL = new InjectionToken<
-    CapabilityMono<BlockStrategyScroll<unknown>>
+    FunctionMono<BlockStrategyScroll<unknown>>
 >('[DETACH_BLOCK_STRATEGY_SCROLL]', {
     factory: () => detachBlockStrategyScroll,
 });

@@ -2,9 +2,9 @@ import { supportsScrollBehavior } from '@angular/cdk/platform';
 import { InjectionToken } from '@angular/core';
 import {
     and,
-    CapabilityMono,
     Condition,
     condition,
+    FunctionMono,
     Mono,
     mono,
     tube,
@@ -70,7 +70,7 @@ const restoreScrollBehavior = <T>(): Mono<BlockStrategyScroll<T>> =>
     });
 
 export const DISABLE_BLOCK_STRATEGY_SCROLL = new InjectionToken<
-    CapabilityMono<BlockStrategyScroll<unknown>>
+    FunctionMono<BlockStrategyScroll<unknown>>
 >('[DISABLE_BLOCK_STRATEGY_SCROLL]', {
     factory: () => disableBlockStrategyScroll,
 });

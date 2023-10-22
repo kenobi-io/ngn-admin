@@ -17,7 +17,7 @@ export const CHANGE_VIEWPORT_RULER_SCROLL =
 export const createViewportRulerScroll = (
     change?: Partial<ViewportRulerScroll>
 ): ViewportRulerScroll => {
-    const vrs: ViewportRulerScroll = {
+    const viewportRulerScroll: ViewportRulerScroll = {
         change: new Subject<Event>(),
         document: inject(DOCUMENT),
         /** Event listener that will be used to handle the viewport change events. */
@@ -28,24 +28,35 @@ export const createViewportRulerScroll = (
         platform: inject(PLATFORM_TOKEN),
         throttleTime: DEFAULT_RESIZE_TIME,
     };
-    outZone(vrs.ngZone, () => {
-        if (vrs.platform.isBrowser) {
-            const windowRef: Window = vrs.document.defaultView || window;
+    outZone(viewportRulerScroll.ngZone, () => {
+        if (viewportRulerScroll.platform.isBrowser) {
+            const windowRef: Window =
+                viewportRulerScroll.document.defaultView || window;
 
             // Note that bind the events ourselves, rather than going through something like RxJS's
             // `fromEvent` so that we can ensure that they're bound outside of the NgZone.
-            windowRef.addEventListener('resize', vrs.listener);
-            windowRef.addEventListener('orientationchange', vrs.listener);
+            windowRef.addEventListener('resize', viewportRulerScroll.listener);
+            windowRef.addEventListener(
+                'orientationchange',
+                viewportRulerScroll.listener
+            );
         }
 
         // Clear the cached position so that the viewport is re-measured next time it is required.
         // We don't need to keep track of the subscription, because it is completed on destroy.
-        changeViewportRulerScroll(vrs);
-        vrs.timeChange?.subscribe(() => (vrs.viewportSize = undefined));
+        changeViewportRulerScroll()({
+            strategyScroll: {
+                ngZone: viewportRulerScroll.ngZone,
+                viewportRulerScroll,
+            },
+        });
+        viewportRulerScroll.timeChange?.subscribe(
+            () => (viewportRulerScroll.viewportSize = undefined)
+        );
     });
-    changes(vrs, change, CHANGE_VIEWPORT_RULER_SCROLL);
+    changes(viewportRulerScroll, change, CHANGE_VIEWPORT_RULER_SCROLL);
 
-    return vrs;
+    return viewportRulerScroll;
 };
 
 export const VIEWPORT_RULER_SCROLL = new InjectionToken<ViewportRulerScroll>(

@@ -4,9 +4,23 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 
 import { StrategyScroll } from '../../scroll/data';
 
-// type Data<T> = unknown;
-
-type ChangeConfigOverlay<T, StrategiesScrollOverlay> = {
+export type ConfigOverlay<
+    T = unknown,
+    StrategiesScrollOverlay extends StrategyScroll<T> = StrategyScroll<T>
+> = {
+    /** Custom class to add to the overlay pane. */
+    panelClass?: string | string[];
+    /** Whether the overlay has a backdrop. */
+    hasBackdrop?: boolean;
+    /** Custom class to add to the backdrop */
+    backdropClass?: string | string[];
+    /**
+     * Whether the overlay should be disposed of when the user goes backwards/forwards in history.
+     * Note that this usually doesn't include clicking on links (unless the user is using
+     * the `HashLocationStrategy`).
+     */
+    disposeOnNavigation?: boolean;
+} & Partial<{
     /**
      * Direction of the text in the overlay panel. If a `Directionality` instance
      * is passed in, the overlay will handle changes to its value automatically.
@@ -29,22 +43,4 @@ type ChangeConfigOverlay<T, StrategiesScrollOverlay> = {
     // positionStrategy: PositionStrategy; // TODO: add dcing PositionStrategy
     /** Strategy to be used when handling scroll events while the overlay is open. */
     strategyScroll: StrategiesScrollOverlay;
-};
-
-export type ConfigOverlay<
-    T,
-    StrategyScrollOverlay extends StrategyScroll<T> = StrategyScroll<T>
-> = Partial<ChangeConfigOverlay<T, StrategyScrollOverlay>> & {
-    /** Custom class to add to the overlay pane. */
-    panelClass?: string | string[];
-    /** Whether the overlay has a backdrop. */
-    hasBackdrop?: boolean;
-    /** Custom class to add to the backdrop */
-    backdropClass?: string | string[];
-    /**
-     * Whether the overlay should be disposed of when the user goes backwards/forwards in history.
-     * Note that this usually doesn't include clicking on links (unless the user is using
-     * the `HashLocationStrategy`).
-     */
-    disposeOnNavigation?: boolean;
-};
+}>;

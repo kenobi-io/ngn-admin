@@ -16,7 +16,7 @@ export const createRepositionStrategyScroll = <T>(
     const reposition: RepositionStrategyScroll<T> = {
         dispatcher: inject(DISPATCHER_SCROLL),
         ngZone: inject(ZONE_TOKEN),
-        viewportRuler: inject(VIEWPORT_RULER_SCROLL),
+        viewportRulerScroll: inject(VIEWPORT_RULER_SCROLL),
     };
     changes(reposition, change, CHANGE_REPOSITION_STRATEGY_SCROLL);
 

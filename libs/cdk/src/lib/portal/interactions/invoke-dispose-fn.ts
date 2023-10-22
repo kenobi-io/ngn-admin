@@ -1,7 +1,13 @@
-import { PortalOutlet } from '../data';
+import { Mono, mono } from '@core-template';
 
-export const invokeDisposeFn = <T>(use: PortalOutlet<T>): PortalOutlet<T> => {
-    use.disposeFn?.();
-    use.disposeFn = undefined;
-    return use;
-};
+import { PortalOutletCapability } from '../data';
+
+type InvokeDisposeFn<T = unknown> = () => Mono<PortalOutletCapability<T>>;
+
+export const invokeDisposeFn: InvokeDisposeFn = () =>
+    mono(({ portalOutlet }) => {
+        if (portalOutlet) {
+            portalOutlet.disposeFn?.();
+            portalOutlet.disposeFn = undefined;
+        }
+    });

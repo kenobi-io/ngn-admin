@@ -1,9 +1,9 @@
 import { Mono, mono } from '@core-template';
-import { outZone } from '@ngn-template/cdk';
-import { Observable, Observer, fromEvent } from 'rxjs';
+import { fromEvent,Observable, Observer } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { Scrollable } from '../../../directive';
+import { outZone } from '../../../platform';
 import { DispatcherScroll } from '../../data';
 import { removeGlobalListenerDispatcherScroll } from './remove-global-listener-dispatcher-scroll';
 

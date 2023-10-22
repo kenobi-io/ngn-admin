@@ -69,7 +69,7 @@
 //         overlay?: Overlay<T>;
 //         overlayKeydown: EventEmitter<KeyboardEvent>;
 //         overlayOutsideClick: EventEmitter<MouseEvent>;
-//         // overlayRef?: OverlayRef;
+//         // overlay?: OverlayRef;
 //         panelClass?: string | string[];
 //         position?: FlexibleConnectedPositionStrategy;
 //         positionChange: EventEmitter<ConnectedOverlayPositionChange>;
@@ -168,7 +168,7 @@
 //         //    positionBuilder: inject(OverlayPositionBuilder),
 //         //    scrollStrategies: inject(ScrollStrategyOptions),
 //         // };
-//         use.overlay && (use.overlay.ref = createOverlayRef);
+//         use.overlay && (use.overlay = createOverlayRef);
 //         setOverlayConfig(use, hasBackdrop, positionStrategy, dir);
 //         use.overlay = createOverlay(createOverlayRef);
 //         return use;
@@ -181,7 +181,7 @@
 //         dir: Directionality
 //     ): OverlayConfig => {
 //         use.overlay &&
-//             (use.overlay.ref.config = new OverlayConfig({
+//             (use.overlay.config = new OverlayConfig({
 //                 backdropClass,
 //                 direction: dir,
 //                 hasBackdrop: hasBackdrop,
@@ -309,7 +309,7 @@
 //     /** Emits when there are mouse outside click events that are targeted at the overlay. */
 //     @Output() readonly overlayOutsideClick = new EventEmitter<MouseEvent>();
 //     use!: UseConnectedOverlay<T>;
-//     // private _overlayRef: OverlayRef;
+//     // private _overlay: OverlayRef;
 //     // private _templatePortal: TemplatePortal;
 //     // private _hasBackdrop = false;
 //     // private _lockPosition = false;
@@ -403,8 +403,8 @@
 //     }
 
 //     /** The associated overlay reference. */
-//     get overlayRef(): OverlayRef {
-//         return this._overlayRef;
+//     get overlay(): OverlayRef {
+//         return this._overlay;
 //     }
 
 //     /** The element's layout direction. */
@@ -430,8 +430,8 @@
 //         this._backdropSubscription.unsubscribe();
 //         this._positionSubscription.unsubscribe();
 
-//         if (this._overlayRef) {
-//             this._overlayRef.dispose();
+//         if (this._overlay) {
+//             this._overlay.dispose();
 //         }
 //         this.scrollStrategy = this._scrollStrategyFactory();
 //     }
@@ -439,7 +439,7 @@
 //     ngOnChanges(changes: SimpleChanges) {
 //         if (this._position) {
 //             this._updatePositionStrategy(this._position);
-//             this._overlayRef.updateSize({
+//             this._overlay.updateSize({
 //                 height: this.height,
 //                 minHeight: this.minHeight,
 //                 minWidth: this.minWidth,
@@ -470,16 +470,16 @@
 //             this.positions = defaultPositionList;
 //         }
 
-//         const overlayRef = (this._overlayRef = this._overlay.create(
+//         const overlay = (this._overlay = this._overlay.create(
 //             this._buildConfig()
 //         ));
-//         this._attachSubscription = overlayRef
+//         this._attachSubscription = overlay
 //             .attachments()
 //             .subscribe(() => this.attach.emit());
-//         this._detachSubscription = overlayRef
+//         this._detachSubscription = overlay
 //             .detachments()
 //             .subscribe(() => this.detach.emit());
-//         overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
+//         overlay.keydownEvents().subscribe((event: KeyboardEvent) => {
 //             this.overlayKeydown.next(event);
 
 //             if (
@@ -492,7 +492,7 @@
 //             }
 //         });
 
-//         this._overlayRef
+//         this._overlay
 //             .outsidePointerEvents()
 //             .subscribe((event: MouseEvent) => {
 //                 this.overlayOutsideClick.next(event);
@@ -574,19 +574,19 @@
 
 //     /** Attaches the overlay and subscribes to backdrop clicks if backdrop exists */
 //     private _attachOverlay() {
-//         if (!this._overlayRef) {
+//         if (!this._overlay) {
 //             this._createOverlay();
 //         } else {
 //             // Update the overlay size, in case the directive's inputs have changed
-//             this._overlayRef.getConfig().hasBackdrop = this.hasBackdrop;
+//             this._overlay.getConfig().hasBackdrop = this.hasBackdrop;
 //         }
 
-//         if (!this._overlayRef.hasAttached()) {
-//             this._overlayRef.attach(this._templatePortal);
+//         if (!this._overlay.hasAttached()) {
+//             this._overlay.attach(this._templatePortal);
 //         }
 
 //         if (this.hasBackdrop) {
-//             this._backdropSubscription = this._overlayRef
+//             this._backdropSubscription = this._overlay
 //                 .backdropClick()
 //                 .subscribe((event) => {
 //                     this.backdropClick.emit(event);
@@ -614,8 +614,8 @@
 
 //     /** Detaches the overlay and unsubscribes to backdrop clicks if backdrop exists */
 //     private _detachOverlay() {
-//         if (this._overlayRef) {
-//             this._overlayRef.detach();
+//         if (this._overlay) {
+//             this._overlay.detach();
 //         }
 
 //         this._backdropSubscription.unsubscribe();

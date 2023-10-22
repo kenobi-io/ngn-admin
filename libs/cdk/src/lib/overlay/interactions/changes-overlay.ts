@@ -59,14 +59,14 @@
 //    };
 //
 //    const setChangesOverlayRef = <T>(overlay: Overlay<T>): Overlay<T> => {
-//        const { host, pane, portalOutlet } = overlay.ref;
+//        const { host, pane, portalOutlet } = overlay;
 //
 //        if (host && pane && portalOutlet) {
-//            overlay.ref = changesOverlayRef.call<
+//            overlay = changesOverlayRef.call<
 //                OverlayRef<T>,
 //                [change: ChangesOverlayRef<T>],
 //                OverlayRef<T>
-//            >(overlay.ref, {
+//            >(overlay, {
 //                config,
 //                host,
 //                pane,

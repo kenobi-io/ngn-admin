@@ -8,11 +8,9 @@
 
 import { Platform } from '@angular/cdk/platform';
 
-type ChangeContainerOverlay = {
-    body: HTMLDivElement;
-};
 /** Container inside which all overlays will render. */
-export type ContainerOverlay = Partial<ChangeContainerOverlay> & {
+export type ContainerOverlay = {
     document: Document;
     platform: Platform;
+    body?: HTMLDivElement;
 };

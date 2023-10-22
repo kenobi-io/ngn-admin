@@ -1,7 +1,10 @@
 import { Platform } from '@angular/cdk/platform';
 
 import { Zonality } from '../../../directive';
-import { DispatcherOverlay } from './dispatcher-overlay';
+import {
+    DispatcherOverlay,
+    DispatcherOverlayCapability,
+} from './dispatcher-overlay';
 
 type PointerDownListener = {
     (event: PointerEvent): void;
@@ -15,22 +18,22 @@ type ClickListener = {
     (this: OutsideClickDispatcherOverlay, event: MouseEvent): void;
 };
 
-type ChangesOutsideClickDispatcherOverlay = {
-    pointerDownEventTarget: EventTarget;
-};
+export type OutsideClickDispatcherOverlay = DispatcherOverlay &
+    Partial<
+        Zonality & { pointerDownEventTarget: EventTarget } & {
+            // kindof: 'OutsideClickDispatcherOverlay';
+            cursorOriginalValue: string;
+            cursorStyleIsSet: boolean;
+            platform: Platform;
+            /** @breaking-change 14.0.0 _ngZone will be required. */
+            pointerDownListener: PointerDownListener;
+            pointerDownEventTarget: EventTarget;
 
-export type OutsideClickDispatcherOverlay = Zonality &
-    DispatcherOverlay &
-    Partial<ChangesOutsideClickDispatcherOverlay> & {
-        // kindof: 'OutsideClickDispatcherOverlay';
-        cursorOriginalValue: string;
-        cursorStyleIsSet: boolean;
-        platform: Platform;
-        /** @breaking-change 14.0.0 _ngZone will be required. */
-        pointerDownListener: PointerDownListener;
-        listener: ClickListener;
+            listener: ClickListener;
+        }
+    >;
+
+export type OutsideClickDispatcherOverlayCapability<T = unknown> =
+    DispatcherOverlayCapability<T> & {
+        dispatcherOverlay?: OutsideClickDispatcherOverlay;
     };
-
-export type OutsideClickDispatcherOverlayCapability = {
-    dispatcher: OutsideClickDispatcherOverlay;
-};

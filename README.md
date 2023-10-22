@@ -254,3 +254,7 @@ import(`@tiptap/core`).then(m => editor$.next(m.Editor));
     > 
 5. **[dci]** data: </br>
     > all utilities instead of the returned result should set value to same named property of ```ChangesType<T>```</br>
+    > 
+5. **[dci]** encapsulation: </br>
+    > add data for encapsulate in object that pass to ```tube(...)({ overlay, encapsulateObject})```</br>
+    > this avoids enriching the object whose data must be returned from the method</br>

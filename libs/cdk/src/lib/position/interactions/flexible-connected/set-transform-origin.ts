@@ -1,31 +1,53 @@
-// import { tube } from '@core-template';
+import { mono } from '@core-template';
 
-// import { isOverlayRefDirectionRtl } from '../../../overlay';
-// import { FlexibleConnectedPosition } from '../../data';
+import { isOverlayRefDirectionRtl, OverlayCapability } from '../../../overlay';
+import {
+    FlexibleConnectedPosition,
+    FlexibleConnectedStrategyPositionCapability,
+    ParamsMonoStrategyPositionCapability,
+} from '../../data';
 
-// /** @internal Sets the transform origin based on the configured selector and the passed-in position.  */
-// export const setTransformOrigin =
-//     (position: FlexibleConnectedPosition) => () => {
-//         if (!this._transformOriginSelector) {
-//             return;
-//         }
+/** Sets the transform origin based on the configured selector and the passed-in position. */
+export const setTransformOrigin: ParamsMonoStrategyPositionCapability<
+    FlexibleConnectedStrategyPositionCapability,
+    FlexibleConnectedPosition
+> = (position) =>
+    mono(({ strategyPosition }) => {
+        if (strategyPosition) {
+            const { boundingBox, transformOriginSelector } = strategyPosition;
+            const elements = getElementsWithSelector(
+                transformOriginSelector,
+                boundingBox
+            );
 
-//         const elements: NodeListOf<HTMLElement> =
-//             this._boundingBox!.querySelectorAll(this._transformOriginSelector);
-//         let xOrigin: 'left' | 'right' | 'center';
-//         const yOrigin: 'top' | 'bottom' | 'center' = position.overlayY;
+            const xOrigin = calculateXOriginValue(strategyPosition, position);
+            const yOrigin = position.overlayY;
 
-//         if (position.overlayX === 'center') {
-//             xOrigin = 'center';
-//         } else if (isOverlayRefDirectionRtl()) {
-//             xOrigin = position.overlayX === 'start' ? 'right' : 'left';
-//         } else {
-//             xOrigin = position.overlayX === 'start' ? 'left' : 'right';
-//         }
+            for (const element of elements) {
+                element.style.transformOrigin = `${xOrigin} ${yOrigin}`;
+            }
+        }
+    });
 
-//         for (let i = 0; i < elements.length; i++) {
-//             elements[i].style.transformOrigin = `${xOrigin} ${yOrigin}`;
-//         }
+const getElementsWithSelector = (
+    transformOriginSelector?: string,
+    boundingBox?: HTMLElement
+): HTMLElement[] =>
+    Array.from(
+        boundingBox?.querySelectorAll<HTMLElement>(
+            transformOriginSelector || ''
+        ) ?? []
+    );
 
-//         return tube();
-//     };
+const calculateXOriginValue = <T>(
+    { overlay }: OverlayCapability<T>,
+    position: FlexibleConnectedPosition
+): 'left' | 'right' | 'center' => {
+    if (position.overlayX === 'center') {
+        return 'center';
+    } else if (overlay && isOverlayRefDirectionRtl({ overlay })) {
+        return position.overlayX === 'start' ? 'right' : 'left';
+    } else {
+        return position.overlayX === 'start' ? 'left' : 'right';
+    }
+};

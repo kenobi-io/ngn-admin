@@ -111,7 +111,7 @@
 //      *   showing on touch devices.
 //      */
 //     @Input('TooltipTouchGestures') touchGestures: TooltipTouchGestures = 'auto';
-//     _overlayRef!: OverlayRef | null;
+//     _overlay!: OverlayRef | null;
 //     _tooltipInstance!: T | null;
 //     private _portal!: ComponentPortal<T>;
 //     private _position: TooltipPosition = 'below';
@@ -172,8 +172,8 @@
 //         }
 
 //         _dir.change.pipe(takeUntil(this._destroyed)).subscribe(() => {
-//             if (this._overlayRef) {
-//                 this._updatePosition(this._overlayRef);
+//             if (this._overlay) {
+//                 this._updatePosition(this._overlay);
 //             }
 //         });
 //     }
@@ -238,8 +238,8 @@
 
 //         clearTimeout(this._touchstartTimeout);
 
-//         if (this._overlayRef) {
-//             this._overlayRef.dispose();
+//         if (this._overlay) {
+//             this._overlay.dispose();
 //             this._tooltipInstance = null;
 //         }
 
@@ -273,12 +273,12 @@
 //             return;
 //         }
 
-//         const overlayRef = this._createOverlay(origin);
+//         const overlay = this._createOverlay(origin);
 //         this._detach();
 //         this._portal =
 //             this._portal ||
 //             new ComponentPortal(this._tooltipComponent, this._viewContainerRef);
-//         const instance = (this._tooltipInstance = overlayRef.attach(
+//         const instance = (this._tooltipInstance = overlay.attach(
 //             this._portal
 //         ).instance);
 //         instance._triggerElement = this._elementRef.nativeElement;
@@ -316,10 +316,10 @@
 //         if (value !== this._position) {
 //             this._position = value;
 
-//             if (this._overlayRef) {
-//                 this._updatePosition(this._overlayRef);
+//             if (this._overlay) {
+//                 this._updatePosition(this._overlay);
 //                 this._tooltipInstance?.show(0);
-//                 this._overlayRef.updatePosition();
+//                 this._overlay.updatePosition();
 //             }
 //         }
 //     }
@@ -328,7 +328,7 @@
 //     set positionAtOrigin(value: BooleanInput) {
 //         this._positionAtOrigin = coerceBooleanProperty(value);
 //         this._detach();
-//         this._overlayRef = null;
+//         this._overlay = null;
 //     }
 //     // eslint-disable-next-line sort-class-members/sort-class-members, @typescript-eslint/adjacent-overload-signatures
 //     set disabled(value: BooleanInput) {
@@ -403,15 +403,15 @@
 
 //     /** Create the overlay config and position strategy */
 //     private _createOverlay(origin?: { x: number; y: number }): OverlayRef {
-//         if (this._overlayRef) {
-//             const existingStrategy = this._overlayRef.getConfig()
+//         if (this._overlay) {
+//             const existingStrategy = this._overlay.getConfig()
 //                 .positionStrategy as FlexibleConnectedPositionStrategy;
 
 //             if (
 //                 (!this.positionAtOrigin || !origin) &&
 //                 existingStrategy._origin instanceof ElementRef
 //             ) {
-//                 return this._overlayRef;
+//                 return this._overlay;
 //             }
 
 //             this._detach();
@@ -452,26 +452,26 @@
 //                 }
 //             });
 
-//         this._overlayRef = this._overlay.create({
+//         this._overlay = this._overlay.create({
 //             direction: this._dir,
 //             panelClass: `${this._cssClassPrefix}-${PANEL_CLASS}`,
 //             positionStrategy: strategy,
 //             scrollStrategy: this._scrollStrategy(),
 //         });
 
-//         this._updatePosition(this._overlayRef);
+//         this._updatePosition(this._overlay);
 
-//         this._overlayRef
+//         this._overlay
 //             .detachments()
 //             .pipe(takeUntil(this._destroyed))
 //             .subscribe(() => this._detach());
 
-//         this._overlayRef
+//         this._overlay
 //             .outsidePointerEvents()
 //             .pipe(takeUntil(this._destroyed))
 //             .subscribe(() => this._tooltipInstance?._handleBodyInteraction());
 
-//         this._overlayRef
+//         this._overlay
 //             .keydownEvents()
 //             .pipe(takeUntil(this._destroyed))
 //             .subscribe((event) => {
@@ -487,26 +487,26 @@
 //             });
 
 //         if (this._defaultOptions?.disableTooltipInteractivity) {
-//             this._overlayRef.addPanelClass(
+//             this._overlay.addPanelClass(
 //                 `${this._cssClassPrefix}-tooltip-panel-non-interactive`
 //             );
 //         }
 
-//         return this._overlayRef;
+//         return this._overlay;
 //     }
 
 //     /** Detaches the currently-attached tooltip. */
 //     private _detach() {
-//         if (this._overlayRef && this._overlayRef.hasAttached()) {
-//             this._overlayRef.detach();
+//         if (this._overlay && this._overlay.hasAttached()) {
+//             this._overlay.detach();
 //         }
 
 //         this._tooltipInstance = null;
 //     }
 
 //     /** Updates the position of the current tooltip. */
-//     private _updatePosition(overlayRef: OverlayRef) {
-//         const position = overlayRef.getConfig()
+//     private _updatePosition(overlay: OverlayRef) {
+//         const position = overlay.getConfig()
 //             .positionStrategy as FlexibleConnectedPositionStrategy;
 //         const origin = this._getOrigin();
 //         const overlay = this._getOverlayPosition();
@@ -618,7 +618,7 @@
 //                 .pipe(take(1), takeUntil(this._destroyed))
 //                 .subscribe(() => {
 //                     if (this._tooltipInstance) {
-//                         this._overlayRef!.updatePosition();
+//                         this._overlay!.updatePosition();
 //                     }
 //                 });
 //         }
@@ -680,14 +680,14 @@
 //         }
 
 //         if (newPosition !== this._currentPosition) {
-//             const overlayRef = this._overlayRef;
+//             const overlay = this._overlay;
 
-//             if (overlayRef) {
+//             if (overlay) {
 //                 const classPrefix = `${this._cssClassPrefix}-${PANEL_CLASS}-`;
-//                 overlayRef.removePanelClass(
+//                 overlay.removePanelClass(
 //                     classPrefix + this._currentPosition
 //                 );
-//                 overlayRef.addPanelClass(classPrefix + newPosition);
+//                 overlay.addPanelClass(classPrefix + newPosition);
 //             }
 
 //             this._currentPosition = newPosition;
@@ -767,7 +767,7 @@
 //                             .relatedTarget as Node | null;
 //                         if (
 //                             !newTarget ||
-//                             !this._overlayRef?.overlayElement.contains(
+//                             !this._overlay?.overlayElement.contains(
 //                                 newTarget
 //                             )
 //                         ) {

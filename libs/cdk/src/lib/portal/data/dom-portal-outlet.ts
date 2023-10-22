@@ -36,5 +36,5 @@ type ChangesDomPortalOutlet<T> = {
  * A PortalOutlet for attaching portals to an arbitrary DOM element outside of the Angular
  * application context.
  */
-export type DomPortalOutlet<T> = PortalOutlet<T> &
+export type DomPortalOutlet<T = unknown> = PortalOutlet<T> &
     Partial<ChangesDomPortalOutlet<T>>;

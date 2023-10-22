@@ -6,9 +6,22 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { Directive, inject, OnDestroy, OnInit } from '@angular/core';
+import { Directionality } from '@angular/cdk/bidi';
+import {
+    Directive,
+    ElementRef,
+    EmbeddedViewRef,
+    inject,
+    NgZone,
+    OnDestroy,
+    OnInit,
+    TemplateRef,
+    ViewContainerRef,
+} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
-import { Scrollable } from '../../directive';
+import { Context, OptionsEmbeddedViewRef, Scrollable } from '../../directive';
+import { VIEW_CONTAINER_REF_TOKEN, ZONE_TOKEN } from '../../platform';
 import { DispatcherScroll } from '../data';
 import {
     deregisterDispatcherScroll,
@@ -26,13 +39,18 @@ import {
     selector: '[scrollable]',
     standalone: true,
 })
-export class ScrollableDirective<T> implements OnInit, OnDestroy {
-    scrollable: Scrollable<T /* , RefScrollable<T> */> = inject(REF_SCROLLABLE);
-    dispatcher: DispatcherScroll<T /* , RefScrollable<T> */> =
-        inject(DISPATCHER_SCROLL);
-    destroyed: Subject<void>;
-    elementScrolled: Observable<Event>;
-    elementRef: ElementRef<HTMLElement>;
+export class ScrollableDirective<T> implements OnInit, OnDestroy, Scrollable {
+    viewContainerRef: ViewContainerRef = inject(VIEW_CONTAINER_REF_TOKEN);
+    ngZone: NgZone = inject(ZONE_TOKEN);
+    context?: Context<unknown> | undefined;
+    optionsEmbeddedViewRef?: OptionsEmbeddedViewRef | undefined;
+    templateRef?: TemplateRef<Context<unknown>> | undefined;
+    viewRef?: EmbeddedViewRef<Context<unknown>> | undefined;
+    scrollable: Scrollable<T> = inject(REF_SCROLLABLE);
+    dispatcher: DispatcherScroll<T> = inject(DISPATCHER_SCROLL);
+    destroyed: Subject<void> = new Subject();
+    elementScrolled!: Observable<Event>;
+    elementRef: ElementRef<HTMLElement> = inject(ElementRef<HTMLElement>);
     dir?: Directionality;
 
     ngOnInit(): void {

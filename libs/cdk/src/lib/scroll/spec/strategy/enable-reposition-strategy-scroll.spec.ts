@@ -35,11 +35,9 @@ describe('enableRepositionStrategyScroll', () => {
         strategy.dispatcher.scrolled.subscribe.mock.calls[0][0]();
 
         // Expectations for scrolled event
-        expect(updatePositionOverlayRef).toHaveBeenCalledWith(
-            strategy.overlayRef
-        );
+        expect(updatePositionOverlayRef).toHaveBeenCalledWith(strategy.overlay);
         expect(
-            strategy.overlayRef.overlayElement.getBoundingClientRect
+            strategy.overlay.overlayElement.getBoundingClientRect
         ).toHaveBeenCalled();
         expect(detachOverlayRef).not.toHaveBeenCalled(); // Since autoClose is true, detachOverlayRef should not be called
 

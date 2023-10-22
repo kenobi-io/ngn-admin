@@ -3,13 +3,13 @@ import { Overlay } from '../../overlay';
 import { DispatcherScroll } from './dispatcher-scroll';
 import { ViewportRulerScroll } from './viewport-rule-scroll';
 
-export type StrategyScroll<T> = Zonality &
+export type StrategyScroll<T = unknown> = Zonality &
     Partial<{
         overlay: Overlay<T>;
         dispatcher: DispatcherScroll<T>;
     }> & {
-        viewportRuler: ViewportRulerScroll;
+        viewportRulerScroll: ViewportRulerScroll;
     };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type NoopStrategyScroll<T> = StrategyScroll<T> & {};
+export type NoopStrategyScroll<T = unknown> = StrategyScroll<T> & {};

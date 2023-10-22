@@ -15,7 +15,7 @@
 //         const {
 //             boundingBox,
 //             isDisposed,
-//             overlay: overlayRef,
+//             overlay,
 //             pane,
 //             positionChanger,
 //         } = strategyPosition;
@@ -47,8 +47,8 @@
 //             resetOverlayStylesElement(); // local
 //         }
 
-//         if (overlayRef) {
-//             overlayRef.ref.host?.classList.remove(boundingBoxClass);
+//         if (overlay) {
+//             overlay.host?.classList.remove(boundingBoxClass);
 //         }
 
 //         detachFlexibleConnectedStrategyPosition()(strategyPosition);

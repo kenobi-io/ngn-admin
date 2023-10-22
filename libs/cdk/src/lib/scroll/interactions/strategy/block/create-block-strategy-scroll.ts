@@ -21,7 +21,7 @@ export const createBlockStrategyScroll = <T>(
             top: 0,
             width: 0,
         },
-        viewportRuler: inject(VIEWPORT_RULER_SCROLL),
+        viewportRulerScroll: inject(VIEWPORT_RULER_SCROLL),
         window: inject(WINDOW_TOKEN),
     };
     changes(block, change, CHANGE_BLOCK_STRATEGY_SCROLL);

@@ -1,11 +1,11 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Condition, Mono, condition, mono, tube } from '@core-template';
+import { Condition, condition, Mono, mono, tube } from '@core-template';
 
 import { setRtl } from '../../../overlay';
 import { BoundingBoxRect, Point } from '../../../platform';
 import {
     FlexibleConnectedStrategyPosition,
-    ParamsUnaryApplyFlexibleConnectedStrategyPosition,
+    FlexibleConnectedStrategyPositionCapability,
 } from '../../data';
 
 type CalculateBoundingBoxRectData<T> = Partial<
@@ -23,11 +23,17 @@ type CalculateBoundingBoxRectData<T> = Partial<
     height?: number;
 };
 
-type CalculateBoundingBoxRectParam = {
+type Param = {
     origin: Point;
     position: ConnectedPosition;
     boundingBoxRect: BoundingBoxRect; // Updated: Added boundingBoxRect as a parameter
 };
+
+type ParamsMonoApplyFlexibleConnectedStrategyPosition<
+    K = unknown,
+    T = unknown,
+    R = Partial<FlexibleConnectedStrategyPositionCapability<T>>
+> = (param: K) => Mono<R>;
 
 /**
  * @internal
@@ -36,8 +42,8 @@ type CalculateBoundingBoxRectParam = {
  * This method does no measuring and applies no styles so that we can cheaply compute the
  * bounds for all positions and choose the best fit based on these results.
  */
-export const calculateBoundingBoxRect: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
-    CalculateBoundingBoxRectParam
+export const calculateBoundingBoxRect: ParamsMonoApplyFlexibleConnectedStrategyPosition<
+    Param
 > = ({ boundingBoxRect, origin, position }) =>
     mono(({ strategyPosition }) => {
         if (strategyPosition) {

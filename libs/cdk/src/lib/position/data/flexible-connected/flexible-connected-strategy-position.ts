@@ -13,10 +13,8 @@ import { Observable, Subject, Subscription } from 'rxjs';
 
 import { BoundingBoxSize, Dimension, Point } from '../../../platform';
 import { ViewportRulerScrollCapability } from '../../../scroll';
-import {
-    StrategyPosition,
-    StrategyPositionCapability,
-} from '../strategy-position';
+import { StrategyPositionCapability } from '../capability';
+import { StrategyPosition } from '../strategy-position';
 import {
     ConnectedOverlayPositionChange,
     ConnectionPositionPair,
@@ -54,92 +52,71 @@ type ChangesFlexibleConnectedStrategyPosition = {
  * a basic dropdown is connecting the bottom-left corner of the origin to the top-left corner
  * of the overlay.
  */
-export type FlexibleConnectedStrategyPosition<T> = StrategyPosition<T> &
-    Partial<ChangesFlexibleConnectedStrategyPosition> &
-    ViewportRulerScrollCapability & {
-        document: Document;
-        /** Whether we're performing the very first positioning of the overlay. */
-        isInitialRender: boolean;
+export type FlexibleConnectedStrategyPosition<T = unknown> =
+    StrategyPosition<T> &
+        Partial<ChangesFlexibleConnectedStrategyPosition> &
+        ViewportRulerScrollCapability & {
+            document: Document;
+            /** Whether we're performing the very first positioning of the overlay. */
+            isInitialRender: boolean;
 
-        /** Last size used for the bounding box. Used to avoid resizing the overlay after open. */
-        lastBoundingBoxSize: BoundingBoxSize;
+            /** Last size used for the bounding box. Used to avoid resizing the overlay after open. */
+            lastBoundingBoxSize: BoundingBoxSize;
 
-        /** Whether the overlay was pushed in a previous positioning. */
-        isPushed: boolean;
+            /** Whether the overlay was pushed in a previous positioning. */
+            isPushed: boolean;
 
-        /** Whether the overlay can be pushed on-screen on the initial open. */
-        canPush: boolean;
+            /** Whether the overlay can be pushed on-screen on the initial open. */
+            canPush: boolean;
 
-        /** Whether the overlay can grow via flexible width/height after the initial open. */
-        growAfterOpen: boolean;
+            /** Whether the overlay can grow via flexible width/height after the initial open. */
+            growAfterOpen: boolean;
 
-        /** Whether the overlay's width and height can be constrained to fit within the viewport. */
-        hasFlexibleDimensions: boolean;
+            /** Whether the overlay's width and height can be constrained to fit within the viewport. */
+            hasFlexibleDimensions: boolean;
 
-        /** Whether the overlay position is locked. */
-        positionLocked: boolean;
+            /** Whether the overlay position is locked. */
+            positionLocked: boolean;
 
-        /** Cached origin dimensions */
-        originRect: Dimension;
+            /** Cached origin dimensions */
+            originRect: Dimension;
 
-        /** Cached overlay dimensions */
-        overlayRect: Dimension;
+            /** Cached overlay dimensions */
+            overlayRect: Dimension;
 
-        /** Cached viewport dimensions */
-        viewportRect: Dimension;
+            /** Cached viewport dimensions */
+            viewportRect: Dimension;
 
-        /** Amount of space that must be maintained between the overlay and the edge of the viewport. */
-        viewportMargin: number;
+            /** Amount of space that must be maintained between the overlay and the edge of the viewport. */
+            viewportMargin: number;
 
-        /** The Scrollable containers used to check scrollable view properties on position change. */
-        scrollables: CdkScrollable[];
+            /** The Scrollable containers used to check scrollable view properties on position change. */
+            scrollables: CdkScrollable[];
 
-        /** Ordered list of preferred positions, from most to least desirable. */
-        preferredPositions: ConnectionPositionPair[];
+            /** Ordered list of preferred positions, from most to least desirable. */
+            preferredPositions: ConnectionPositionPair[];
 
-        /** The origin element against which the overlay will be positioned. */
-        origin: FlexibleConnectedPositionStrategyOrigin;
+            /** The origin element against which the overlay will be positioned. */
+            origin: FlexibleConnectedPositionStrategyOrigin;
 
-        /** @internal Observable sequence of position changes. */
-        positionChange: Observable<ConnectedOverlayPositionChange>;
+            /** @internal Observable sequence of position changes. */
+            positionChange: Observable<ConnectedOverlayPositionChange>;
 
-        /** Subject that emits whenever the position changes. */
-        readonly positionChanger: Subject<ConnectedOverlayPositionChange>;
+            /** Subject that emits whenever the position changes. */
+            readonly positionChanger: Subject<ConnectedOverlayPositionChange>;
 
-        /** Subscription to viewport size changes. */
-        resizeSubscription: Subscription;
+            /** Subscription to viewport size changes. */
+            resizeSubscription: Subscription;
 
-        /** Selector to be used when finding the elements on which to set the transform origin. */
-        transformOriginSelector: string;
+            /** Selector to be used when finding the elements on which to set the transform origin. */
+            transformOriginSelector: string;
 
-        /** Keeps track of the CSS classes that the position strategy has applied on the overlay panel. */
-        appliedPanelClasses: string[];
-        platform: Platform;
+            /** Keeps track of the CSS classes that the position strategy has applied on the overlay panel. */
+            appliedPanelClasses: string[];
+            platform: Platform;
+        };
 
-        // constructor(
-        //     connectedTo: FlexibleConnectedPositionStrategyOrigin,
-        //     private viewportRulerScroll: ViewportRuler,
-        //     private _document: Document,
-        //     private _platform: Platform,
-        //     private _overlayContainer: OverlayContainer
-        // ) {
-        //     lastBoundingBoxSize = {width: 0, height: 0};
-        //     this.setOrigin(connectedTo);
-        //     isPushed = false;
-        //     canPush = true;
-        //     growAfterOpen = false;
-        //     hasFlexibleDimensions = true;
-        //     positionLocked = false;
-        //     viewportMargin = 0;
-        //     scrollables = [];
-        //     preferredPositions  = [];
-        //     positionChanger = new Subject<ConnectedOverlayPositionChange>();
-        //     resizeSubscription = Subscription.EMPTY;
-        //     appliedPanelClasses = [];
-        // }
-    };
-
-export type FlexibleConnectedStrategyPositionCapability<T> =
+export type FlexibleConnectedStrategyPositionCapability<T = unknown> =
     StrategyPositionCapability<T> & {
-        strategyPosition: FlexibleConnectedStrategyPosition<T>;
+        strategyPosition?: FlexibleConnectedStrategyPosition<T>;
     };

@@ -20,7 +20,7 @@ export type ChangesUseScrollable = {
     dir: Directionality;
 };
 
-export type Scrollable<T> = Ref<T, HTMLElement> &
+export type Scrollable<T = unknown> = Ref<T, HTMLElement> &
     Partial<ChangesUseScrollable> & {
         readonly elementScrolled: Observable<Event>;
         destroyed: Subject<void>;

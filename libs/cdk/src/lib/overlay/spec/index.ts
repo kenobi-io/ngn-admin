@@ -1,1 +1,1 @@
-export * from './overlay-fixture';
+export * from './overlay.fixture';

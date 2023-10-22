@@ -6,5 +6,5 @@
         "types": ["node"]
     },
     "files": ["src/test-setup.ts"],
-    "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts", "**/*.json", "src/lib/overlay/spec/overlay-fixture.ts"]
+    "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts", "**/*.json", "src/lib/overlay/spec/overlay.fixture.ts"]
 }

@@ -3,13 +3,24 @@ import {
     RtlScrollAxisType,
     supportsScrollBehavior,
 } from '@angular/cdk/platform';
-import { _Bottom, _Left, _Right, _Top, _Without } from '@angular/cdk/scrolling';
-import { CapabilityMono, Mono, mono, tube } from '@core-template';
+import {
+    _Bottom,
+    _Left,
+    _Right,
+    _Top,
+    _Without,
+    ExtendedScrollToOptions,
+} from '@angular/cdk/scrolling';
+import { mono, tube } from '@core-template';
 
-import { ExtendedScrollToOptions, Scrollable } from '../../../directive';
+import {
+    ParamsMonoScrollableCapability,
+    ScrollableCapability,
+} from '../../data';
 
-type ScrollToScrollable = CapabilityMono<
-    Scrollable<unknown> & { isRtl?: boolean; options?: ExtendedScrollToOptions }
+type PRS = ParamsMonoScrollableCapability<
+    Required<ScrollableCapability>,
+    { options: ExtendedScrollToOptions } & { isRtl?: boolean }
 >;
 
 /**
@@ -20,60 +31,54 @@ type ScrollToScrollable = CapabilityMono<
  * in an RTL context.
  * @use options specified the offsets to scroll to.
  */
-export const scrollToScrollable = <T>(): Mono<Scrollable<T>> =>
-    mono((scrollable) =>
-        tube(
-            setRtl(),
-            startEndAsLeftOffsetRewrite(),
-            startEndAsRightOffsetRewrite(),
-            topOffsetRewrite(),
-            leftAndRightOffsetRewrite(),
-            applyOptionsOfScroll()
-        )(scrollable)
+export const scrollToScrollable: ParamsMonoScrollableCapability<
+    ScrollableCapability,
+    { options: ExtendedScrollToOptions }
+> = ({ options }) =>
+    mono(({ scrollable }) => {
+        const rtl = { isRtl: false, options };
+        scrollable &&
+            tube(
+                setRtl(rtl),
+                startEndAsLeftOffsetRewrite(rtl),
+                startEndAsRightOffsetRewrite(rtl),
+                topOffsetRewrite(rtl),
+                leftAndRightOffsetRewrite(rtl),
+                applyOptionsOfScroll(rtl)
+            )({ scrollable });
+    });
+
+const setRtl: ParamsMonoScrollableCapability<
+    Required<ScrollableCapability>,
+    { isRtl?: boolean }
+> = ({ isRtl }) =>
+    mono(({ scrollable }) => {
+        scrollable &&
+            (isRtl = !!(scrollable?.dir && scrollable.dir.value === 'rtl')) &&
+            isRtl;
+    });
+
+const startEndAsLeftOffsetRewrite: PRS = ({ isRtl, options }) =>
+    mono(
+        ({ scrollable }) =>
+            options &&
+            options.left == undefined &&
+            (options.left = isRtl ? options.end : options.start) &&
+            scrollable
     );
 
-const setRtl: ScrollToScrollable = () =>
-    mono((scrollable) => {
-        scrollable &&
-            (scrollable.isRtl = !!(
-                scrollable?.dir && scrollable.dir.value === 'rtl'
-            ));
-    });
-
-const applyOptionsOfScroll: ScrollToScrollable = () =>
-    mono((scrollable) => {
-        const { nativeElement } = scrollable.elementRef;
-        if (supportsScrollBehavior()) {
-            nativeElement.scrollTo(scrollable.options);
-        } else if (scrollable.options) {
-            if (scrollable.options.top != undefined) {
-                nativeElement.scrollTop = scrollable.options.top;
-            }
-            if (scrollable.options.left != undefined) {
-                nativeElement.scrollLeft = scrollable.options.left;
-            }
-        }
-    });
-
-const startEndAsLeftOffsetRewrite: ScrollToScrollable = () =>
-    mono((scrollable) => {
-        const { isRtl, options } = scrollable;
-        options &&
-            options.left == undefined &&
-            (options.left = isRtl ? options.end : options.start);
-    });
-
-const startEndAsRightOffsetRewrite: ScrollToScrollable = () =>
-    mono((scrollable) => {
-        const { isRtl, options } = scrollable;
-        options &&
+const startEndAsRightOffsetRewrite: PRS = ({ isRtl, options }) =>
+    mono(
+        ({ scrollable }) =>
+            options &&
             options.right == undefined &&
-            (options.right = isRtl ? options.start : options.end);
-    });
+            (options.right = isRtl ? options.start : options.end) &&
+            scrollable
+    );
 
-const topOffsetRewrite: ScrollToScrollable = () =>
-    mono((scrollable) => {
-        const { elementRef, options } = scrollable;
+const topOffsetRewrite: PRS = ({ options }) =>
+    mono(({ scrollable }) => {
+        const { elementRef } = scrollable;
         const { nativeElement } = elementRef;
 
         if (options?.bottom != undefined) {
@@ -84,9 +89,9 @@ const topOffsetRewrite: ScrollToScrollable = () =>
         }
     });
 
-const leftAndRightOffsetRewrite: ScrollToScrollable = () =>
-    mono((scrollable) => {
-        const { elementRef, isRtl, options } = scrollable;
+const leftAndRightOffsetRewrite: PRS = ({ isRtl, options }) =>
+    mono(({ scrollable }) => {
+        const { elementRef } = scrollable;
         const { nativeElement } = elementRef;
 
         if (!options) {
@@ -112,6 +117,21 @@ const leftAndRightOffsetRewrite: ScrollToScrollable = () =>
                     nativeElement.scrollWidth -
                     nativeElement.clientWidth -
                     options.right;
+            }
+        }
+    });
+
+const applyOptionsOfScroll: PRS = ({ options }) =>
+    mono(({ scrollable }) => {
+        const { nativeElement } = scrollable.elementRef;
+        if (supportsScrollBehavior()) {
+            nativeElement.scrollTo(options);
+        } else if (options) {
+            if (options.top != undefined) {
+                nativeElement.scrollTop = options.top;
+            }
+            if (options.left != undefined) {
+                nativeElement.scrollLeft = options.left;
             }
         }
     });

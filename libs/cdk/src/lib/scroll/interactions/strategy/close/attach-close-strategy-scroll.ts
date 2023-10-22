@@ -1,10 +1,10 @@
 import { InjectionToken } from '@angular/core';
-import { CapabilityMono, mono } from '@core-template';
+import { FunctionMono, mono } from '@core-template';
 
 import { CloseStrategyScroll } from '../../../data';
 
 /** Attaches this scroll strategy to an overlay. */
-export const attachCloseStrategyScroll: CapabilityMono<
+export const attachCloseStrategyScroll: FunctionMono<
     CloseStrategyScroll<unknown>
 > = () =>
     mono((strategy) => {
@@ -12,7 +12,7 @@ export const attachCloseStrategyScroll: CapabilityMono<
     });
 
 export const ATTACH_CLOSE_STRATEGY_SCROLL = new InjectionToken<
-    CapabilityMono<CloseStrategyScroll<unknown>>
+    FunctionMono<CloseStrategyScroll<unknown>>
 >('[ATTACH_CLOSE_STRATEGY_SCROLL]', {
     factory: () => attachCloseStrategyScroll,
 });

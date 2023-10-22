@@ -5,7 +5,8 @@ import { Dimension } from '../../../platform';
 import {
     FlexibleConnectedPosition,
     FlexibleConnectedStrategyPosition,
-    ParamsUnaryApplyFlexibleConnectedStrategyPosition,
+    FlexibleConnectedStrategyPositionCapability,
+    ParamsMonoStrategyPositionCapability,
     XOverlayPosition,
     YOverlayPosition,
 } from '../../data';
@@ -28,7 +29,8 @@ type Param = {
  * @internal
  * Gets the (x, y) coordinate of a connection point on the origin based on a relative position.
  */
-export const originPoint: ParamsUnaryApplyFlexibleConnectedStrategyPosition<
+export const originPoint: ParamsMonoStrategyPositionCapability<
+    FlexibleConnectedStrategyPositionCapability,
     Param
 > = ({ containerRect, originRect, pos }: Param) =>
     mono(({ strategyPosition }) => {

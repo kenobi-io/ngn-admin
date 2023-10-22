@@ -2,10 +2,10 @@ import { coerceArray } from '@angular/cdk/coercion';
 import { Bounden } from '@core-template';
 
 import { casting } from '../../../../directive';
-import { OverlayRef } from '../../../data';
+import { Overlay } from '../../../data';
 
 export type ToggleClassesAttach<T> = Bounden<
-    OverlayRef<T>,
+    Overlay<T>,
     'backdropElement' | 'toggleClasses'
 > & {
     isAdd: boolean;
@@ -14,7 +14,7 @@ export type ToggleClassesAttach<T> = Bounden<
 /** Toggles a single CSS class or an array of classes on an element. */
 export const toggleClassesOverlayRef = <T>(
     use: ToggleClassesAttach<T>
-): OverlayRef<T> => {
+): Overlay<T> => {
     const { backdropElement, isAdd, toggleClasses } = use;
     return casting(use, () => {
         const classes = coerceArray(toggleClasses || []).filter((c) => !!c);

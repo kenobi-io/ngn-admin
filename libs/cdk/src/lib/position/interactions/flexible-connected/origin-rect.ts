@@ -1,91 +1,81 @@
 import { ElementRef } from '@angular/core';
-import { Condition, condition, Mono, mono, tube } from '@core-template';
+import { condition, mono, tube } from '@core-template';
 
 import {
+    ConditionStrategyPositionCapability,
     FlexibleConnectedStrategyPositionCapability,
-    UnaryFlexibleConnectedStrategyPosition,
+    MonoStrategyPositionCapability,
 } from '../../data';
 
-type Data<T> = Partial<FlexibleConnectedStrategyPositionCapability<T>> & {
+type RF = MonoStrategyPositionCapability<
+    Required<FlexibleConnectedStrategyPositionCapability>
+>;
+
+type Data = {
     height: number;
     width: number;
 };
 
+type CRF = ConditionStrategyPositionCapability<
+    Required<FlexibleConnectedStrategyPositionCapability> & Data
+>;
+
 /** @internal Returns the ClientRect of the current origin. */
-export const originRect: UnaryFlexibleConnectedStrategyPosition = <T>() =>
+export const originRect: MonoStrategyPositionCapability<
+    FlexibleConnectedStrategyPositionCapability
+> = () =>
     mono(({ strategyPosition }) => {
-        const value: Data<T> = {
+        const value: Data = {
             height: 0,
-            ...strategyPosition,
             width: 0,
         };
 
-        tube(
-            doesTheOriginInstanceofElementRef(),
-            assignOriginElementRefBoundingClientRect(),
-            doesTheOriginInstanceofElement(),
-            assignOriginElementBoundingClientRect(),
-            doesNotTheOriginInstanceof(),
-            assignOriginRect()
-        )(value);
+        strategyPosition &&
+            tube(
+                ({ strategyPosition: { origin } }) =>
+                    origin instanceof ElementRef,
+                assignOriginElementRefBoundingClientRect(),
+                ({ strategyPosition: { origin } }) => origin instanceof Element,
+                assignOriginElementBoundingClientRect(),
+                doesNotTheOriginInstanceof(),
+                assignOriginRect()
+            )({ strategyPosition, ...value });
     });
 
-const doesTheOriginInstanceofElementRef = <T>(): Condition<Data<T>> =>
-    condition((model) => model?.strategyPosition?.origin instanceof ElementRef);
-
-const doesTheOriginInstanceofElement = <T>(): Condition<Data<T>> =>
-    condition((model) => model?.strategyPosition?.origin instanceof Element);
-
-const doesNotTheOriginInstanceof = <T>(): Condition<Data<T>> =>
+const doesNotTheOriginInstanceof: CRF = () =>
     condition(
-        (model) =>
-            !(model?.strategyPosition?.origin instanceof Element) &&
-            !(model?.strategyPosition?.origin instanceof ElementRef)
+        ({ strategyPosition: { origin } }) =>
+            !(origin instanceof Element) && !(origin instanceof ElementRef)
     );
 
-const assignOriginElementRefBoundingClientRect = <T>(): Mono<
-    Partial<FlexibleConnectedStrategyPositionCapability<T>>
-> =>
+const assignOriginElementRefBoundingClientRect: RF = () =>
     mono(
-        (model) =>
-            model.strategyPosition &&
-            (model.strategyPosition.originRect = (
-                model.strategyPosition?.origin as ElementRef
+        ({ strategyPosition }) =>
+            (strategyPosition.originRect = (
+                strategyPosition.origin as ElementRef
             ).nativeElement.getBoundingClientRect())
     );
 
-const assignOriginElementBoundingClientRect = <T>(): Mono<
-    Partial<FlexibleConnectedStrategyPositionCapability<T>>
-> =>
+const assignOriginElementBoundingClientRect: RF = () =>
     mono(
-        (model) =>
-            model.strategyPosition &&
-            (model.strategyPosition.originRect = (
-                model.strategyPosition?.origin as Element
+        ({ strategyPosition, strategyPosition: { origin } }) =>
+            (strategyPosition.originRect = (
+                origin as Element
             ).getBoundingClientRect())
     );
 
-const assignOriginRect = <T>(): Mono<
-    Partial<FlexibleConnectedStrategyPositionCapability<T>>
-> =>
-    mono((model) => {
-        const { strategyPosition } = model;
-        if (strategyPosition) {
-            const { origin } = strategyPosition;
-            if (
-                !(origin instanceof Element) &&
-                !(origin instanceof ElementRef)
-            ) {
-                const width = origin.width || 0;
-                const height = origin.height || 0;
-                strategyPosition.originRect = {
-                    bottom: origin.y + height,
-                    height,
-                    left: origin.x,
-                    right: origin.x + width,
-                    top: origin.y,
-                    width,
-                };
-            }
+const assignOriginRect: RF = () =>
+    mono(({ strategyPosition, strategyPosition: { origin } }) => {
+        if (!(origin instanceof Element) && !(origin instanceof ElementRef)) {
+            const width = origin.width || 0;
+            const height = origin.height || 0;
+            strategyPosition.originRect = {
+                bottom: origin.y + height,
+                height,
+                left: origin.x,
+                right: origin.x + width,
+                top: origin.y,
+                width,
+            };
         }
     });

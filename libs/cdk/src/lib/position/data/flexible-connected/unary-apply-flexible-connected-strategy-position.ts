@@ -1,32 +1,30 @@
-import {
-    CapabilityMono,
-    Condition,
-    Mono,
-    ParamsCapabilityMono,
-} from '@core-template';
+// import { UnaryFunction } from 'rxjs';
 
-import { FlexibleConnectedStrategyPositionCapability } from '../../data';
+// import { FlexibleConnectedStrategyPositionCapability } from '../../data';
 
-export type UnaryFlexibleConnectedStrategyPosition = <
-    T,
-    R = Partial<FlexibleConnectedStrategyPositionCapability<T>>
->() => Mono<R>;
+// export type MonoFlexibleConnectedStrategyPosition = <
+//     T = unknown,
+//     R extends FlexibleConnectedStrategyPositionCapability<T> = FlexibleConnectedStrategyPositionCapability<T>
+// >() => Mono<R>;
 
-export type ParamsUnaryApplyFlexibleConnectedStrategyPosition<
-    T,
-    R = Partial<FlexibleConnectedStrategyPositionCapability<T>>
-> = <K>(param: K) => Mono<R>;
+// export type ParamsMonoApplyFlexibleConnectedStrategyPosition<
+//     Param = unknown,
+//     T = unknown,
+//     R extends
+//         FlexibleConnectedStrategyPositionCapability<T> = FlexibleConnectedStrategyPositionCapability<T>,
+// > = (param: Param) => Mono<R>;
 
-export type ConditionApplyFlexibleConnectedStrategyPosition = <
-    T,
-    R = Partial<FlexibleConnectedStrategyPositionCapability<T>>
->() => Condition<R>;
+// export type UnaryApplyFlexibleConnectedStrategyPosition<
+//     P = unknown,
+//     T = unknown,
+//     R extends
+//         FlexibleConnectedStrategyPositionCapability<T> = FlexibleConnectedStrategyPositionCapability<T>,
+// > = () => UnaryFunction<P, R>;
 
-export type CapabilityUnaryFlexibleConnectedStrategyPosition<T> =
-    CapabilityMono<Partial<FlexibleConnectedStrategyPositionCapability<T>>>;
-
-export type ParamsCapabilityUnaryFlexibleConnectedStrategyPosition<T, P> =
-    ParamsCapabilityMono<
-        P,
-        Partial<FlexibleConnectedStrategyPositionCapability<T>>
-    >;
+// export type ParamsUnaryApplyFlexibleConnectedStrategyPosition<
+//     Param = unknown,
+//     P = unknown,
+//     T = unknown,
+//     R extends
+//         FlexibleConnectedStrategyPositionCapability<T> = FlexibleConnectedStrategyPositionCapability<T>,
+// > = (param: Param) => UnaryFunction<P, R>;

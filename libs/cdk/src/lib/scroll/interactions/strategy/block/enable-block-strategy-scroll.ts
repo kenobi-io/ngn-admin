@@ -14,7 +14,7 @@ export const enableBlockStrategyScroll = <T>(): Mono<BlockStrategyScroll<T>> =>
     });
 
 const canBeEnabledScroll = <T>(strategy: BlockStrategyScroll<T>): boolean => {
-    const { document, viewportRuler } = strategy;
+    const { document, viewportRulerScroll: viewportRuler } = strategy;
     // Since the scroll strategies can't be singletons, we have to use a global CSS class
     // (`cdk-global-scrollblock`) to make sure that we don't try to disable global
     // scrolling multiple times.
@@ -42,7 +42,11 @@ const canBeEnabledScroll = <T>(strategy: BlockStrategyScroll<T>): boolean => {
 
 const enabledScroll = <T>(): Mono<BlockStrategyScroll<T>> =>
     mono((strategy) => {
-        const { document, previousHTMLStyles, viewportRuler } = strategy;
+        const {
+            document,
+            previousHTMLStyles,
+            viewportRulerScroll: viewportRuler,
+        } = strategy;
 
         const root = document.documentElement;
         positionViewportRulerScroll(viewportRuler);

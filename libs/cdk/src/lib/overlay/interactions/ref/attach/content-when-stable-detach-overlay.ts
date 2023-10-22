@@ -1,23 +1,18 @@
 import { mono } from '@core-template';
-import { outZone } from '@ngn-template/cdk';
-import { merge, takeUntil, UnaryFunction } from 'rxjs';
+import { merge, takeUntil } from 'rxjs';
 
-import { OverlayRefCapability } from '../../../data';
-import { toggleClassesOverlayRef } from './toggle-classes-overlay-ref';
-
-type ContentWhenStableDetachOverlayRef = <
-    T,
-    R,
-    P extends OverlayRefCapability<T> = OverlayRefCapability<T>
->() => UnaryFunction<P, R>;
+import { outZone } from '../../../../platform';
+import { MonoOverlayCapability, OverlayCapability } from '../../../data';
+import { toggleClassesOverlayRef } from './toggle-classes-overlay';
 
 /** Detaches the overlay content next time the ngZone stabilizes. */
-
-export const contentWhenStableDetachOverlayRef: ContentWhenStableDetachOverlayRef =
-    <T, R, P extends OverlayRefCapability<T>>() =>
-        mono<P, R>(({ overlayRef }) => {
+export const contentWhenStableDetachOverlayRef: MonoOverlayCapability<
+    OverlayCapability
+> = () =>
+    mono(({ overlay }) => {
+        if (overlay) {
             const { attachments, config, detachments, host, ngZone, pane } =
-                overlayRef;
+                overlay;
             // Normally we wouldn't have to explicitly run this outside the `NgZone`, however
             // if the consumer is using `ngZone-patch-rxjs`, the `Subscription.unsubscribe` call will
             // be patched to run inside the ngZone, which will throw us into an infinite loop.
@@ -32,18 +27,18 @@ export const contentWhenStableDetachOverlayRef: ContentWhenStableDetachOverlayRe
                         // they may have been removed by the time the ngZone stabilizes.
                         if (!pane || !host || pane.children.length === 0) {
                             if (pane && config?.panelClass) {
-                                overlayRef.toggleClasses = config.panelClass;
-                                const tca = { ...overlayRef, isAdd: false };
+                                overlay.toggleClasses = config.panelClass;
+                                const tca = { ...overlay, isAdd: false };
                                 toggleClassesOverlayRef(tca);
                             }
 
                             if (host?.parentElement) {
-                                overlayRef.previousHostParent =
-                                    host.parentElement;
+                                overlay.previousHostParent = host.parentElement;
                                 host.remove();
                             }
                             subscription.unsubscribe();
                         }
                     });
             });
-        });
+        }
+    });

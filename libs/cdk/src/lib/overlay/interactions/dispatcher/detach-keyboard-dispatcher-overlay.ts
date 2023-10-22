@@ -1,15 +1,17 @@
-import { Finish, Mono, mono } from '@core-template';
+import { FunctionMono, mono } from '@core-template';
 
-import { KeyboardDispatcherOverlay } from '../../data';
+import { KeyboardDispatcherOverlayCapability } from '../../data';
 
 /** Detaches the global keyboard event listener. */
-export const detachKeyboardDispatcherOverlay = (
-    finish?: Finish
-): Mono<KeyboardDispatcherOverlay> =>
-    mono((dispatcher) => {
-        const { document, isAttached, listener } = dispatcher;
-        if (isAttached && document && listener) {
-            document.body.removeEventListener('keydown', listener);
-            dispatcher.isAttached = false;
+export const detachKeyboardDispatcherOverlay: FunctionMono<
+    KeyboardDispatcherOverlayCapability
+> = (finish) =>
+    mono(({ dispatcherOverlay }) => {
+        if (dispatcherOverlay) {
+            const { document, isAttached, listener } = dispatcherOverlay;
+            if (isAttached && document && listener) {
+                document.body.removeEventListener('keydown', listener);
+                dispatcherOverlay.isAttached = false;
+            }
         }
     }, finish);

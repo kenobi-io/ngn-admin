@@ -1,30 +1,39 @@
 import {
+    ConnectionPositionPair,
     validateHorizontalPosition,
     validateVerticalPosition,
 } from '@angular/cdk/overlay';
+import { each, finish, isEmpty, mono, tube } from '@core-template';
 
-import { FlexibleConnectedStrategyPosition } from '../../data';
+import {
+    FlexibleConnectedStrategyPositionCapability,
+    MonoStrategyPositionCapability,
+    StrategyPositionCapability,
+} from '../../data';
 
 /** Validates that the current position match the expected values. */
-export const validateFlexibleConnectedStrategyPosition = <T>(
-    strategyPosition: FlexibleConnectedStrategyPosition<T>
-): FlexibleConnectedStrategyPosition<T> => {
-    const { preferredPositions } = strategyPosition;
+export const validateFlexibleConnectedStrategyPosition: MonoStrategyPositionCapability<
+    FlexibleConnectedStrategyPositionCapability
+> = () =>
+    mono(({ strategyPosition }) => {
+        if (strategyPosition)
+            tube(
+                isEmpty('preferredPositions'),
+                throwError(),
+                each<ConnectionPositionPair>('preferredPositions', (pair) => {
+                    validateHorizontalPosition('originX', pair.originX);
+                    validateVerticalPosition('originY', pair.originY);
+                    validateHorizontalPosition('overlayX', pair.overlayX);
+                    validateVerticalPosition('overlayY', pair.overlayY);
+                })
+            )(strategyPosition);
+    });
 
-    if (!preferredPositions.length) {
+const throwError: MonoStrategyPositionCapability<
+    StrategyPositionCapability
+> = () =>
+    mono(() => {
         throw new Error(
             'FlexibleConnectedPositionStrategy: At least one position is required.'
         );
-    }
-
-    // TODO(crisbeto): remove these once Angular's template type
-    // checking is advanced enough to catch these cases.
-    preferredPositions.forEach((pair) => {
-        validateHorizontalPosition('originX', pair.originX);
-        validateVerticalPosition('originY', pair.originY);
-        validateHorizontalPosition('overlayX', pair.overlayX);
-        validateVerticalPosition('overlayY', pair.overlayY);
-    });
-
-    return strategyPosition;
-};
+    }, finish);

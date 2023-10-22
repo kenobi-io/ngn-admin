@@ -21,7 +21,7 @@ export const withFlexibleConnectedStrategyPosition = <T>(
         if (lastPosition && positions.indexOf(lastPosition) === -1) {
             strategyPosition.lastPosition = undefined;
         }
-        validateFlexibleConnectedStrategyPosition(strategyPosition);
+        validateFlexibleConnectedStrategyPosition()({ strategyPosition });
 
         return strategyPosition;
     };

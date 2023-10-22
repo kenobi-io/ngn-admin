@@ -1,3 +1,4 @@
+export * from './capability';
 export * from './component-portal';
 export * from './dom-portal';
 export * from './dom-portal-outlet';

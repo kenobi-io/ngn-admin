@@ -46,8 +46,8 @@
 //                     '';
 //             styles.width = styles.height = '100%';
 //         } else {
-//             const maxHeight = this._overlayRef.getConfig().maxHeight;
-//             const maxWidth = this._overlayRef.getConfig().maxWidth;
+//             const maxHeight = this._overlay.getConfig().maxHeight;
+//             const maxWidth = this._overlay.getConfig().maxWidth;
 
 //             styles.height = coerceCssPixelValue(boundingBoxRect.height);
 //             styles.top = coerceCssPixelValue(boundingBoxRect.top);

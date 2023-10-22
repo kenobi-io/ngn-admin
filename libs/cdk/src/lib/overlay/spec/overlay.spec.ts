@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { mockOverlay } from './overlay-fixture';
+import { mockOverlay } from './overlay.fixture';
 
 describe('createOverlay', () => {
     it('should create an overlay with default values', () => {
@@ -13,7 +13,7 @@ describe('createOverlay', () => {
         expect(overlay.injector).toBeDefined();
         expect(overlay.optionsStrategyScroll).toBeDefined();
         expect(overlay.positionBuilder).toBeDefined();
-        expect(overlay.ref).toBeDefined();
+        expect(overlay).toBeDefined();
         expect(overlay.config?.hasBackdrop).toBe(false);
         expect(overlay.config?.panelClass).toEqual([]);
         // expect(overlay.config?.scrollStrategy).toBeDefined();
@@ -61,10 +61,10 @@ describe('createOverlay', () => {
 
 // describe('Overlay', () => {
 //     let overlay: Overlay<any>;
-//     let overlayRef: OverlayRef<any>;
+//     let overlay: OverlayRef<any>;
 
 //     beforeEach(() => {
-//         overlayRef = {} as OverlayRef<any>;
+//         overlay = {} as OverlayRef<any>;
 //         const optionsStrategyScroll = {} as OptionsStrategyScrollOverlay<any>;
 //         const positionBuilder = {} as OverlayPositionBuilder;
 //         const componentFactoryResolver = {} as ComponentFactoryResolver;
@@ -82,14 +82,14 @@ describe('createOverlay', () => {
 //             injector,
 //             optionsStrategyScroll,
 //             positionBuilder,
-//             ref: overlayRef,
+//             ref: overlay,
 //             zonality,
 //             ...changesOverlayRef,
 //         };
 //     });
 
 //     it('should have all properties defined', () => {
-//         expect(overlay.ref).toBeDefined();
+//         expect(overlay).toBeDefined();
 //         expect(overlay.optionsStrategyScroll).toBeDefined();
 //         expect(overlay.positionBuilder).toBeDefined();
 //         expect(overlay.componentFactoryResolver).toBeDefined();

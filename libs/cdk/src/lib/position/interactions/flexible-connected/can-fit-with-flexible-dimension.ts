@@ -17,10 +17,10 @@
 //         const availableHeight = viewport.bottom - point.y;
 //         const availableWidth = viewport.right - point.x;
 //         const minHeight = pixelValue({
-//             input: this._overlayRef.getConfig().minHeight,
+//             input: this._overlay.getConfig().minHeight,
 //         });
 //         const minWidth = pixelValue({
-//             input: this._overlayRef.getConfig().minWidth,
+//             input: this._overlay.getConfig().minWidth,
 //         });
 
 //         const verticalFit =

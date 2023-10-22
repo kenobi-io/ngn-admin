@@ -118,7 +118,12 @@ const registeredEmitsEventSubscribe = <T>(
     scrollSubscription?: Subscription
 ): UCS<T> =>
     mono((strategy) => {
-        const { config, dispatcher, overlay, viewportRuler } = strategy;
+        const {
+            config,
+            dispatcher,
+            overlay,
+            viewportRulerScroll: viewportRuler,
+        } = strategy;
         const { threshold } = { ...config };
         positionViewportRulerScroll(viewportRuler);
         const { startPosition } = viewportRuler;
@@ -138,7 +143,7 @@ const registeredEmitsEventSubscribe = <T>(
                     ) {
                         detach()(strategy);
                     } else if (overlay) {
-                        updatePositionOverlayRef(overlay.ref);
+                        updatePositionOverlayRef(overlay);
                     }
                 }
             );

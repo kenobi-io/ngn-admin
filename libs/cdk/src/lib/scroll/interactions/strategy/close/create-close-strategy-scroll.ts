@@ -16,7 +16,7 @@ export const createCloseStrategyScroll = <T>(
     const close: CloseStrategyScroll<T> = {
         dispatcher: inject(DISPATCHER_SCROLL),
         ngZone: inject(ZONE_TOKEN),
-        viewportRuler: inject(VIEWPORT_RULER_SCROLL),
+        viewportRulerScroll: inject(VIEWPORT_RULER_SCROLL),
     };
     changes(close, change, CHANGE_CLOSE_STRATEGY_SCROLL);
 

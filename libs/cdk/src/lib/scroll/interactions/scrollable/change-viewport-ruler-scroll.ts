@@ -1,12 +1,10 @@
-import { Mono, mono } from '@core-template';
+import { mono } from '@core-template';
 import { auditTime } from 'rxjs/operators';
 
-import { UnaryViewportRulerScroll, ViewportRulerScroll } from '../../data';
-
-type ChangeViewportRulerScroll = {
-    (): Mono<ViewportRulerScroll>;
-    (viewportRuler: ViewportRulerScroll): ViewportRulerScroll;
-};
+import {
+    MonoStrategyScrollCapability,
+    StrategyScrollCapability,
+} from '../../data';
 
 /**
  * Returns a stream that emits whenever the size of the viewport changes.
@@ -14,12 +12,15 @@ type ChangeViewportRulerScroll = {
  * @param throttleTime Time in milliseconds to throttle the stream.
  */
 
-export const changeViewportRulerScroll: UnaryViewportRulerScroll = () =>
-    mono(({ viewportRulerScroll: ViewportRulerScroll }) => {
-        if (ViewportRulerScroll) {
-            const { change, throttleTime } = ViewportRulerScroll;
+export const changeViewportRulerScroll: MonoStrategyScrollCapability<
+    StrategyScrollCapability
+> = () =>
+    mono(({ strategyScroll }) => {
+        if (strategyScroll) {
+            const { viewportRulerScroll } = strategyScroll;
+            const { change, throttleTime } = viewportRulerScroll;
 
-            ViewportRulerScroll.timeChange =
+            viewportRulerScroll.timeChange =
                 throttleTime > 0
                     ? change.pipe(auditTime(throttleTime))
                     : change.asObservable();

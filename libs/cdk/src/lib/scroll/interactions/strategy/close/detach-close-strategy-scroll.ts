@@ -1,10 +1,10 @@
 import { inject, InjectionToken } from '@angular/core';
-import { CapabilityMono, mono, tube } from '@core-template';
+import { FunctionMono, mono, tube } from '@core-template';
 
 import { CloseStrategyScroll } from '../../../data';
 import { DISABLE_CLOSE_STRATEGY_SCROLL } from './disable-close-strategy-scroll';
 
-export const detachCloseStrategyScroll: CapabilityMono<
+export const detachCloseStrategyScroll: FunctionMono<
     CloseStrategyScroll<unknown>
 > = () =>
     mono((strategy) => {
@@ -18,7 +18,7 @@ export const detachCloseStrategyScroll: CapabilityMono<
     });
 
 export const DETACH_CLOSE_STRATEGY_SCROLL = new InjectionToken<
-    CapabilityMono<CloseStrategyScroll<unknown>>
+    FunctionMono<CloseStrategyScroll<unknown>>
 >('[DETACH_CLOSE_STRATEGY_SCROLL]', {
     factory: () => detachCloseStrategyScroll,
 });

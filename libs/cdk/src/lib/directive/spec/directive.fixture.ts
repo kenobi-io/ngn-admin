@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventEmitter, NgZone } from '@angular/core';
+import { jest } from '@jest/globals';
 
 /**
  * Provides a noop implementation of `NgZone` which does nothing. This zone requires explicit calls
@@ -14,43 +15,30 @@ export class MockNgZone implements NgZone {
     readonly onStable: EventEmitter<unknown> = new EventEmitter();
     readonly onError: EventEmitter<unknown> = new EventEmitter();
 
-    run<T>(
-        fn: (...args: unknown[]) => T,
-        applyThis?: unknown,
-        applyArgs?: unknown
-    ): T {
-        return fn.apply(applyThis, applyArgs as T[]);
-    }
-
-    runGuarded<T>(
-        fn: (...args: unknown[]) => unknown,
-        applyThis?: unknown,
-        applyArgs?: unknown
-    ): T {
-        return fn.apply(applyThis as T, applyArgs as T[]) as T;
-    }
-
-    runOutsideAngular<T>(fn: (...args: unknown[]) => T): T {
-        return fn();
-    }
+    runOutsideAngular = (): any => jest.fn((fn: () => void) => fn());
+    runGuarded = (fn: (...args: unknown[]) => unknown): any => jest.fn(fn);
+    run = <T>(fn: (...args: unknown[]) => T): any => jest.fn(fn);
 
     // eslint-disable-next-line no-unused-vars
-    runTask<T>(
-        fn: (...args: unknown[]) => T,
-        applyThis?: unknown,
-        applyArgs?: unknown,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-        name?: string
-    ): T {
-        return fn.apply(applyThis, applyArgs as T[]);
-    }
+    runTask = (fn: (...args: unknown[]) => unknown): any => jest.fn(fn);
 }
 
 export const mockNoopNgZone: NgZone = {} as NgZone;
 
-export const mockNgZone: NgZone = /*  {
-    onError: jest.fn<any>() as unknown as EventEmitter<any>,
-    run: jest.fn(),
-    runOutsideAngular: jest.fn(),
-    runTask: jest.fn(),
-}; */ new MockNgZone();
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const mockNgZone: NgZone & { simulateZoneExit?: Function } = {
+    hasPendingMacrotasks: false,
+    hasPendingMicrotasks: false,
+    isStable: true,
+    onError: jest.fn<any>() as any,
+    onMicrotaskEmpty: jest.fn<any>() as any,
+    onStable: new EventEmitter(false),
+    onUnstable: jest.fn<any>() as any,
+    run: jest.fn() as any,
+    runGuarded: jest.fn() as any,
+    runOutsideAngular: jest.fn() as any,
+    runTask: jest.fn() as any,
+    simulateZoneExit: function (): void {
+        this.onStable.emit(null);
+    },
+};

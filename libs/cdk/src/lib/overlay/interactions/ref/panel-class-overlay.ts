@@ -1,18 +1,18 @@
 import { Bounden } from '@core-template';
 
 import { casting } from '../../../directive';
-import { OverlayRef } from '../../data';
-import { toggleClassesOverlayRef } from './attach/toggle-classes-overlay-ref';
+import { Overlay } from '../../data';
+import { toggleClassesOverlayRef } from './attach/toggle-classes-overlay';
 
 export type PanelClassOverlayRef<T> = Bounden<
-    OverlayRef<T>,
+    Overlay<T>,
     'backdropElement' | 'pane' | 'panelClass'
 >;
 
 /** Add a CSS class or an array of classes to the overlay pane. */
 export const addPanelClassOverlayRef = <T>(
     use: PanelClassOverlayRef<T>
-): OverlayRef<T> => {
+): Overlay<T> => {
     return casting(use, () => {
         const { pane, panelClass } = use;
         if (pane) {
@@ -26,7 +26,7 @@ export const addPanelClassOverlayRef = <T>(
 /** Remove a CSS class or an array of classes from the overlay pane. */
 export const removePanelClassOverlayRef = <T>(
     use: PanelClassOverlayRef<T>
-): OverlayRef<T> => {
+): Overlay<T> => {
     return casting(use, () => {
         const { pane, panelClass } = use;
         if (pane) {
